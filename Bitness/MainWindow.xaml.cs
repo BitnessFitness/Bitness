@@ -21,14 +21,27 @@ namespace Bitness
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// The Kinect Sensor That We're Getting Data From
+        /// </summary>
         private KinectSensor sensor;
+
+        /// <summary>
+        /// The pixeldata for the color frame
+        /// </summary>
         private byte[] colorPixels;
+
+        /// <summary>
+        /// The bitmap that we'll write the color frame to
+        /// </summary>
         private WriteableBitmap colorBitmap;
+
 
         public MainWindow()
         {
             InitializeComponent();
         }
+
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
@@ -42,15 +55,21 @@ namespace Bitness
                 }
             }
 
+            // If we have a sensor picked out
             if (this.sensor != null)
             {
+                // Enable the sensor's color stream
                 this.sensor.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
+
+                // Allocate space for pixel data
                 this.colorPixels = new byte[this.sensor.ColorStream.FramePixelDataLength];
+
                 this.colorBitmap = new WriteableBitmap(this.sensor.ColorStream.FrameWidth,
                     this.sensor.ColorStream.FrameHeight, 96.0, 96.0, PixelFormats.Bgr32, null);
                 this.Camera.Source = this.colorBitmap;
                 this.sensor.ColorFrameReady += this.SensorColorFrameReady;
 
+                // Init the sensor
                 try
                 {
                     this.sensor.Start();
@@ -70,6 +89,7 @@ namespace Bitness
                 if (colorFrame == null)
                     return;
 
+                // Copy the color frame data to the texture
                 colorFrame.CopyPixelDataTo(this.colorPixels);
                 this.colorBitmap.WritePixels(
                     new Int32Rect(0, 0, this.colorBitmap.PixelWidth, this.colorBitmap.PixelHeight),
@@ -79,6 +99,7 @@ namespace Bitness
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            // Safely shutdown the sensor
             if (this.sensor != null)
             {
                 this.sensor.Stop();
