@@ -36,6 +36,15 @@ namespace Bitness
         /// </summary>
         private WriteableBitmap colorBitmap;
 
+        /// <summary>
+        /// Array of current skeletons
+        /// </summary>
+        private Skeleton[] skeletons;
+
+        /// <summary>
+        /// Drawing group for skeleton render
+        /// </summary>
+        private DrawingGroup drawingGroup;
 
         public MainWindow()
         {
@@ -45,6 +54,10 @@ namespace Bitness
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
+            this.drawingGroup = new DrawingGroup();
+
+            Skeleton.Source = new DrawingImage(this.drawingGroup);
+
             foreach (KinectSensor sensor in KinectSensor.KinectSensors)
             {
                 if (sensor.Status == KinectStatus.Connected)
@@ -58,6 +71,12 @@ namespace Bitness
             // If we have a sensor picked out
             if (this.sensor != null)
             {
+                // Enable the skeleton frame sensor
+                this.sensor.SkeletonStream.Enable();
+
+                // Add the event handler to the sensor listener
+                this.sensor.SkeletonFrameReady += this.SensorSkeletonFrameReady;
+
                 // Enable the sensor's color stream
                 this.sensor.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
 
@@ -80,6 +99,70 @@ namespace Bitness
                     this.sensor = null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Event handler for when the skeleton frame is ready
+        /// </summary>
+        /// <param name="sender">object sending the event</param>
+        /// <param name="e">event arguments</param>
+        private void SensorSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
+        {
+            using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
+            {
+                if(skeletonFrame != null)
+                {
+                    this.skeletons = new Skeleton[skeletonFrame.SkeletonArrayLength];
+                    skeletonFrame.CopySkeletonDataTo(this.skeletons);
+                }
+                else
+                {
+                    this.skeletons = null;
+                }
+            }
+
+            drawSkeletons();
+        }
+
+        private void drawSkeletons()
+        {
+            using (DrawingContext dc = this.drawingGroup.Open())
+            {
+                dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.colorBitmap.PixelWidth, 
+                    this.colorBitmap.PixelHeight));
+
+                if (skeletons != null)
+                {
+                    foreach (Skeleton skel in skeletons)
+                    {
+                        if (skel.TrackingState == SkeletonTrackingState.Tracked)
+                        {
+                            this.drawJoints(dc, skel);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void drawJoints(DrawingContext dc, Skeleton skel)
+        {
+            foreach (Joint joint in skel.Joints)
+            {
+                if(joint.TrackingState == JointTrackingState.Tracked)
+                {
+                    Brush drawBrush = new SolidColorBrush(Color.FromArgb(255, 100, 149, 237));
+
+                    dc.DrawEllipse(drawBrush, null, this.SkeletonPointToScreen(joint.Position), 10.0, 10.0);
+                }
+            }
+        }
+
+        private Point SkeletonPointToScreen(SkeletonPoint skelpoint)
+        {
+            DepthImagePoint depthPoint = this.sensor.CoordinateMapper.MapSkeletonPointToDepthPoint(skelpoint,
+                DepthImageFormat.Resolution640x480Fps30);
+
+            return new Point(depthPoint.X, depthPoint.Y);
         }
 
         private void SensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)

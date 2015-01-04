@@ -4,6 +4,7 @@
         Title="MainWindow" Height="480" Width="640" Closing="WindowClosing" Loaded="WindowLoaded">
     <Grid>
         <Image x:Name="Camera" HorizontalAlignment="Left" Height="480" VerticalAlignment="Top" Width="640"/>
+        <Image x:Name="Skeleton" HorizontalAlignment="Left" Height="480" VerticalAlignment="Top" Width="640" Margin="0,0,-8,-31"/>
 
     </Grid>
 </Window>
