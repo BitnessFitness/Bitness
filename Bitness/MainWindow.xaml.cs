@@ -46,6 +46,8 @@ namespace Bitness
         /// </summary>
         private DrawingGroup drawingGroup;
 
+        private Human _human;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -99,6 +101,7 @@ namespace Bitness
                     this.sensor = null;
                 }
             }
+
         }
 
         /// <summary>
@@ -110,10 +113,11 @@ namespace Bitness
         {
             using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
             {
-                if(skeletonFrame != null)
+                if (skeletonFrame != null)
                 {
                     this.skeletons = new Skeleton[skeletonFrame.SkeletonArrayLength];
                     skeletonFrame.CopySkeletonDataTo(this.skeletons);
+                    this._human = new Human(this.skeletons[0]);
                 }
                 else
                 {
@@ -123,7 +127,10 @@ namespace Bitness
 
             drawSkeletons();
         }
-
+        
+        /// <summary>
+        /// Draws the skeletons on the screen
+        /// </summary>
         private void drawSkeletons()
         {
             using (DrawingContext dc = this.drawingGroup.Open())
@@ -140,10 +147,17 @@ namespace Bitness
                             this.drawJoints(dc, skel);
                         }
                     }
+                    //this._human.CalcAngles();
                 }
+
             }
         }
 
+        /// <summary>
+        /// Draws the joints of the given skeleton on the screen
+        /// </summary>
+        /// <param name="dc">The drawing context of the screen</param>
+        /// <param name="skel">The skeleton of the joints to draw</param>
         private void drawJoints(DrawingContext dc, Skeleton skel)
         {
             foreach (Joint joint in skel.Joints)
@@ -157,6 +171,11 @@ namespace Bitness
             }
         }
 
+        /// <summary>
+        /// Converts a skeleton point to coordinates of that point on the screen
+        /// </summary>
+        /// <param name="skelpoint">Point to convert</param>
+        /// <returns>Point on screen</returns>
         private Point SkeletonPointToScreen(SkeletonPoint skelpoint)
         {
             DepthImagePoint depthPoint = this.sensor.CoordinateMapper.MapSkeletonPointToDepthPoint(skelpoint,
@@ -165,6 +184,11 @@ namespace Bitness
             return new Point(depthPoint.X, depthPoint.Y);
         }
 
+        /// <summary>
+        /// Event handler when the color frame is ready on the sensor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
             using (ColorImageFrame colorFrame = e.OpenColorImageFrame())
