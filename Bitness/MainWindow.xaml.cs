@@ -95,7 +95,7 @@ namespace Bitness
                 {
                     this.sensor.Start();
                 }
-                catch(System.IO.IOException ex)
+                catch (System.IO.IOException ex)
                 {
                     Console.WriteLine(ex.Message);
                     this.sensor = null;
@@ -127,7 +127,7 @@ namespace Bitness
 
             drawSkeletons();
         }
-        
+
         /// <summary>
         /// Draws the skeletons on the screen
         /// </summary>
@@ -135,7 +135,7 @@ namespace Bitness
         {
             using (DrawingContext dc = this.drawingGroup.Open())
             {
-                dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.colorBitmap.PixelWidth, 
+                dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.colorBitmap.PixelWidth,
                     this.colorBitmap.PixelHeight));
 
                 if (skeletons != null)
@@ -145,9 +145,9 @@ namespace Bitness
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
                             this.drawJoints(dc, skel);
+                            this._human.CalcAngles(skel);
                         }
                     }
-                    //this._human.CalcAngles();
                 }
 
             }
@@ -162,7 +162,7 @@ namespace Bitness
         {
             foreach (Joint joint in skel.Joints)
             {
-                if(joint.TrackingState == JointTrackingState.Tracked)
+                if (joint.TrackingState == JointTrackingState.Tracked)
                 {
                     Brush drawBrush = new SolidColorBrush(Color.FromArgb(255, 100, 149, 237));
 
