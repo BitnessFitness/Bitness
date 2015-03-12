@@ -16,96 +16,129 @@ using Microsoft.Kinect;
 
 namespace Bitness
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using Microsoft.Kinect;
+
     public partial class MainWindow : Window
     {
         /// <summary>
-        /// The Kinect Sensor That We're Getting Data From
+        /// Active Kinect sensor
         /// </summary>
-        private KinectSensor sensor;
+        private KinectSensor sensor = null;
 
         /// <summary>
-        /// The pixeldata for the color frame
+        /// Reader for color frames
         /// </summary>
-        private byte[] colorPixels;
+        private ColorFrameReader colorFrameReader = null;
 
         /// <summary>
-        /// The bitmap that we'll write the color frame to
+        /// Bitmap to display
         /// </summary>
-        private WriteableBitmap colorBitmap;
+        private WriteableBitmap colorBitmap = null;
 
-
+        /// <summary>
+        /// Initializes a new instance of the MainWindow class.
+        /// </summary>
         public MainWindow()
         {
-            InitializeComponent();
+            this.sensor = KinectSensor.GetDefault();
+            this.colorFrameReader = this.sensor.ColorFrameSource.OpenReader();
+            this.colorFrameReader.FrameArrived += this.Reader_ColorFrameArrived;
+            FrameDescription colorFrameDescription = this.sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
+            this.colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
+            this.sensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
+            this.sensor.Open();
+
+
+            // use the window object as the view model in this simple example
+            this.DataContext = this;
+
+            this.InitializeComponent();
+        }
+
+        /// <summary>
+        /// Gets the bitmap to display
+        /// </summary>
+        public ImageSource ImageSource
+        {
+            get
+            {
+                return this.colorBitmap;
+            }
         }
 
 
-        private void WindowLoaded(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Execute shutdown tasks
+        /// </summary>
+        /// <param name="sender">object sending the event</param>
+        /// <param name="e">event arguments</param>
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            foreach (KinectSensor sensor in KinectSensor.KinectSensors)
+            if (this.colorFrameReader != null)
             {
-                if (sensor.Status == KinectStatus.Connected)
-                {
-                    // Get the first sensor
-                    this.sensor = sensor;
-                    break;
-                }
+                this.colorFrameReader.Dispose();
+                this.colorFrameReader = null;
             }
 
-            // If we have a sensor picked out
             if (this.sensor != null)
             {
-                // Enable the sensor's color stream
-                this.sensor.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
-
-                // Allocate space for pixel data
-                this.colorPixels = new byte[this.sensor.ColorStream.FramePixelDataLength];
-
-                this.colorBitmap = new WriteableBitmap(this.sensor.ColorStream.FrameWidth,
-                    this.sensor.ColorStream.FrameHeight, 96.0, 96.0, PixelFormats.Bgr32, null);
-                this.Camera.Source = this.colorBitmap;
-                this.sensor.ColorFrameReady += this.SensorColorFrameReady;
-
-                // Init the sensor
-                try
-                {
-                    this.sensor.Start();
-                }
-                catch(System.IO.IOException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    this.sensor = null;
-                }
+                this.sensor.Close();
+                this.sensor = null;
             }
         }
 
-        private void SensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
+        /// <summary>
+        /// Handles the color frame data arriving from the sensor
+        /// </summary>
+        /// <param name="sender">object sending the event</param>
+        /// <param name="e">event arguments</param>
+        private void Reader_ColorFrameArrived(object sender, ColorFrameArrivedEventArgs e)
         {
-            using (ColorImageFrame colorFrame = e.OpenColorImageFrame())
+            // ColorFrame is IDisposable
+            using (ColorFrame colorFrame = e.FrameReference.AcquireFrame())
             {
-                if (colorFrame == null)
-                    return;
+                if (colorFrame != null)
+                {
+                    FrameDescription colorFrameDescription = colorFrame.FrameDescription;
 
-                // Copy the color frame data to the texture
-                colorFrame.CopyPixelDataTo(this.colorPixels);
-                this.colorBitmap.WritePixels(
-                    new Int32Rect(0, 0, this.colorBitmap.PixelWidth, this.colorBitmap.PixelHeight),
-                    this.colorPixels, this.colorBitmap.PixelWidth * sizeof(Int32), 0);
+                    using (KinectBuffer colorBuffer = colorFrame.LockRawImageBuffer())
+                    {
+                        this.colorBitmap.Lock();
+
+                        // verify data and write the new color frame data to the display bitmap
+                        if ((colorFrameDescription.Width == this.colorBitmap.PixelWidth) && (colorFrameDescription.Height == this.colorBitmap.PixelHeight))
+                        {
+                            colorFrame.CopyConvertedFrameDataToIntPtr(
+                                this.colorBitmap.BackBuffer,
+                                (uint)(colorFrameDescription.Width * colorFrameDescription.Height * 4),
+                                ColorImageFormat.Bgra);
+
+                            this.colorBitmap.AddDirtyRect(new Int32Rect(0, 0, this.colorBitmap.PixelWidth, this.colorBitmap.PixelHeight));
+                        }
+
+                        this.colorBitmap.Unlock();
+                    }
+                }
             }
         }
 
-        private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        /// <summary>
+        /// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged).
+        /// </summary>
+        /// <param name="sender">object sending the event</param>
+        /// <param name="e">event arguments</param>
+        private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
         {
-            // Safely shutdown the sensor
-            if (this.sensor != null)
-            {
-                this.sensor.Stop();
-            }
+            // on failure, set the status text
+
         }
-
-
     }
 }

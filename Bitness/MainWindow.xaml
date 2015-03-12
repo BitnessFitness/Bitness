@@ -1,9 +1,8 @@
 ﻿<Window x:Class="Bitness.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="480" Width="640" Closing="WindowClosing" Loaded="WindowLoaded">
-    <Grid>
-        <Image x:Name="Camera" HorizontalAlignment="Left" Height="480" VerticalAlignment="Top" Width="640"/>
-
-    </Grid>
+        Title="MainWindow" Height="600" Width="700" Closing="MainWindow_Closing">
+    <Viewbox Grid.Row="1" HorizontalAlignment="Center">
+        <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
+    </Viewbox>
 </Window>
