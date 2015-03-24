@@ -10,14 +10,8 @@ namespace Bitness
     interface Action
     {
 
-        bool InProgress { get; }
         int Reps { get; }
 
-        WatchedJoint[] WatchedJoints
-        {
-            get;
-        }
-
-        string Update (IReadOnlyDictionary<JointType, Joint> joints);
+        void Update (IReadOnlyDictionary<JointType, Joint> joints);
     }
 }

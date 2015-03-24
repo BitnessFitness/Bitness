@@ -26,7 +26,7 @@ namespace Bitness
     using System.Windows.Media.Imaging;
     using Microsoft.Kinect;
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
         /// <summary>
@@ -118,11 +118,29 @@ namespace Bitness
             }
         }
 
+        /// <summary>
+        /// INotifyPropertyChangedPropertyChanged event to allow window controls to bind to changeable data
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public string StatusText
         {
             get
             {
                 return this.statusText;
+            }
+            set
+            {
+                if (this.statusText != value)
+                {
+                    this.statusText = value;
+
+                    // notify any bound elements that the text has changed
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("StatusText"));
+                    }
+                }
             }
         }
         /// <summary>
@@ -149,10 +167,11 @@ namespace Bitness
             this.sensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
             this.sensor.Open();
 
-            JointType[] exerciseJoints = { JointType.Head };
-            int[] directions = { 1 };
-            this.exercise = new JumpingJack(exerciseJoints, directions);
-
+            List<JointType> joints = new List<JointType>()
+            {
+                JointType.Head
+            };
+            this.exercise = new JumpingJack(joints);
 
             // use the window object as the view model in this simple example
             this.DataContext = this;
@@ -252,8 +271,8 @@ namespace Bitness
                             this.DrawBody(joints, jointPoints, dc, drawPen);
 
                             // here is where we check the exercise
-                            this.statusText = this.exercise.Update(body.Joints);
-                            Console.WriteLine(statusText);
+                            this.exercise.Update(body.Joints);
+                            this.StatusText = this.exercise.Reps.ToString();
 
                         }
                     }
