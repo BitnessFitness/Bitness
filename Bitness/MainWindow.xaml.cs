@@ -40,6 +40,11 @@ namespace Bitness
         private ColorFrameReader colorFrameReader = null;
 
         /// <summary>
+        /// Drawing image that we will display
+        /// </summary>
+        private DrawingImage imageSource;
+
+        /// <summary>
         /// Bitmap to display
         /// </summary>
         private WriteableBitmap colorBitmap = null;
@@ -85,6 +90,42 @@ namespace Bitness
         private int displayHeight;
 
         /// <summary>
+        /// Small bit of text in the bottom right corner of the screen
+        /// </summary>
+        private string statusText = "Nothing has happened yet!";
+
+        private Action exercise;
+
+        /// <summary>
+        /// Gets the skeleton points to display
+        /// </summary>
+        public ImageSource BodySource
+        {
+            get
+            {
+                return this.imageSource;
+            }
+        }
+
+        /// <summary>
+        /// Gets the bitmap to display
+        /// </summary>
+        public ImageSource ImageSource
+        {
+            get
+            {
+                return this.colorBitmap;
+            }
+        }
+
+        public string StatusText
+        {
+            get
+            {
+                return this.statusText;
+            }
+        }
+        /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
         public MainWindow()
@@ -103,9 +144,14 @@ namespace Bitness
             this.bodyFrameReader = this.sensor.BodyFrameSource.OpenReader();
             this.coordinateMapper = this.sensor.CoordinateMapper;
             this.drawingGroup = new DrawingGroup();
+            this.imageSource = new DrawingImage(this.drawingGroup);
 
             this.sensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
             this.sensor.Open();
+
+            JointType[] exerciseJoints = { JointType.Head };
+            int[] directions = { 1 };
+            this.exercise = new JumpingJack(exerciseJoints, directions);
 
 
             // use the window object as the view model in this simple example
@@ -114,16 +160,7 @@ namespace Bitness
             this.InitializeComponent();
         }
 
-        /// <summary>
-        /// Gets the bitmap to display
-        /// </summary>
-        public ImageSource ImageSource
-        {
-            get
-            {
-                return this.colorBitmap;
-            }
-        }
+
 
         /// <summary>
         /// Execute start up tasks
@@ -134,7 +171,6 @@ namespace Bitness
         {
             if (this.bodyFrameReader != null)
             {
-                Console.WriteLine("adding body frame reader event listener");
                 this.bodyFrameReader.FrameArrived += this.Reader_BodyFrameArrived;
             }
         }
@@ -182,21 +218,17 @@ namespace Bitness
 
             if (dataReceived)
             {
-                Console.WriteLine("data received");
                 using (DrawingContext dc = this.drawingGroup.Open())
                 {
                     // Draw a transparent background to set the render size
-                    dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
+                    dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
-                    int penIndex = 0;
                     foreach (Body body in this.bodies)
                     {
-                        Console.WriteLine("body");
                         Pen drawPen = new Pen(Brushes.Red, 6);
 
                         if (body.IsTracked)
                         {
-                            Console.WriteLine("body is tracked");
                             IReadOnlyDictionary<JointType, Joint> joints = body.Joints;
 
                             // convert the joint points to depth (display) space
@@ -207,6 +239,7 @@ namespace Bitness
                                 // sometimes the depth(Z) of an inferred joint may show as negative
                                 // clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
                                 CameraSpacePoint position = joints[jointType].Position;
+
                                 if (position.Z < 0)
                                 {
                                     position.Z = InferredZPositionClamp;
@@ -217,6 +250,10 @@ namespace Bitness
                             }
 
                             this.DrawBody(joints, jointPoints, dc, drawPen);
+
+                            // here is where we check the exercise
+                            this.statusText = this.exercise.Update(body.Joints);
+                            Console.WriteLine(statusText);
 
                         }
                     }
@@ -236,7 +273,6 @@ namespace Bitness
         /// <param name="drawingPen">specifies color to draw a specific body</param>
         private void DrawBody(IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, DrawingContext drawingContext, Pen drawingPen)
         {
-            Console.WriteLine("Drawing Body");
             // Draw the joints
             foreach (JointType jointType in joints.Keys)
             {

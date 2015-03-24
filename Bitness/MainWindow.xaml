@@ -9,7 +9,17 @@
         <SolidColorBrush x:Key="KinectPurpleBrush" Color="#ff52318f" />
         <SolidColorBrush x:Key="KinectBlueBrush" Color="#ff00BCF2" />
     </Window.Resources>
-    <Viewbox Grid.Row="1" HorizontalAlignment="Center">
-        <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
-    </Viewbox>
+    <Grid>
+        <Viewbox Grid.Row="1" HorizontalAlignment="Center">
+            <Grid Name="CompositeImage">
+                <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
+                <Image Source="{Binding BodySource}" Stretch="UniformToFill" />
+            </Grid>
+        </Viewbox>
+
+   
+        <StatusBar HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
+            <StatusBarItem Content="{Binding StatusText}" />
+        </StatusBar>
+    </Grid>
 </Window>
