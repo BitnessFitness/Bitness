@@ -95,8 +95,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Action.cs" />
+    <Compile Include="FloorWindow.xaml.cs">
+      <DependentUpon>FloorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="JumpingJack.cs" />
     <Compile Include="WatchedJoint.cs" />
+    <Page Include="FloorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -148,6 +148,9 @@ namespace Bitness
         /// </summary>
         public MainWindow()
         {
+            FloorWindow floor = new FloorWindow();
+            floor.Show();
+
             this.sensor = KinectSensor.GetDefault();
             this.colorFrameReader = this.sensor.ColorFrameSource.OpenReader();
             this.colorFrameReader.FrameArrived += this.Reader_ColorFrameArrived;
@@ -354,7 +357,6 @@ namespace Bitness
         private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
         {
             // on failure, set the status text
-
         }
     }
 }
