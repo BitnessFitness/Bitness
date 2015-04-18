@@ -21,9 +21,9 @@ namespace Bitness
     /// </summary>
     public partial class FloorWindow : Window
     {
-        public static const double OFFSET = 1f;
-        public static const double WIDTH_IN = 2f;
-        public static const double HEIGHT_IN = 2f;
+        public const double OFFSET = 1f;
+        public const double WIDTH_IN = 2f;
+        public const double HEIGHT_IN = 2f;
 
         public FloorWindow()
         {
