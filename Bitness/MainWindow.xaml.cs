@@ -94,7 +94,7 @@ namespace Bitness
         /// </summary>
         private string statusText = "Nothing has happened yet!";
 
-        private Action exercise;
+        private List<Action> exercises;
 
         /// <summary>
         /// Gets the skeleton points to display
@@ -174,11 +174,10 @@ namespace Bitness
             {
                 JointType.Head
             };
-            this.exercise = new JumpingJack(joints);
 
             // use the window object as the view model in this simple example
             this.DataContext = this;
-
+            this.exercises = new List<Action>();
             this.InitializeComponent();
         }
 
@@ -245,9 +244,23 @@ namespace Bitness
                     // Draw a transparent background to set the render size
                     dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
-                    foreach (Body body in this.bodies)
+                    List<int> counts = new List<int>(); 
+
+                    for (int i = 0; i < this.bodies.Length; i++)
                     {
                         Pen drawPen = new Pen(Brushes.Red, 6);
+                        Body body = this.bodies[i];
+                        if (i >= this.exercises.Count)
+                        {
+                            List <JointType> joints = new List<JointType>()
+                            {
+                                JointType.Head
+                            };
+
+                            this.exercises.Add(new JumpingJack(joints));
+                        }
+
+                        Action exercise = this.exercises[i];
 
                         if (body.IsTracked)
                         {
@@ -274,11 +287,18 @@ namespace Bitness
                             this.DrawBody(joints, jointPoints, dc, drawPen);
 
                             // here is where we check the exercise
-                            this.exercise.Update(body.Joints);
-                            this.StatusText = this.exercise.Reps.ToString();
-
+                            exercise.Update(body.Joints);
+                            counts.Add(exercise.Reps);
                         }
                     }
+
+                    String message = "Jumping jacks: ";
+                    for (int i = 0; i < counts.Count; i++)
+                    {
+                        message += "player #" + i + ": " + counts[i] + ". ";
+                    }
+
+                    Console.WriteLine(message);
 
                     // prevent drawing outside of our render area
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
