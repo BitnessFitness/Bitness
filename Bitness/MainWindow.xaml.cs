@@ -298,6 +298,7 @@ namespace Bitness
                         message += "player #" + i + ": " + counts[i] + ". ";
                     }
 
+                    this.StatusText = message;
                     Console.WriteLine(message);
 
                     // prevent drawing outside of our render area
