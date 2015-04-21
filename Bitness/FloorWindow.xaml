@@ -2,7 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="FloorWindow" Height="500" Width="500">
-    <Grid>
-        
-    </Grid>
+    <Viewbox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <Grid Name="CompositeImage">
+            <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
+        </Grid>
+    </Viewbox>
 </Window>
