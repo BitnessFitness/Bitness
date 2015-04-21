@@ -181,6 +181,10 @@ namespace Bitness
             this.InitializeComponent();
         }
 
+        public void PlayVideo(object sender, RoutedEventArgs e){
+            testVideo.Visibility = Visibility.Visible;
+            testVideo.Play();
+        }
 
 
         /// <summary>
