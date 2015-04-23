@@ -23,11 +23,13 @@
             </Grid>
         </Viewbox>
 
-        <MediaElement Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="testVideo" Source="Videos/ttPlayTest3.mp4" Width="500"/>
+        <!-- <MediaElement Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="testVideo" Source="Videos/ttPlayTest3.mp4" Width="500"/> 
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Height="30">
             <Button Click="PlayVideo" Content="Play"/>
         </StackPanel>
 
+        -->
+        
         <StatusBar  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
             <StatusBarItem Content="{Binding StatusText}" />
         </StatusBar>
