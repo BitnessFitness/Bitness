@@ -9,19 +9,17 @@
         <SolidColorBrush x:Key="KinectPurpleBrush" Color="#ff52318f" />
         <SolidColorBrush x:Key="KinectBlueBrush" Color="#ff00BCF2" />
     </Window.Resources>
-    <Grid>
-        <Border Grid.Row="1" Background="Black" />
-        <Border Grid.Row="1" Grid.Column="2" Background="Black" Margin="0,0,8,0"/>
-        <Border Grid.Column="0" Background="Black"/>
-        <Border Grid.Column="2" Background="Black" Margin="0,0,8,0"/>
-        <Border Grid.Column="1" Background="Black"/>
+    <Grid x:Name="mainGrid">
+        <Border Grid.Row="1" Background="#242C3A" />
+        <Border Grid.Row="1" Grid.Column="2" Background="#242C3A"/>
+        <Border Grid.Column="0" Background="#242C3A"/>
+        <Border Grid.Column="2" Background="#242C3A"/>
+        <Border Grid.Column="1" Background="#242C3A"/>
 
         <Viewbox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top">
             <Grid Name="CompositeImage">
-                
                 <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
                 <Image Source="{Binding BodySource}" Stretch="UniformToFill" />
-                
             </Grid>
         </Viewbox>
 
@@ -29,28 +27,27 @@
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Height="30">
             <Button Click="PlayVideo" Content="Play"/>
         </StackPanel>
-        
+
         <StatusBar  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
             <StatusBarItem Content="{Binding StatusText}" />
         </StatusBar>
-        
-        <Image Grid.Row="0" Source="http://bitnessfitness.github.io/images/team.png" HorizontalAlignment="Center" Stretch="Fill" Height="56" Width="95" Margin="0 10 0 5" />
-        <TextBlock Grid.Row="0" Grid.Column="1" Margin="0 0 -1 0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource KinectBlueBrush}" FontFamily="Segoe UI" FontSize="36">BITNESS</TextBlock>
-        <Image Grid.Row="0" Stretch="None" HorizontalAlignment="Center" Margin="0 0 0 5" />
-        
+
+        <Image Grid.Row="0" Source="Images/Planets.png" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Grid.ColumnSpan="3" Margin="0,0,0,0"/>
+       
+        <Canvas x:Name="topBarCanvas" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1272" Grid.ColumnSpan="3">
+            <Image x:Name="redRocket" Source="Images/top_redrocket.png" Width="32" Canvas.Bottom="80"/>
+            <Image x:Name="blueRocket" Source="Images/top_bluerocket.png" Width="32" Canvas.Bottom="45"/>
+        </Canvas>    
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="880"/>
             <ColumnDefinition Width="200"/>
-            <!--
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            -->
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="150"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+
     </Grid>
 </Window>
