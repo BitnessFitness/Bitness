@@ -42,7 +42,7 @@ namespace Bitness
         /// <summary>
         /// Drawing image that we will display
         /// </summary>
-        private DrawingImage imageSource;
+        private DrawingImage bodySource;
 
         /// <summary>
         /// Bitmap to display
@@ -94,6 +94,8 @@ namespace Bitness
         /// </summary>
         private string statusText = "Nothing has happened yet!";
 
+        private FloorWindow floor;
+
         private List<Action> exercises;
 
         /// <summary>
@@ -103,7 +105,7 @@ namespace Bitness
         {
             get
             {
-                return this.imageSource;
+                return this.bodySource;
             }
         }
 
@@ -148,9 +150,9 @@ namespace Bitness
         /// </summary>
         public MainWindow()
         {
-            FloorWindow floor = new FloorWindow();
-            floor.Show();
-
+            this.floor = new FloorWindow();
+            this.floor.Show();
+            
             this.sensor = KinectSensor.GetDefault();
             this.colorFrameReader = this.sensor.ColorFrameSource.OpenReader();
             this.colorFrameReader.FrameArrived += this.Reader_ColorFrameArrived;
@@ -165,7 +167,7 @@ namespace Bitness
             this.bodyFrameReader = this.sensor.BodyFrameSource.OpenReader();
             this.coordinateMapper = this.sensor.CoordinateMapper;
             this.drawingGroup = new DrawingGroup();
-            this.imageSource = new DrawingImage(this.drawingGroup);
+            this.bodySource = new DrawingImage(this.drawingGroup);
 
             this.sensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
             this.sensor.Open();
@@ -181,9 +183,10 @@ namespace Bitness
             this.InitializeComponent();
         }
 
-        public void PlayVideo(object sender, RoutedEventArgs e){
-            testVideo.Visibility = Visibility.Visible;
-            testVideo.Play();
+        public void PlayVideo(object sender, RoutedEventArgs e)
+        {
+            // testVideo.Visibility = Visibility.Visible;
+            // testVideo.Play();
         }
 
 
@@ -248,15 +251,19 @@ namespace Bitness
                     // Draw a transparent background to set the render size
                     dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
-                    List<int> counts = new List<int>(); 
+                    List<int> counts = new List<int>();
+
+                    this.floor.DrawTopDownView(this.bodies);
 
                     for (int i = 0; i < this.bodies.Length; i++)
                     {
                         Pen drawPen = new Pen(Brushes.Red, 6);
                         Body body = this.bodies[i];
+
+
                         if (i >= this.exercises.Count)
                         {
-                            List <JointType> joints = new List<JointType>()
+                            List<JointType> joints = new List<JointType>()
                             {
                                 JointType.Head
                             };
@@ -268,6 +275,7 @@ namespace Bitness
 
                         if (body.IsTracked)
                         {
+
                             IReadOnlyDictionary<JointType, Joint> joints = body.Joints;
 
                             // convert the joint points to depth (display) space
@@ -303,7 +311,6 @@ namespace Bitness
                     }
 
                     this.StatusText = message;
-                    Console.WriteLine(message);
 
                     // prevent drawing outside of our render area
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
