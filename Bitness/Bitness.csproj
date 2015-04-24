@@ -167,6 +167,12 @@
     <Resource Include="Images\top_bluerocket.png" />
     <Resource Include="Images\top_logo.png" />
     <Resource Include="Images\top_redrocket.png" />
+    <Content Include="Videos\bluesideloop.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Videos\redsideloop.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Videos\ttPlayTest3.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
