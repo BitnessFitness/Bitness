@@ -20,4 +20,4 @@ License
 -------
 
 All of our software is written by our development team (see contributors) and is
-licensed under the GNU GPLv3
+licensed under the GPLv3
