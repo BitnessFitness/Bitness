@@ -100,11 +100,13 @@ namespace Bitness
         public Point MapDepthPointToFloor(CameraSpacePoint p)
         {
 
+            // check if in bounds of screen
             if (p.Z > OFFSET &&
                 p.Z < (OFFSET + Y_IN) &&
                 p.X < (X_IN / 2) &&
                 p.X > -(X_IN / 2)) 
             {
+                // modify point origin from kinect to origin of screen (still meters)
                 double fy = (OFFSET + Y_IN) - p.Z;
                 double fx = (X_IN/2) + p.X;
 
@@ -113,7 +115,6 @@ namespace Bitness
                 double py = (fy / Y_IN) * this.Height;
 
                 return new Point(px, py);
-                // this probably works.
             }
 
             return new Point(0.0, 0.0);
@@ -125,7 +126,6 @@ namespace Bitness
             {
                 // Draw a transparent background to set the render size
                 dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, this.Width, this.Height));
-                Console.WriteLine("drawing view");
 
                 for (int i = 0; i < bodies.Length; i++)
                 {

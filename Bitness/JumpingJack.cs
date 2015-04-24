@@ -52,7 +52,7 @@ namespace Bitness
         }
 
 
-        public void Update(IReadOnlyDictionary<JointType, Joint> joints)
+        public bool Update(IReadOnlyDictionary<JointType, Joint> joints)
         {
             if (lastPosition == null)
             {
@@ -78,10 +78,12 @@ namespace Bitness
                 {
                     this.workoutState = State.REST;
                     this.reps++;
+                    this.lastPosition = joints;
+                    return true;
                 }
             }
-
             this.lastPosition = joints;
+            return false;
         }
 
         private bool StateChanged(IReadOnlyDictionary<JointType, Joint> joints)

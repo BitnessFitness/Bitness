@@ -59,6 +59,8 @@ namespace Bitness
         /// </summary>
         private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
 
+        private int[] ROCKET_X = new int[2] { 105, 105 };
+
         /// <summary>
         /// List of all of our bodies.
         /// </summary>
@@ -96,7 +98,7 @@ namespace Bitness
 
         private FloorWindow floor;
 
-        private List<Action> exercises;           
+        private List<Action> exercises;
 
         /// <summary>
         /// Gets the skeleton points to display
@@ -152,7 +154,7 @@ namespace Bitness
         {
             this.floor = new FloorWindow();
             this.floor.Show();
-            
+
             this.sensor = KinectSensor.GetDefault();
             this.colorFrameReader = this.sensor.ColorFrameSource.OpenReader();
             this.colorFrameReader.FrameArrived += this.Reader_ColorFrameArrived;
@@ -175,7 +177,7 @@ namespace Bitness
             List<JointType> joints = new List<JointType>()
             {
                 JointType.Head
-            }; 
+            };
 
             // use the window object as the view model in this simple example
             this.DataContext = this;
@@ -299,24 +301,31 @@ namespace Bitness
                             this.DrawBody(joints, jointPoints, dc, drawPen);
 
                             // here is where we check the exercise
-                            exercise.Update(body.Joints);
+                            bool repAdded = exercise.Update(body.Joints);
                             counts.Add(exercise.Reps);
- 
+
+                            if (repAdded && i < 2)
+                            {
+                                ROCKET_X[i] += (counts[i] * 20);
+                            }
+
                         }
                     }
 
                     String message = "Jumping jacks: ";
 
-                    //This gets where the red rocket's X Position
-                    double redRocketX = Canvas.GetLeft(redRocket);
-                    Console.WriteLine("Red Rocket X: " + redRocketX);
-
                     for (int i = 0; i < counts.Count; i++)
                     {
                         message += "player #" + i + ": " + counts[i] + ". ";
                         //Set a new red rocket X for each jump
-                        Canvas.SetLeft(redRocket, (redRocketX +(i * 20)));
-                        Console.WriteLine("New Red Rocket Left: " + (redRocketX +(i * 20)));
+                        if (i == 0)
+                        {
+                            Canvas.SetLeft(redRocket, ROCKET_X[i]);
+                        }
+                        else
+                        {
+                            Canvas.SetLeft(blueRocket, ROCKET_X[i]);
+                        }
                     }
 
                     this.StatusText = message;
@@ -398,6 +407,6 @@ namespace Bitness
         private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
         {
             // on failure, set the status text
-        }   
+        }
     }
 }
