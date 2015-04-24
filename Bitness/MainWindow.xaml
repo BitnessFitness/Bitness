@@ -28,7 +28,21 @@
             <Button Click="PlayVideo" Content="Play"/>
         </StackPanel>
         -->
-        
+
+        <MediaElement Name="bluesideSync" Grid.Row="1" Grid.Column="0">
+            <MediaElement.Triggers>
+                <EventTrigger RoutedEvent="MediaElement.Loaded">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!-- The MediaTimeline has a RepeatBehavior="Forever" which makes the media play over and over indefinitely.-->
+                                <MediaTimeline Source="Videos/Sync_screen.mp4" Storyboard.TargetName="bluesideSync" RepeatBehavior="Forever" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </MediaElement.Triggers>
+        </MediaElement>
         <MediaElement Name="bluesideStandby" Grid.Row="1" Grid.Column="0">
             <MediaElement.Triggers>
                 <EventTrigger RoutedEvent="MediaElement.Loaded">
@@ -63,11 +77,11 @@
         </StatusBar>
 
         <Image Grid.Row="0" Source="Images/Planets.png" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Grid.ColumnSpan="3" Margin="0,0,0,0"/>
-        <Image Grid.Row="1" Grid.Column="0" Source="Images/tube-bottom.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30" Width="110"/>
-        <Image Grid.Row="1" Grid.Column="0" Source="Images/Tube-glass-and-top.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"/>
+        <Image x:Name="blueFuelBottom" Grid.Row="1" Grid.Column="0" Source="Images/tube-bottom.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30" Width="110"/>
+        <Image x:Name="blueFuelTube" Grid.Row="1" Grid.Column="0" Source="Images/Tube-glass-and-top.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"/>
 
-        <Image Grid.Row="1" Grid.Column="3" Source="Images/tube-bottom.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30" Width="110"/>
-        <Image Grid.Row="1" Grid.Column="3" Source="Images/Tube-glass-and-top.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"/>
+        <Image x:Name="redFuelBottom" Grid.Row="1" Grid.Column="3" Source="Images/tube-bottom.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30" Width="110"/>
+        <Image x:Name="redFuelTube" Grid.Row="1" Grid.Column="3" Source="Images/Tube-glass-and-top.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"/>
 
         <Canvas x:Name="topBarCanvas" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1272" Grid.ColumnSpan="3">
             <Image x:Name="redRocket" Source="Images/top_redrocket.png" Width="32" Canvas.Top="50" Canvas.Left="105"/>

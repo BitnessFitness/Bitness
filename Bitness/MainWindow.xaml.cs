@@ -61,6 +61,8 @@ namespace Bitness
 
         private int[] ROCKET_X = new int[2] { 105, 105 };
 
+
+
         /// <summary>
         /// List of all of our bodies.
         /// </summary>
@@ -182,7 +184,9 @@ namespace Bitness
             // use the window object as the view model in this simple example
             this.DataContext = this;
             this.exercises = new List<Action>();
+           
             this.InitializeComponent();
+
         }
 
         public void PlayVideo(object sender, RoutedEventArgs e)
@@ -190,7 +194,6 @@ namespace Bitness
             // testVideo.Visibility = Visibility.Visible;
             // testVideo.Play();
         }
-
 
         /// <summary>
         /// Execute start up tasks
@@ -228,6 +231,8 @@ namespace Bitness
         private void Reader_BodyFrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
             bool dataReceived = false;
+            //Stores the # of bodies on the screen
+            int bodyCounter = 0;
 
             using (BodyFrame bodyFrame = e.FrameReference.AcquireFrame())
             {
@@ -262,6 +267,46 @@ namespace Bitness
                         Pen drawPen = new Pen(Brushes.Red, 6);
                         Body body = this.bodies[i];
 
+                        if (this.bodies[i].IsTracked == true)
+                        {
+                            //If a body is bring tracked in the bodies[] add to the body counter.
+                            bodyCounter++;
+                        }
+
+                        if (bodyCounter == 2)
+                        {
+                            //Hide Standby Videos
+                            redsideStandby.Visibility = Visibility.Hidden;
+                            bluesideStandby.Visibility = Visibility.Hidden;
+                            //Fuel Tubes
+                            redFuelTube.Visibility = Visibility.Visible;
+                            blueFuelTube.Visibility = Visibility.Visible;
+                            redFuelBottom.Visibility = Visibility.Visible;
+                            blueFuelBottom.Visibility = Visibility.Visible;
+                        }
+                        else if(bodyCounter == 1)
+                        {
+                            //Red
+                            redsideStandby.Visibility = Visibility.Visible;
+                            redFuelTube.Visibility = Visibility.Hidden;
+                            redFuelBottom.Visibility = Visibility.Hidden;
+                            //Blue
+                            bluesideStandby.Visibility = Visibility.Hidden;
+                            blueFuelTube.Visibility = Visibility.Visible;
+                            blueFuelBottom.Visibility = Visibility.Visible;
+
+                        }
+                        else
+                        {
+                            //Show Standby Videos
+                            redsideStandby.Visibility = Visibility.Visible;
+                            bluesideStandby.Visibility = Visibility.Visible;
+                            //Fuel Tubes
+                            redFuelTube.Visibility = Visibility.Hidden;
+                            blueFuelTube.Visibility = Visibility.Hidden;
+                            redFuelBottom.Visibility = Visibility.Hidden;
+                            blueFuelBottom.Visibility = Visibility.Hidden;
+                        }
 
                         if (i >= this.exercises.Count)
                         {
@@ -277,7 +322,6 @@ namespace Bitness
 
                         if (body.IsTracked)
                         {
-
                             IReadOnlyDictionary<JointType, Joint> joints = body.Joints;
 
                             // convert the joint points to depth (display) space
@@ -310,6 +354,7 @@ namespace Bitness
                             }
 
                         }
+
                     }
 
                     String message = "Jumping jacks: ";
