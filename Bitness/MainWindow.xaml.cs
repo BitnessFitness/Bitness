@@ -42,7 +42,7 @@ namespace Bitness
         /// <summary>
         /// Drawing image that we will display
         /// </summary>
-        private DrawingImage imageSource;
+        private DrawingImage bodySource;
 
         /// <summary>
         /// Bitmap to display
@@ -94,7 +94,9 @@ namespace Bitness
         /// </summary>
         private string statusText = "Nothing has happened yet!";
 
-        private Action exercise;
+        private FloorWindow floor;
+
+        private List<Action> exercises;
 
         /// <summary>
         /// Gets the skeleton points to display
@@ -103,7 +105,7 @@ namespace Bitness
         {
             get
             {
-                return this.imageSource;
+                return this.bodySource;
             }
         }
 
@@ -148,9 +150,9 @@ namespace Bitness
         /// </summary>
         public MainWindow()
         {
-            FloorWindow floor = new FloorWindow();
-            floor.Show();
-
+            this.floor = new FloorWindow();
+            this.floor.Show();
+            
             this.sensor = KinectSensor.GetDefault();
             this.colorFrameReader = this.sensor.ColorFrameSource.OpenReader();
             this.colorFrameReader.FrameArrived += this.Reader_ColorFrameArrived;
@@ -165,7 +167,7 @@ namespace Bitness
             this.bodyFrameReader = this.sensor.BodyFrameSource.OpenReader();
             this.coordinateMapper = this.sensor.CoordinateMapper;
             this.drawingGroup = new DrawingGroup();
-            this.imageSource = new DrawingImage(this.drawingGroup);
+            this.bodySource = new DrawingImage(this.drawingGroup);
 
             this.sensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
             this.sensor.Open();
@@ -174,14 +176,18 @@ namespace Bitness
             {
                 JointType.Head
             };
-            this.exercise = new JumpingJack(joints);
 
             // use the window object as the view model in this simple example
             this.DataContext = this;
-
+            this.exercises = new List<Action>();
             this.InitializeComponent();
         }
 
+        public void PlayVideo(object sender, RoutedEventArgs e)
+        {
+            // testVideo.Visibility = Visibility.Visible;
+            // testVideo.Play();
+        }
 
 
         /// <summary>
@@ -245,12 +251,31 @@ namespace Bitness
                     // Draw a transparent background to set the render size
                     dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
-                    foreach (Body body in this.bodies)
+                    List<int> counts = new List<int>();
+
+                    this.floor.DrawTopDownView(this.bodies);
+
+                    for (int i = 0; i < this.bodies.Length; i++)
                     {
                         Pen drawPen = new Pen(Brushes.Red, 6);
+                        Body body = this.bodies[i];
+
+
+                        if (i >= this.exercises.Count)
+                        {
+                            List<JointType> joints = new List<JointType>()
+                            {
+                                JointType.Head
+                            };
+
+                            this.exercises.Add(new JumpingJack(joints));
+                        }
+
+                        Action exercise = this.exercises[i];
 
                         if (body.IsTracked)
                         {
+
                             IReadOnlyDictionary<JointType, Joint> joints = body.Joints;
 
                             // convert the joint points to depth (display) space
@@ -274,11 +299,18 @@ namespace Bitness
                             this.DrawBody(joints, jointPoints, dc, drawPen);
 
                             // here is where we check the exercise
-                            this.exercise.Update(body.Joints);
-                            this.StatusText = this.exercise.Reps.ToString();
-
+                            exercise.Update(body.Joints);
+                            counts.Add(exercise.Reps);
                         }
                     }
+
+                    String message = "Jumping jacks: ";
+                    for (int i = 0; i < counts.Count; i++)
+                    {
+                        message += "player #" + i + ": " + counts[i] + ". ";
+                    }
+
+                    this.StatusText = message;
 
                     // prevent drawing outside of our render area
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
@@ -357,6 +389,6 @@ namespace Bitness
         private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
         {
             // on failure, set the status text
-        }
+        }   
     }
 }
