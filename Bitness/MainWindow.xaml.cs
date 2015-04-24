@@ -59,6 +59,8 @@ namespace Bitness
         /// </summary>
         private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
 
+        private int[] ROCKET_X = new int[2] { 105, 105 };
+
         /// <summary>
         /// List of all of our bodies.
         /// </summary>
@@ -152,7 +154,7 @@ namespace Bitness
         {
             this.floor = new FloorWindow();
             this.floor.Show();
-            
+
             this.sensor = KinectSensor.GetDefault();
             this.colorFrameReader = this.sensor.ColorFrameSource.OpenReader();
             this.colorFrameReader.FrameArrived += this.Reader_ColorFrameArrived;
@@ -299,15 +301,31 @@ namespace Bitness
                             this.DrawBody(joints, jointPoints, dc, drawPen);
 
                             // here is where we check the exercise
-                            exercise.Update(body.Joints);
+                            bool repAdded = exercise.Update(body.Joints);
                             counts.Add(exercise.Reps);
+
+                            if (repAdded && i < 2)
+                            {
+                                ROCKET_X[i] += (counts[i] * 20);
+                            }
+
                         }
                     }
 
                     String message = "Jumping jacks: ";
+
                     for (int i = 0; i < counts.Count; i++)
                     {
                         message += "player #" + i + ": " + counts[i] + ". ";
+                        //Set a new red rocket X for each jump
+                        if (i == 0)
+                        {
+                            Canvas.SetLeft(redRocket, ROCKET_X[i]);
+                        }
+                        else
+                        {
+                            Canvas.SetLeft(blueRocket, ROCKET_X[i]);
+                        }
                     }
 
                     this.StatusText = message;

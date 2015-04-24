@@ -12,6 +12,6 @@ namespace Bitness
 
         int Reps { get; }
 
-        void Update (IReadOnlyDictionary<JointType, Joint> joints);
+        bool Update (IReadOnlyDictionary<JointType, Joint> joints);
     }
 }
