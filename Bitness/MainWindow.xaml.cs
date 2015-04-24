@@ -96,7 +96,7 @@ namespace Bitness
 
         private FloorWindow floor;
 
-        private List<Action> exercises;
+        private List<Action> exercises;           
 
         /// <summary>
         /// Gets the skeleton points to display
@@ -175,7 +175,7 @@ namespace Bitness
             List<JointType> joints = new List<JointType>()
             {
                 JointType.Head
-            };
+            }; 
 
             // use the window object as the view model in this simple example
             this.DataContext = this;
@@ -301,13 +301,22 @@ namespace Bitness
                             // here is where we check the exercise
                             exercise.Update(body.Joints);
                             counts.Add(exercise.Reps);
+ 
                         }
                     }
 
                     String message = "Jumping jacks: ";
+
+                    //This gets where the red rocket's X Position
+                    double redRocketX = Canvas.GetLeft(redRocket);
+                    Console.WriteLine("Red Rocket X: " + redRocketX);
+
                     for (int i = 0; i < counts.Count; i++)
                     {
                         message += "player #" + i + ": " + counts[i] + ". ";
+                        //Set a new red rocket X for each jump
+                        Canvas.SetLeft(redRocket, (redRocketX +(i * 20)));
+                        Console.WriteLine("New Red Rocket Left: " + (redRocketX +(i * 20)));
                     }
 
                     this.StatusText = message;

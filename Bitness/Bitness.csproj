@@ -164,9 +164,11 @@
   <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\Planets.png" />
-    <Resource Include="Images\top_bluerocket.png" />
     <Resource Include="Images\top_logo.png" />
+    <Resource Include="Images\Tube-glass-and-top.png" />
+    <Resource Include="Images\top_bluerocket.png" />
     <Resource Include="Images\top_redrocket.png" />
+    <Resource Include="Images\tube-bottom.png" />
     <Content Include="Videos\ttPlayTest3.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
