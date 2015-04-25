@@ -62,6 +62,12 @@ namespace Bitness
         private int[] ROCKET_X = new int[2] { 105, 105 };
 
         /// <summary>
+        /// Refrence to left and right bodies
+        /// </summary>
+        private Body leftBody;
+        private Body rightBody;
+
+        /// <summary>
         /// List of all of our bodies.
         /// </summary>
         private Body[] bodies = null;
@@ -231,6 +237,7 @@ namespace Bitness
             bool dataReceived = false;
             //Stores the # of bodies on the screen
             int bodyCounter = 0;
+            Body[] trackedBodies = new Body[2];
 
             //Line Trail for red rocket
             Line redRocketTrail = new Line();
@@ -283,6 +290,7 @@ namespace Bitness
 
                         if (this.bodies[i].IsTracked == true)
                         {
+                            trackedBodies[bodyCounter] = body;
                             //If a body is bring tracked in the bodies[] add to the body counter.
                             bodyCounter++;
                         }
@@ -297,18 +305,44 @@ namespace Bitness
                             blueFuelTube.Visibility = Visibility.Visible;
                             redFuelBottom.Visibility = Visibility.Visible;
                             blueFuelBottom.Visibility = Visibility.Visible;
+                            
+                            // TODO: leftBody and rightBody aren't being used
+                            if (trackedBodies[0].Joints[JointType.Head].Position.X > 
+                                trackedBodies[1].Joints[JointType.Head].Position.X)
+                            {
+                                rightBody = trackedBodies[0];
+                                leftBody = trackedBodies[1];
+                            }
+                            else
+                            {
+                                leftBody = trackedBodies[0];
+                                rightBody = trackedBodies[1];
+                            }
                         }
                         else if(bodyCounter == 1)
                         {
-                            //Red
-                            redsideStandby.Visibility = Visibility.Visible;
-                            redFuelTube.Visibility = Visibility.Hidden;
-                            redFuelBottom.Visibility = Visibility.Hidden;
-                            //Blue
-                            bluesideStandby.Visibility = Visibility.Hidden;
-                            blueFuelTube.Visibility = Visibility.Visible;
-                            blueFuelBottom.Visibility = Visibility.Visible;
-
+                            if (trackedBodies[0].Joints[JointType.Head].Position.X > 0)
+                            {
+                                //Red
+                                redsideStandby.Visibility = Visibility.Hidden;
+                                redFuelTube.Visibility = Visibility.Visible;
+                                redFuelBottom.Visibility = Visibility.Visible;
+                                //Blue
+                                bluesideStandby.Visibility = Visibility.Visible;
+                                blueFuelTube.Visibility = Visibility.Hidden;
+                                blueFuelBottom.Visibility = Visibility.Hidden;
+                            }
+                            else
+                            {
+                                //Red
+                                redsideStandby.Visibility = Visibility.Visible;
+                                redFuelTube.Visibility = Visibility.Hidden;
+                                redFuelBottom.Visibility = Visibility.Hidden;
+                                //Blue
+                                bluesideStandby.Visibility = Visibility.Hidden;
+                                blueFuelTube.Visibility = Visibility.Visible;
+                                blueFuelBottom.Visibility = Visibility.Visible;
+                            }
                         }
                         else
                         {
