@@ -61,8 +61,6 @@ namespace Bitness
 
         private int[] ROCKET_X = new int[2] { 105, 105 };
 
-
-
         /// <summary>
         /// List of all of our bodies.
         /// </summary>
@@ -234,6 +232,22 @@ namespace Bitness
             //Stores the # of bodies on the screen
             int bodyCounter = 0;
 
+            //Line Trail for red rocket
+            Line redRocketTrail = new Line();
+            redRocketTrail.Stroke = System.Windows.Media.Brushes.OrangeRed;
+            redRocketTrail.X1 = 125;
+            redRocketTrail.Y1 = 61;
+            redRocketTrail.Y2 = 61;
+            Canvas.SetZIndex(redRocketTrail, -1);
+
+            //Line Trail for blue rocket
+            Line blueRocketTrail = new Line();
+            blueRocketTrail.Stroke = System.Windows.Media.Brushes.Blue;
+            blueRocketTrail.X1 = 125;
+            blueRocketTrail.Y1 = 90;
+            blueRocketTrail.Y2 = 90;
+            Canvas.SetZIndex(blueRocketTrail, -2);
+
             using (BodyFrame bodyFrame = e.FrameReference.AcquireFrame())
             {
                 if (bodyFrame != null)
@@ -258,7 +272,7 @@ namespace Bitness
                     // Draw a transparent background to set the render size
                     dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
-                    List<int> counts = new List<int>();
+                    List<int> counts = new List<int>();                   
 
                     this.floor.DrawTopDownView(this.bodies);
 
@@ -350,7 +364,7 @@ namespace Bitness
 
                             if (repAdded && i < 2)
                             {
-                                ROCKET_X[i] += (counts[i] * 20);
+                                ROCKET_X[i] = (105 + (counts[i] * 20));
                             }
 
                         }
@@ -366,10 +380,16 @@ namespace Bitness
                         if (i == 0)
                         {
                             Canvas.SetLeft(redRocket, ROCKET_X[i]);
+                            //Change the 2nd X position for the trail and add it to the canvas
+                            redRocketTrail.X2 = (ROCKET_X[i] + 10);
+                            topBarCanvas.Children.Add(redRocketTrail);
                         }
                         else
                         {
                             Canvas.SetLeft(blueRocket, ROCKET_X[i]);
+                            //Change the 2nd X position for the trail and add it to the canvas
+                            blueRocketTrail.X2 = (ROCKET_X[i] + 10);
+                            topBarCanvas.Children.Add(blueRocketTrail);
                         }
                     }
 
