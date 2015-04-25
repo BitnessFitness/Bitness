@@ -167,16 +167,15 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Images\sprites\" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Planets.png" />
     <Resource Include="Images\top_logo.png" />
     <Resource Include="Images\Tube-glass-and-top.png" />
     <Resource Include="Images\top_bluerocket.png" />
     <Resource Include="Images\top_redrocket.png" />
-    <None Include="Images\sprites\spritesheet.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Resource Include="Images\cat.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
