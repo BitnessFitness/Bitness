@@ -7,6 +7,6 @@
 
     <Canvas>
         <Image Source="{Binding ImageSource}" />
-        <Image x:Name="catGif" gif:ImageBehavior.AnimatedSource="Images/cat.gif" Width="400" Height="225"/>
+        <Image x:Name="blueFloorGif" gif:ImageBehavior.AnimatedSource="Images/bluefloor.gif" Width="400"/>
     </Canvas>
 </Window>
