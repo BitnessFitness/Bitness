@@ -108,6 +108,9 @@ namespace Bitness
 
         private List<Action> exercises;
 
+        private bool bluePlayerSynced = false;
+        private bool redPlayerSynced = false;
+
         /// <summary>
         /// Gets the skeleton points to display
         /// </summary>
@@ -190,15 +193,23 @@ namespace Bitness
             // use the window object as the view model in this simple example
             this.DataContext = this;
             this.exercises = new List<Action>();
-           
+
             this.InitializeComponent();
 
+            blueSyncVideo.Visibility = Visibility.Hidden;
+            redSyncVideo.Visibility = Visibility.Hidden;
+
+            redFuelTube.Visibility = Visibility.Hidden;
+            redFuelBottom.Visibility = Visibility.Hidden;
+
+            blueFuelTube.Visibility = Visibility.Hidden;
+            blueFuelBottom.Visibility = Visibility.Hidden;
         }
 
         public void PlayVideo(object sender, RoutedEventArgs e)
         {
-            // testVideo.Visibility = Visibility.Visible;
-            // testVideo.Play();
+            //testVideo.Visibility = Visibility.Visible;
+            //testVideo.Play();
         }
 
         /// <summary>
@@ -301,6 +312,7 @@ namespace Bitness
                             //Hide Standby Videos
                             redsideStandby.Visibility = Visibility.Hidden;
                             bluesideStandby.Visibility = Visibility.Hidden;
+
                             //Fuel Tubes
                             redFuelTube.Visibility = Visibility.Visible;
                             blueFuelTube.Visibility = Visibility.Visible;
@@ -311,24 +323,31 @@ namespace Bitness
                             //show the water gifs
                             gif_canvas_left.Visibility = Visibility.Visible;
                             gif_canvas_right.Visibility = Visibility.Visible;
+
+                            //Show Sync Videos
+                            blueSyncVideo.Visibility = Visibility.Visible;
+                            redSyncVideo.Visibility = Visibility.Visible;
+
                         }
-                        else if(bodyCounter == 1)
+                        else if (bodyCounter == 1)
                         {
                             //Red
                             redsideStandby.Visibility = Visibility.Visible;
+                            redSyncVideo.Visibility = Visibility.Hidden;
                             redFuelTube.Visibility = Visibility.Hidden;
                             redFuelBottom.Visibility = Visibility.Hidden;
                             //Blue
                             bluesideStandby.Visibility = Visibility.Hidden;
-                            blueFuelTube.Visibility = Visibility.Visible;
-                            blueFuelBottom.Visibility = Visibility.Visible;
-
+                            blueSyncVideo.Visibility = Visibility.Visible;
                         }
                         else
                         {
                             //Show Standby Videos
                             redsideStandby.Visibility = Visibility.Visible;
                             bluesideStandby.Visibility = Visibility.Visible;
+                            //Hide Sync Videos
+                            blueSyncVideo.Visibility = Visibility.Hidden;
+                            redSyncVideo.Visibility = Visibility.Hidden;
                             //Fuel Tubes
                             redFuelTube.Visibility = Visibility.Hidden;
                             blueFuelTube.Visibility = Visibility.Hidden;
@@ -553,6 +572,53 @@ namespace Bitness
         private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
         {
             // on failure, set the status text
+        }
+
+        private void blueSyncVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Console.WriteLine("Blue Sync Vid Visible?:" + blueSyncVideo.IsVisible);
+            if ((blueSyncVideo.IsVisible == true) && (bluePlayerSynced == false))
+            {
+                bluePlayerSynced = true;
+                blueSyncVideo.Position = TimeSpan.Zero;
+                blueSyncVideo.Play();
+            }
+        }
+
+        private void blueSyncVideo_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            blueSyncVideo.Visibility = Visibility.Hidden;
+            showActiveBlue();
+        }
+
+        private void showActiveBlue()
+        {
+            Console.WriteLine("showActiveBlue");
+            blueFuelTube.Visibility = Visibility.Visible;
+            blueFuelBottom.Visibility = Visibility.Visible;
+        }
+
+
+        private void redSyncVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((redSyncVideo.IsVisible == true) && (redPlayerSynced == false))
+            {
+                redPlayerSynced = true;
+                redSyncVideo.Position = TimeSpan.Zero;
+                redSyncVideo.Play();
+            }
+        }
+
+        private void redSyncVideo_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            redSyncVideo.Visibility = Visibility.Hidden;
+            showActiveRed();
+        }
+
+        private void showActiveRed()
+        {
+            redFuelTube.Visibility = Visibility.Visible;
+            redFuelBottom.Visibility = Visibility.Visible;
         }
     }
 }

@@ -175,6 +175,9 @@
     <Resource Include="Images\Tube-glass-and-top.png" />
     <Resource Include="Images\top_bluerocket.png" />
     <Resource Include="Images\top_redrocket.png" />
+    <Content Include="Videos\Bitness-Syncing.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Images\test-water2.gif" />
     <Content Include="Videos\bluesideloop.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
