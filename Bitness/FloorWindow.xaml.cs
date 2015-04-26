@@ -14,8 +14,10 @@ using System.Windows.Shapes;
 
 using Microsoft.Kinect;
 using System.ComponentModel;
+
 using System.Windows.Media.Animation;
 using WpfAnimatedGif;
+
 
 namespace Bitness
 {
@@ -97,8 +99,7 @@ namespace Bitness
             Canvas.SetLeft(catGif, 0.0);
             Canvas.SetTop(catGif, 0.0);
 
-            String[] filenames = new String[1] { "pack://application:,,,/Images/sprites/spritesheet.png" };
-            // Sprite s = new Sprite(filenames, 7, 26, blueSync);
+
         }
 
         /// <summary>
@@ -112,6 +113,7 @@ namespace Bitness
             if (p.Z > OFFSET &&
                 p.Z < (OFFSET + Y_IN) &&
                 p.X < (X_IN / 2) &&
+
                 p.X > -(X_IN / 2))
             {
                 // modify point origin from kinect to origin of screen (still meters)
@@ -145,6 +147,7 @@ namespace Bitness
                         Canvas.SetLeft(catGif, p.X);
                         Canvas.SetTop(catGif, p.Y);
                     }
+
                     dc.DrawEllipse(drawBrush, null, p, 3, 3);
                 }
 

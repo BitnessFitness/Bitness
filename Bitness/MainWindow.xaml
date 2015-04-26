@@ -1,6 +1,8 @@
 ﻿<Window x:Class="Bitness.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         Title="MainWindow" Height="800" Width="1280" 
         Loaded="MainWindow_Loaded"
         Closing="MainWindow_Closing">
@@ -8,6 +10,22 @@
         <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e" />
         <SolidColorBrush x:Key="KinectPurpleBrush" Color="#ff52318f" />
         <SolidColorBrush x:Key="KinectBlueBrush" Color="#ff00BCF2" />
+
+        <Style TargetType="{x:Type ContentControl}">
+            <Setter Property="BorderThickness" Value="5" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Background" Value="PaleGreen" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Window.Resources>
     <Grid x:Name="mainGrid">
         <Border Grid.Row="1" Background="#242C3A" />
@@ -28,7 +46,10 @@
             <Button Click="PlayVideo" Content="Play"/>
         </StackPanel>
         -->
-
+      
+        <MediaElement Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="blueSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="blueSyncVideo_MediaEnded" Width="550" IsVisibleChanged="blueSyncVideo_IsVisibleChanged"/>
+        <MediaElement Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="redSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="redSyncVideo_MediaEnded" Width="550" IsVisibleChanged="redSyncVideo_IsVisibleChanged"/>
+        
         <MediaElement Name="bluesideSync" Grid.Row="1" Grid.Column="0">
             <MediaElement.Triggers>
                 <EventTrigger RoutedEvent="MediaElement.Loaded">
@@ -76,7 +97,6 @@
             <StatusBarItem Content="{Binding StatusText}" />
         </StatusBar>
 
-        <Image Grid.Row="0" Source="Images/Planets.png" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Grid.ColumnSpan="3" Margin="0,0,0,0"/>
         <Image x:Name="blueFuelBottom" Grid.Row="1" Grid.Column="0" Source="Images/tube-bottom.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30" Width="110"/>
         <Image x:Name="blueFuelTube" Grid.Row="1" Grid.Column="0" Source="Images/Tube-glass-and-top.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"/>
 
@@ -84,9 +104,27 @@
         <Image x:Name="redFuelTube" Grid.Row="1" Grid.Column="3" Source="Images/Tube-glass-and-top.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"/>
 
         <Canvas x:Name="topBarCanvas" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1272" Grid.ColumnSpan="3">
+            <Image Source="Images/Planets.png" HorizontalAlignment="Center" Stretch="UniformToFill" Canvas.Top="-25"/>
             <Image x:Name="redRocket" Source="Images/top_redrocket.png" Width="32" Canvas.Top="50" Canvas.Left="105"/>
             <Image x:Name="blueRocket" Source="Images/top_bluerocket.png" Width="32" Canvas.Bottom="50" Canvas.Left="105"/>
-        </Canvas>    
+
+        </Canvas>
+
+        <StackPanel Tag="Panel" PreviewMouseDown="PreviewMouseDown" MouseDown="MouseDown">
+            <ContentControl BorderBrush="Red" Tag="C1" PreviewMouseDown="PreviewMouseDown" MouseDown="MouseDown">
+                <ContentControl BorderBrush="Green" Tag="C2" PreviewMouseDown="PreviewMouseDown" MouseDown="MouseDown">
+                    <ContentControl Content="Click Me" BorderBrush="Blue" Tag="C3" PreviewMouseDown="PreviewMouseDown" MouseDown="MouseDown"/>
+                </ContentControl>
+            </ContentControl>
+        </StackPanel>
+        <Canvas Name="left_canvas" Grid.Row="1" Grid.Column="0" Margin="61,529,63,64" RenderTransformOrigin="0.546,0.669"/>
+        <Canvas Name="right_canvas" Grid.Row="1" Grid.Column="2" Margin="61,529,63,64" RenderTransformOrigin="0.546,0.669"/>
+        <Canvas Name="gif_canvas_right">
+            <Image x:Name="testwater_right" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="49" Margin="1140,660,63,64" />
+        </Canvas>
+        <Canvas Name="gif_canvas_left">
+            <Image x:Name="testwater_left" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="49" Margin="60,660,63,64" />
+        </Canvas>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
