@@ -208,6 +208,10 @@ namespace Bitness
             leftSideBarCanvas.Visibility = Visibility.Hidden;
             rightSideBarCanvas.Visibility = Visibility.Hidden;
 
+            //hides videos for blastoff
+            BlastOffLeft.Visibility = Visibility.Hidden;
+            BlastOffRight.Visibility = Visibility.Hidden;
+
         }
 
         public void PlayVideo(object sender, RoutedEventArgs e)
@@ -338,6 +342,7 @@ namespace Bitness
                             blueSyncVideo.Visibility = Visibility.Visible;
                             //Show Left Sidebar
                             leftSideBarCanvas.Visibility = Visibility.Visible;
+
                         }
                         else
                         {
@@ -391,10 +396,12 @@ namespace Bitness
                             // here is where we check the exercise
                             bool repAdded = exercise.Update(body.Joints);
                             counts.Add(exercise.Reps);
+                            
 
                             if (repAdded && i < 2)
                             {
                                 ROCKET_X[i] = (105 + (counts[i] * 20));                                                                
+                                //moves bar based off index
                                 moveBar(i);
                             }
 
@@ -503,7 +510,23 @@ namespace Bitness
             fuelBarLeft = new System.Windows.Shapes.Rectangle();
             fuelBarRight = new System.Windows.Shapes.Rectangle();
 
-            if (index == 0)
+            //will raise the bar based off the index (left is 0 right is 1)
+            //will not raise any more if the respective numRaise value is over a certain amount
+            if (index == 1 && numRaiseRight<42)
+            {             
+                numJacksRight = numJacksRight + 13;
+                // Add a rectangle Element
+                fuelBarRight.Stroke = fuelBrush;
+                fuelBarRight.Fill = fuelBrush;
+                fuelBarRight.Width = 80;
+                fuelBarRight.Height = numJacksRight;
+                Canvas.SetLeft(fuelBarRight, -40);
+                Canvas.SetBottom(fuelBarRight, 65);
+                Canvas.SetBottom(testwater_right, (65 + (13 * numRaiseRight)));
+                rightSideBarCanvas.Children.Add(fuelBarRight);
+                numRaiseRight++;
+            }			
+            if (index == 0 && numRaiseLeft<42)
             {
                 numJacksLeft = numJacksLeft + 13;
                 // Add a rectangle Element
@@ -517,21 +540,22 @@ namespace Bitness
                 leftSideBarCanvas.Children.Add(fuelBarLeft);
                 numRaiseLeft++;
             }
-
-            if (index == 1)
+            if (numRaiseLeft >= 42)
             {
-                numJacksRight = numJacksRight + 13;
-                // Add a rectangle Element
-                fuelBarRight.Stroke = fuelBrush;
-                fuelBarRight.Fill = fuelBrush;
-                fuelBarRight.Width = 80;
-                fuelBarRight.Height = numJacksRight;
-                Canvas.SetLeft(fuelBarRight, -40);
-                Canvas.SetBottom(fuelBarRight, 65);
-                Canvas.SetBottom(testwater_right, (65 + (13 * numRaiseRight)));
-                rightSideBarCanvas.Children.Add(fuelBarRight);
-                numRaiseRight++;
-            }          
+                //hides the rectangle and water gif for the left bar
+                leftSideBarCanvas.Visibility = Visibility.Hidden;
+                bluesideStandby.Visibility = Visibility.Hidden;
+                BlastOffLeft.Visibility = Visibility.Visible;
+                BlastOffLeft.Play();
+            }
+            if (numRaiseRight >= 42)
+            {
+                //hides the rectangle and water gif for the right bar
+                rightSideBarCanvas.Visibility = Visibility.Hidden;
+                redsideStandby.Visibility = Visibility.Hidden;
+                BlastOffRight.Visibility = Visibility.Visible;
+                BlastOffRight.Play();
+            }
         }
 
         /// <summary>
@@ -589,6 +613,19 @@ namespace Bitness
         {
             //Show Right Sidebar
             rightSideBarCanvas.Visibility = Visibility.Visible;
+        }
+
+        //gets rid of blastoff videos on end
+        private void BlastOffLeft_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            BlastOffLeft.Visibility = Visibility.Hidden;
+            bluesideStandby.Visibility = Visibility.Visible;
+        }
+
+        private void BlastOffRight_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            BlastOffRight.Visibility = Visibility.Hidden;
+            redsideStandby.Visibility = Visibility.Visible;
         }
     }
 }
