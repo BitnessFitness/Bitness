@@ -52,39 +52,28 @@
         <Image Grid.Row="1" Grid.Column="0" x:Name="bluesideStandby" gif:ImageBehavior.AnimatedSource="Images/bluesideloop.gif"/>
         <Image Grid.Row="1" Grid.Column="3" x:Name="redsideStandby" gif:ImageBehavior.AnimatedSource="Images/redsideloop.gif"/>
 
-        <StatusBar Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
+        <StatusBar Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
             <StatusBarItem Content="{Binding StatusText}" />
         </StatusBar>
-
-        <Image x:Name="blueFuelBottom" Grid.Row="1" Grid.Column="0" Source="Images/tube-bottom.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30" Width="110"/>
-        <Image x:Name="blueFuelTube" Grid.Row="1" Grid.Column="0" Source="Images/Tube-glass-and-top.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"/>
-
-        <Image x:Name="redFuelBottom" Grid.Row="1" Grid.Column="3" Source="Images/tube-bottom.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30" Width="110"/>
-        <Image x:Name="redFuelTube" Grid.Row="1" Grid.Column="3" Source="Images/Tube-glass-and-top.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"/>
-        
-        <StackPanel Tag="Panel" PreviewMouseDown="PreviewMouseDown" MouseDown="MouseDown">
-            <ContentControl BorderBrush="Red" Tag="C1" PreviewMouseDown="PreviewMouseDown" MouseDown="MouseDown">
-                <ContentControl BorderBrush="Green" Tag="C2" PreviewMouseDown="PreviewMouseDown" MouseDown="MouseDown">
-                    <ContentControl Content="Click Me" BorderBrush="Blue" Tag="C3" PreviewMouseDown="PreviewMouseDown" MouseDown="MouseDown"/>
-                </ContentControl>
-            </ContentControl>
-        </StackPanel>
-        <Canvas Name="left_canvas" Grid.Row="1" Grid.Column="0" Margin="61,529,63,64" RenderTransformOrigin="0.546,0.669"/>
-        <Canvas Name="right_canvas" Grid.Row="1" Grid.Column="2" Margin="61,529,63,64" RenderTransformOrigin="0.546,0.669"/>
-
-
+       
         <Canvas x:Name="topBarCanvas" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1272" Grid.ColumnSpan="3">
+            <!-- <Image x:Name="topStars" gif:ImageBehavior.AnimatedSource="Images/stars.gif"/> -->
             <Image Source="Images/Planets.png" HorizontalAlignment="Center" Stretch="UniformToFill" Canvas.Top="-25"/>
             <Image x:Name="redRocket" Source="Images/top_redrocket.png" Width="32" Canvas.Top="50" Canvas.Left="105"/>
             <Image x:Name="blueRocket" Source="Images/top_bluerocket.png" Width="32" Canvas.Bottom="50" Canvas.Left="105"/>
         </Canvas>
-        <Canvas Name="gif_canvas_right">
-            <Image x:Name="testwater_right" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="49" Margin="1140,660,63,64" />
+      
+        <Canvas Name="leftSideBarCanvas" Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Image x:Name="blueFuelBottom" Grid.Row="1" Grid.Column="0" Source="Images/tube-bottom.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110"/>
+            <Image x:Name="testwater_left" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" Canvas.Left="-40" Canvas.Bottom="65"/>
+            <Image x:Name="blueFuelTube" Grid.Row="1" Grid.Column="0" Source="Images/Tube-glass-and-top.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110"/>
         </Canvas>
-        <Canvas Name="gif_canvas_left">
-            <Image x:Name="testwater_left" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="49" Margin="60,660,63,64" />
+        <Canvas Name="rightSideBarCanvas" Grid.Row="1" Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Image x:Name="redFuelBottom" Grid.Row="1" Grid.Column="3" Source="Images/tube-bottom.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110"/>
+            <Image x:Name="testwater_right" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" Canvas.Left="-40" Canvas.Bottom="65"/>
+            <Image x:Name="redFuelTube" Grid.Row="1" Grid.Column="3" Source="Images/Tube-glass-and-top.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110"/>
         </Canvas>
-       
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="880"/>

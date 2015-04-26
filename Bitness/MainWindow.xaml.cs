@@ -99,10 +99,15 @@ namespace Bitness
         /// <summary>
         /// ints used to raise rectngles and gifs for now
         /// </summary>
-        public int numJacks = 0;
-        public int numRaise = 1;
-        public int numJacks2 = 0;
-        public int numRaise2= 1;
+        public int numJacksLeft = 0;
+        public int numRaiseLeft = 1;
+        public int numJacksRight = 0;
+        public int numRaiseRight= 1;
+
+        //Custom Colors For Bitness
+        public Color red = Color.FromRgb(241, 128, 33);
+        public Color blue = Color.FromRgb(16, 177, 232);
+        public Color fuelOrange = Color.FromRgb(219, 131, 35);
 
         private FloorWindow floor;
 
@@ -185,6 +190,7 @@ namespace Bitness
             this.sensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
             this.sensor.Open();
 
+
             List<JointType> joints = new List<JointType>()
             {
                 JointType.Head
@@ -199,11 +205,9 @@ namespace Bitness
             blueSyncVideo.Visibility = Visibility.Hidden;
             redSyncVideo.Visibility = Visibility.Hidden;
 
-            redFuelTube.Visibility = Visibility.Hidden;
-            redFuelBottom.Visibility = Visibility.Hidden;
+            leftSideBarCanvas.Visibility = Visibility.Hidden;
+            rightSideBarCanvas.Visibility = Visibility.Hidden;
 
-            blueFuelTube.Visibility = Visibility.Hidden;
-            blueFuelBottom.Visibility = Visibility.Hidden;
         }
 
         public void PlayVideo(object sender, RoutedEventArgs e)
@@ -251,9 +255,12 @@ namespace Bitness
             //Stores the # of bodies on the screen
             int bodyCounter = 0;
 
+            SolidColorBrush redBrush = new SolidColorBrush(red);
+            SolidColorBrush blueBrush = new SolidColorBrush(blue);
+
             //Line Trail for red rocket
             Line redRocketTrail = new Line();
-            redRocketTrail.Stroke = System.Windows.Media.Brushes.OrangeRed;
+            redRocketTrail.Stroke = redBrush;
             redRocketTrail.X1 = 125;
             redRocketTrail.Y1 = 61;
             redRocketTrail.Y2 = 61;
@@ -261,7 +268,7 @@ namespace Bitness
 
             //Line Trail for blue rocket
             Line blueRocketTrail = new Line();
-            blueRocketTrail.Stroke = System.Windows.Media.Brushes.Blue;
+            blueRocketTrail.Stroke = blueBrush;
             blueRocketTrail.X1 = 125;
             blueRocketTrail.Y1 = 90;
             blueRocketTrail.Y2 = 90;
@@ -310,19 +317,10 @@ namespace Bitness
                         {
                             //Hide Standby Videos
                             redsideStandby.Visibility = Visibility.Hidden;
-                            bluesideStandby.Visibility = Visibility.Hidden;
-
-                            //Fuel Tubes
-                            redFuelTube.Visibility = Visibility.Visible;
-                            blueFuelTube.Visibility = Visibility.Visible;
-                            redFuelBottom.Visibility = Visibility.Visible;
-                            blueFuelBottom.Visibility = Visibility.Visible;
-
-                            
-                            //show the water gifs
-                            gif_canvas_left.Visibility = Visibility.Visible;
-                            gif_canvas_right.Visibility = Visibility.Visible;
-
+                            bluesideStandby.Visibility = Visibility.Hidden;                            
+                            //Show Sidebars
+                            leftSideBarCanvas.Visibility = Visibility.Visible;
+                            rightSideBarCanvas.Visibility = Visibility.Visible;
                             //Show Sync Videos
                             blueSyncVideo.Visibility = Visibility.Visible;
                             redSyncVideo.Visibility = Visibility.Visible;
@@ -333,29 +331,25 @@ namespace Bitness
                             //Red
                             redsideStandby.Visibility = Visibility.Visible;
                             redSyncVideo.Visibility = Visibility.Hidden;
-                            redFuelTube.Visibility = Visibility.Hidden;
-                            redFuelBottom.Visibility = Visibility.Hidden;
+                            //Hide Right Sidebar
+                            rightSideBarCanvas.Visibility = Visibility.Hidden;
                             //Blue
                             bluesideStandby.Visibility = Visibility.Hidden;
                             blueSyncVideo.Visibility = Visibility.Visible;
+                            //Show Left Sidebar
+                            leftSideBarCanvas.Visibility = Visibility.Visible;
                         }
                         else
                         {
                             //Show Standby Videos
                             redsideStandby.Visibility = Visibility.Visible;
                             bluesideStandby.Visibility = Visibility.Visible;
+                            //Hide sidebars
+                            leftSideBarCanvas.Visibility = Visibility.Hidden;
+                            rightSideBarCanvas.Visibility = Visibility.Hidden;
                             //Hide Sync Videos
                             blueSyncVideo.Visibility = Visibility.Hidden;
                             redSyncVideo.Visibility = Visibility.Hidden;
-                            //Fuel Tubes
-                            redFuelTube.Visibility = Visibility.Hidden;
-                            blueFuelTube.Visibility = Visibility.Hidden;
-                            redFuelBottom.Visibility = Visibility.Hidden;
-                            blueFuelBottom.Visibility = Visibility.Hidden;
-                            //hides the gifs
-                            //show the water gifs
-                            gif_canvas_left.Visibility = Visibility.Hidden;
-                            gif_canvas_right.Visibility = Visibility.Hidden;
                         }
 
                         if (i >= this.exercises.Count)
@@ -400,9 +394,7 @@ namespace Bitness
 
                             if (repAdded && i < 2)
                             {
-                                ROCKET_X[i] = (105 + (counts[i] * 20));
-                                
-                                
+                                ROCKET_X[i] = (105 + (counts[i] * 20));                                                                
                                 moveBar(i);
                             }
 
@@ -502,58 +494,45 @@ namespace Bitness
                 }
             }
         }
-      
-        private void PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Debug.WriteLine((sender as FrameworkElement).Tag + " Preview");
-        }
-        
-        private void MouseDown(object sender, MouseButtonEventArgs e)
-        {
 
-            moveBar(1);
-            moveBar(0);
-            
-        }
         void moveBar(int index)
         {
-            System.Windows.Shapes.Rectangle rect;
-            System.Windows.Shapes.Rectangle rect2;
-            rect = new System.Windows.Shapes.Rectangle();
-            rect2 = new System.Windows.Shapes.Rectangle();
-
+            SolidColorBrush fuelBrush = new SolidColorBrush(fuelOrange);
+            System.Windows.Shapes.Rectangle fuelBarLeft;
+            System.Windows.Shapes.Rectangle fuelBarRight;
+            fuelBarLeft = new System.Windows.Shapes.Rectangle();
+            fuelBarRight = new System.Windows.Shapes.Rectangle();
 
             if (index == 0)
             {
-                numJacks = numJacks + 13;
+                numJacksLeft = numJacksLeft + 13;
                 // Add a rectangle Element
-                rect.Stroke = new SolidColorBrush(Colors.LightBlue);
-                rect.Fill = new SolidColorBrush(Colors.LightBlue);
-                rect.Width = 80;
-                rect.Height = numJacks;
-                Canvas.SetLeft(rect, 0);
-                Canvas.SetBottom(rect, 0);
-                left_canvas.Children.Add(rect);
-                gif_canvas_left.Margin = new Thickness(0, -13 * numRaise, 0, 0);
-                numRaise++;
+                fuelBarLeft.Stroke = fuelBrush;
+                fuelBarLeft.Fill = fuelBrush;
+                fuelBarLeft.Width = 80;
+                fuelBarLeft.Height = numJacksLeft;
+                Canvas.SetLeft(fuelBarLeft, -40);
+                Canvas.SetBottom(fuelBarLeft, 65);
+                Canvas.SetBottom(testwater_left, (65 + (13 * numRaiseLeft)));
+                leftSideBarCanvas.Children.Add(fuelBarLeft);
+                numRaiseLeft++;
             }
 
             if (index == 1)
             {
-                numJacks2 = numJacks2 + 13;
+                numJacksRight = numJacksRight + 13;
                 // Add a rectangle Element
-                rect2.Stroke = new SolidColorBrush(Colors.Orange);
-                rect2.Fill = new SolidColorBrush(Colors.Orange);
-                rect2.Width = 80;
-                rect2.Height = numJacks2;
-                Canvas.SetLeft(rect2, 0);
-                Canvas.SetBottom(rect2, 0);
-                right_canvas.Children.Add(rect2);
-                gif_canvas_right.Margin = new Thickness(0, -13 * numRaise2, 0, 0);
-                numRaise2++;
+                fuelBarRight.Stroke = fuelBrush;
+                fuelBarRight.Fill = fuelBrush;
+                fuelBarRight.Width = 80;
+                fuelBarRight.Height = numJacksRight;
+                Canvas.SetLeft(fuelBarRight, -40);
+                Canvas.SetBottom(fuelBarRight, 65);
+                Canvas.SetBottom(testwater_right, (65 + (13 * numRaiseRight)));
+                rightSideBarCanvas.Children.Add(fuelBarRight);
+                numRaiseRight++;
             }          
         }
-
 
         /// <summary>
         /// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged).
@@ -586,10 +565,9 @@ namespace Bitness
         private void showActiveBlue()
         {
             Console.WriteLine("Show Active Blue");
-            blueFuelTube.Visibility = Visibility.Visible;
-            blueFuelBottom.Visibility = Visibility.Visible;
+            //Show Left Sidebar
+            leftSideBarCanvas.Visibility = Visibility.Visible;
         }
-
 
         private void redSyncVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -609,8 +587,8 @@ namespace Bitness
 
         private void showActiveRed()
         {
-            redFuelTube.Visibility = Visibility.Visible;
-            redFuelBottom.Visibility = Visibility.Visible;
+            //Show Right Sidebar
+            rightSideBarCanvas.Visibility = Visibility.Visible;
         }
     }
 }
