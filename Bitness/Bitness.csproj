@@ -185,6 +185,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\redfloor.gif" />
+    <Resource Include="Images\stars.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Videos\Bitness-Syncing.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
