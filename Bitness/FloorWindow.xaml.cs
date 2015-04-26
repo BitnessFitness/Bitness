@@ -15,6 +15,10 @@ using System.Windows.Shapes;
 using Microsoft.Kinect;
 using System.ComponentModel;
 
+using System.Windows.Media.Animation;
+using WpfAnimatedGif;
+
+
 namespace Bitness
 {
     /// <summary>
@@ -34,7 +38,7 @@ namespace Bitness
 
 
         private readonly Brush drawBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
-        
+
         /// <summary>
         /// Small bit of text in the bottom right corner of the screen
         /// </summary>
@@ -91,6 +95,11 @@ namespace Bitness
             this.DataContext = this;
 
             InitializeComponent();
+
+            Canvas.SetLeft(catGif, 0.0);
+            Canvas.SetTop(catGif, 0.0);
+
+
         }
 
         /// <summary>
@@ -104,11 +113,12 @@ namespace Bitness
             if (p.Z > OFFSET &&
                 p.Z < (OFFSET + Y_IN) &&
                 p.X < (X_IN / 2) &&
-                p.X > -(X_IN / 2)) 
+
+                p.X > -(X_IN / 2))
             {
                 // modify point origin from kinect to origin of screen (still meters)
                 double fy = (OFFSET + Y_IN) - p.Z;
-                double fx = (X_IN/2) + p.X;
+                double fx = (X_IN / 2) + p.X;
 
                 // convert into pixels
                 double px = (fx / X_IN) * this.Width;
@@ -131,6 +141,12 @@ namespace Bitness
                 {
                     Body body = bodies[i];
                     Point p = MapDepthPointToFloor(body.Joints[JointType.Head].Position);
+
+                    if (p.X != 0 && p.Y != 0)
+                    {
+                        Canvas.SetLeft(catGif, p.X);
+                        Canvas.SetTop(catGif, p.Y);
+                    }
 
                     dc.DrawEllipse(drawBrush, null, p, 3, 3);
                 }
