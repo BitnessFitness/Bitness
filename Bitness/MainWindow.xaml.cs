@@ -96,6 +96,14 @@ namespace Bitness
         /// </summary>
         private string statusText = "Nothing has happened yet!";
 
+        /// <summary>
+        /// ints used to raise rectngles and gifs for now
+        /// </summary>
+        public int numJacks = 0;
+        public int numRaise = 1;
+        public int numJacks2 = 0;
+        public int numRaise2= 1;
+
         private FloorWindow floor;
 
         private List<Action> exercises;
@@ -298,6 +306,11 @@ namespace Bitness
                             blueFuelTube.Visibility = Visibility.Visible;
                             redFuelBottom.Visibility = Visibility.Visible;
                             blueFuelBottom.Visibility = Visibility.Visible;
+
+                            
+                            //show the water gifs
+                            gif_canvas_left.Visibility = Visibility.Visible;
+                            gif_canvas_right.Visibility = Visibility.Visible;
                         }
                         else if(bodyCounter == 1)
                         {
@@ -321,6 +334,10 @@ namespace Bitness
                             blueFuelTube.Visibility = Visibility.Hidden;
                             redFuelBottom.Visibility = Visibility.Hidden;
                             blueFuelBottom.Visibility = Visibility.Hidden;
+                            //hides the gifs
+                            //show the water gifs
+                            gif_canvas_left.Visibility = Visibility.Hidden;
+                            gif_canvas_right.Visibility = Visibility.Hidden;
                         }
 
                         if (i >= this.exercises.Count)
@@ -366,6 +383,9 @@ namespace Bitness
                             if (repAdded && i < 2)
                             {
                                 ROCKET_X[i] = (105 + (counts[i] * 20));
+                                
+                                
+                                moveBar(i);
                             }
 
                         }
@@ -472,44 +492,58 @@ namespace Bitness
         {
             Debug.WriteLine((sender as FrameworkElement).Tag + " Preview");
         }
-        public int numJacks = 0;
-        public int numRaise = 1;
+        
         private void MouseDown(object sender, MouseButtonEventArgs e)
         {
 
+            moveBar(1);
+            moveBar(0);
+            
+        }
+        void moveBar(int index)
+        {
             System.Windows.Shapes.Rectangle rect;
             System.Windows.Shapes.Rectangle rect2;
             rect = new System.Windows.Shapes.Rectangle();
             rect2 = new System.Windows.Shapes.Rectangle();
+
+
+            if (index == 0)
+            {
+                numJacks = numJacks + 13;
+                // Add a rectangle Element
+                rect.Stroke = new SolidColorBrush(Colors.LightBlue);
+                rect.Fill = new SolidColorBrush(Colors.LightBlue);
+                rect.Width = 80;
+                rect.Height = numJacks;
+                Canvas.SetLeft(rect, 0);
+                Canvas.SetBottom(rect, 0);
+                left_canvas.Children.Add(rect);
+                gif_canvas_left.Margin = new Thickness(0, -13 * numRaise, 0, 0);
+                numRaise++;
+            }
+
+            if (index == 1)
+            {
+                numJacks2 = numJacks2 + 13;
+                // Add a rectangle Element
+                rect2.Stroke = new SolidColorBrush(Colors.Orange);
+                rect2.Fill = new SolidColorBrush(Colors.Orange);
+                rect2.Width = 80;
+                rect2.Height = numJacks2;
+                Canvas.SetLeft(rect2, 0);
+                Canvas.SetBottom(rect2, 0);
+                right_canvas.Children.Add(rect2);
+                gif_canvas_right.Margin = new Thickness(0, -13 * numRaise2, 0, 0);
+                numRaise2++;
+            }
+            
+
            
-            //blah blag
-            Random rnd = new Random();
             
-            numJacks = numJacks + 13;
             
-
-
-            // Add a rectangle Element
-            rect.Stroke = new SolidColorBrush(Colors.LightBlue);
-            rect.Fill = new SolidColorBrush(Colors.LightBlue);
-            rect.Width = 80;
-            rect.Height = numJacks;
-            Canvas.SetLeft(rect, 0);
-            Canvas.SetBottom(rect, 0);
-            left_canvas.Children.Add(rect);
-
-            // Add a rectangle Element
-            rect2.Stroke = new SolidColorBrush(Colors.Orange);
-            rect2.Fill = new SolidColorBrush(Colors.Orange);
-            rect2.Width = 80;
-            rect2.Height = numJacks;
-            Canvas.SetLeft(rect2, 0);
-            Canvas.SetBottom(rect2, 0);
-            right_canvas.Children.Add(rect2);
-
-            gif_canvas.Margin =new Thickness(0, -13*numRaise, 0, 0);
-            numRaise++;
         }
+
 
         /// <summary>
         /// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged).
