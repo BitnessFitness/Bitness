@@ -63,16 +63,6 @@ namespace Bitness.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Bitness_Syncing {
-            get {
-                object obj = ResourceManager.GetObject("Bitness_Syncing", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] blue_1 {
             get {
                 object obj = ResourceManager.GetObject("blue_1", resourceCulture);
@@ -81,32 +71,42 @@ namespace Bitness.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static byte[] bluesideloop {
+        internal static System.Drawing.Bitmap bluefloor {
             get {
-                object obj = ResourceManager.GetObject("bluesideloop", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("bluefloor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cat {
+        internal static System.Drawing.Bitmap bluesideloop1 {
             get {
-                object obj = ResourceManager.GetObject("cat", resourceCulture);
+                object obj = ResourceManager.GetObject("bluesideloop1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static byte[] redsideloop {
+        internal static System.Drawing.Bitmap redfloor {
             get {
-                object obj = ResourceManager.GetObject("redsideloop", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("redfloor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap redsideloop1 {
+            get {
+                object obj = ResourceManager.GetObject("redsideloop1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
