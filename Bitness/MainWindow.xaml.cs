@@ -99,10 +99,10 @@ namespace Bitness
         /// <summary>
         /// ints used to raise rectngles and gifs for now
         /// </summary>
-        public int numJacks = 0;
-        public int numRaise = 1;
-        public int numJacks2 = 0;
-        public int numRaise2= 1;
+        public int numJacksLeft = 0;
+        public int numRaiseLeft = 1;
+        public int numJacksRight = 0;
+        public int numRaiseRight= 1;
 
         private FloorWindow floor;
 
@@ -204,6 +204,11 @@ namespace Bitness
 
             blueFuelTube.Visibility = Visibility.Hidden;
             blueFuelBottom.Visibility = Visibility.Hidden;
+
+            //hides videos for blastoff
+            BlastOffLeft.Visibility = Visibility.Hidden;
+            BlastOffRight.Visibility = Visibility.Hidden;
+
         }
 
         public void PlayVideo(object sender, RoutedEventArgs e)
@@ -323,6 +328,9 @@ namespace Bitness
                             //show the water gifs
                             gif_canvas_left.Visibility = Visibility.Visible;
                             gif_canvas_right.Visibility = Visibility.Visible;
+                            //rectangles
+                            rectangle_canvas_right.Visibility = Visibility.Visible;
+                            rectangle_canvas_left.Visibility = Visibility.Visible;
 
                             //Show Sync Videos
                             blueSyncVideo.Visibility = Visibility.Visible;
@@ -339,6 +347,12 @@ namespace Bitness
                             //Blue
                             bluesideStandby.Visibility = Visibility.Hidden;
                             blueSyncVideo.Visibility = Visibility.Visible;
+                            //shows gifs
+                            //show the water gifs
+                            gif_canvas_left.Visibility = Visibility.Visible;
+                            gif_canvas_right.Visibility = Visibility.Visible;
+                            rectangle_canvas_right.Visibility = Visibility.Visible;
+                            rectangle_canvas_left.Visibility = Visibility.Visible;
                         }
                         else
                         {
@@ -353,10 +367,14 @@ namespace Bitness
                             blueFuelTube.Visibility = Visibility.Hidden;
                             redFuelBottom.Visibility = Visibility.Hidden;
                             blueFuelBottom.Visibility = Visibility.Hidden;
-                            //hides the gifs
-                            //show the water gifs
+                            
+                            //hide the water gifs
                             gif_canvas_left.Visibility = Visibility.Hidden;
                             gif_canvas_right.Visibility = Visibility.Hidden;
+                            //rectangles
+                            rectangle_canvas_right.Visibility = Visibility.Hidden;
+                            rectangle_canvas_left.Visibility = Visibility.Hidden;
+                            
                         }
 
                         if (i >= this.exercises.Count)
@@ -398,12 +416,13 @@ namespace Bitness
                             // here is where we check the exercise
                             bool repAdded = exercise.Update(body.Joints);
                             counts.Add(exercise.Reps);
+                            
 
                             if (repAdded && i < 2)
                             {
                                 ROCKET_X[i] = (105 + (counts[i] * 20));
-                                
-                                
+
+                                //moves bar based off index
                                 moveBar(i);
                             }
 
@@ -515,8 +534,8 @@ namespace Bitness
         private void MouseDown(object sender, MouseButtonEventArgs e)
         {
 
-            moveBar(1);
-            moveBar(0);
+           moveBar(1);
+           moveBar(0);
             
         }
         void moveBar(int index)
@@ -526,39 +545,58 @@ namespace Bitness
             rect = new System.Windows.Shapes.Rectangle();
             rect2 = new System.Windows.Shapes.Rectangle();
 
-
-            if (index == 0)
+            //will raise the bar based off the index (left is 0 right is 1)
+            //will not raise any more if the respective numRaise value is over a certain amount
+            if (index == 1 && numRaiseRight<42)
             {
-                numJacks = numJacks + 13;
-                // Add a rectangle Element
-                rect.Stroke = new SolidColorBrush(Colors.LightBlue);
-                rect.Fill = new SolidColorBrush(Colors.LightBlue);
-                rect.Width = 80;
-                rect.Height = numJacks;
-                Canvas.SetLeft(rect, 0);
-                Canvas.SetBottom(rect, 0);
-                left_canvas.Children.Add(rect);
-                gif_canvas_left.Margin = new Thickness(0, -13 * numRaise, 0, 0);
-                numRaise++;
-            }
-
-            if (index == 1)
-            {
-                numJacks2 = numJacks2 + 13;
-                // Add a rectangle Element
+                
+                numJacksRight = numJacksRight + 13;
+                // Add a rectangle Element to the right
                 rect2.Stroke = new SolidColorBrush(Colors.Orange);
                 rect2.Fill = new SolidColorBrush(Colors.Orange);
                 rect2.Width = 80;
-                rect2.Height = numJacks2;
+                rect2.Height = numJacksRight;
                 Canvas.SetLeft(rect2, 0);
                 Canvas.SetBottom(rect2, 0);
-                right_canvas.Children.Add(rect2);
-                gif_canvas_right.Margin = new Thickness(0, -13 * numRaise2, 0, 0);
-                numRaise2++;
+                rectangle_canvas_right.Children.Add(rect2);
+                gif_canvas_right.Margin = new Thickness(0, -13 * numRaiseRight, 0, 0);
+                numRaiseRight++;
             }
-            
 
-           
+            if (index == 0 && numRaiseLeft<42)
+            {
+                numJacksLeft = numJacksLeft + 13;
+                // Add a rectangle Element to the left
+                rect.Stroke = new SolidColorBrush(Colors.LightBlue);
+                rect.Fill = new SolidColorBrush(Colors.LightBlue);
+                rect.Width = 80;
+                rect.Height = numJacksLeft;
+                Canvas.SetLeft(rect, 0);
+                Canvas.SetBottom(rect, 0);
+                rectangle_canvas_left.Children.Add(rect);
+                gif_canvas_left.Margin = new Thickness(0, -13 * numRaiseLeft, 0, 0);
+                numRaiseLeft++;
+            }
+
+            if (numRaiseLeft >= 42)
+            {
+                //hides the rectangle and water gif for the left bar
+                gif_canvas_left.Visibility = Visibility.Hidden;
+                rectangle_canvas_left.Visibility = Visibility.Hidden;
+                bluesideStandby.Visibility = Visibility.Hidden;
+                BlastOffLeft.Visibility = Visibility.Visible;
+                BlastOffLeft.Play();
+                
+            }
+            if (numRaiseRight >= 42)
+            {
+                //hides the rectangle and water gif for the right bar
+                gif_canvas_right.Visibility = Visibility.Hidden;
+                rectangle_canvas_right.Visibility = Visibility.Hidden;
+                redsideStandby.Visibility = Visibility.Hidden;
+                BlastOffRight.Visibility = Visibility.Visible;
+                BlastOffRight.Play();
+            }
             
             
         }
@@ -619,6 +657,19 @@ namespace Bitness
         {
             redFuelTube.Visibility = Visibility.Visible;
             redFuelBottom.Visibility = Visibility.Visible;
+        }
+
+        //gets rid of blastoff videos on end
+        private void BlastOffLeft_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            BlastOffLeft.Visibility = Visibility.Hidden;
+            bluesideStandby.Visibility = Visibility.Visible;
+        }
+
+        private void BlastOffRight_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            BlastOffRight.Visibility = Visibility.Hidden;
+            redsideStandby.Visibility = Visibility.Visible;
         }
     }
 }

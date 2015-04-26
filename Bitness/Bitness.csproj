@@ -195,6 +195,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\tube-bottom.png" />
+    <Content Include="Videos\short_blastoff.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Videos\ttPlayTest3.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

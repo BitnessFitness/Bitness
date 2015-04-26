@@ -73,6 +73,16 @@ namespace Bitness.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] blue_1 {
+            get {
+                object obj = ResourceManager.GetObject("blue_1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] bluesideloop {
             get {
                 object obj = ResourceManager.GetObject("bluesideloop", resourceCulture);
@@ -96,6 +106,16 @@ namespace Bitness.Properties {
         internal static byte[] redsideloop {
             get {
                 object obj = ResourceManager.GetObject("redsideloop", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] short_blastoff {
+            get {
+                object obj = ResourceManager.GetObject("short_blastoff", resourceCulture);
                 return ((byte[])(obj));
             }
         }
