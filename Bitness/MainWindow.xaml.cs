@@ -243,6 +243,7 @@ namespace Bitness
             //Stores the # of bodies on the screen
             int bodyCounter = 0;
 
+
             //Line Trail for red rocket
             Line redRocketTrail = new Line();
             redRocketTrail.Stroke = System.Windows.Media.Brushes.OrangeRed;
@@ -392,13 +393,16 @@ namespace Bitness
                         if (i == 0)
                         {
                             Canvas.SetLeft(redRocket, ROCKET_X[i]);
+
                             //Change the 2nd X position for the trail and add it to the canvas
                             redRocketTrail.X2 = (ROCKET_X[i] + 10);
                             topBarCanvas.Children.Add(redRocketTrail);
+
                         }
                         else
                         {
                             Canvas.SetLeft(blueRocket, ROCKET_X[i]);
+
                             //Change the 2nd X position for the trail and add it to the canvas
                             blueRocketTrail.X2 = (ROCKET_X[i] + 10);
                             topBarCanvas.Children.Add(blueRocketTrail);
@@ -474,6 +478,49 @@ namespace Bitness
                     }
                 }
             }
+        }
+
+        private void PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Debug.WriteLine((sender as FrameworkElement).Tag + " Preview");
+        }
+        public int numJacks = 0;
+        public int numRaise = 1;
+        private void MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            System.Windows.Shapes.Rectangle rect;
+            System.Windows.Shapes.Rectangle rect2;
+            rect = new System.Windows.Shapes.Rectangle();
+            rect2 = new System.Windows.Shapes.Rectangle();
+           
+            //blah blag
+            Random rnd = new Random();
+            
+            numJacks = numJacks + 13;
+            
+
+
+            // Add a rectangle Element
+            rect.Stroke = new SolidColorBrush(Colors.LightBlue);
+            rect.Fill = new SolidColorBrush(Colors.LightBlue);
+            rect.Width = 80;
+            rect.Height = numJacks;
+            Canvas.SetLeft(rect, 0);
+            Canvas.SetBottom(rect, 0);
+            left_canvas.Children.Add(rect);
+
+            // Add a rectangle Element
+            rect2.Stroke = new SolidColorBrush(Colors.Orange);
+            rect2.Fill = new SolidColorBrush(Colors.Orange);
+            rect2.Width = 80;
+            rect2.Height = numJacks;
+            Canvas.SetLeft(rect2, 0);
+            Canvas.SetBottom(rect2, 0);
+            right_canvas.Children.Add(rect2);
+
+            gif_canvas.Margin =new Thickness(0, -13*numRaise, 0, 0);
+            numRaise++;
         }
 
         /// <summary>
