@@ -46,10 +46,10 @@
             <Button Click="PlayVideo" Content="Play"/>
         </StackPanel>
         -->
-      
+
         <MediaElement Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="blueSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="blueSyncVideo_MediaEnded" Width="550" IsVisibleChanged="blueSyncVideo_IsVisibleChanged"/>
         <MediaElement Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="redSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="redSyncVideo_MediaEnded" Width="550" IsVisibleChanged="redSyncVideo_IsVisibleChanged"/>
-        
+
         <MediaElement Name="bluesideSync" Grid.Row="1" Grid.Column="0">
             <MediaElement.Triggers>
                 <EventTrigger RoutedEvent="MediaElement.Loaded">
@@ -117,15 +117,20 @@
                 </ContentControl>
             </ContentControl>
         </StackPanel>
-        <Canvas Name="left_canvas" Grid.Row="1" Grid.Column="0" Margin="61,529,63,64" RenderTransformOrigin="0.546,0.669"/>
-        <Canvas Name="right_canvas" Grid.Row="1" Grid.Column="2" Margin="61,529,63,64" RenderTransformOrigin="0.546,0.669"/>
+        <Canvas Name="rectangle_canvas_left" Grid.Row="1" Grid.Column="0" Margin="61,529,63,64" RenderTransformOrigin="0.546,0.669"/>
+        <Canvas Name="rectangle_canvas_right" Grid.Row="1" Grid.Column="2" Margin="61,529,63,64" RenderTransformOrigin="0.546,0.669"/>
         <Canvas Name="gif_canvas_right">
-            <Image x:Name="testwater_right" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="49" Margin="1140,660,63,64" />
+            <Image x:Name="testwater_right" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="49" Canvas.Left="1141" Canvas.Top="660" />
         </Canvas>
         <Canvas Name="gif_canvas_left">
-            <Image x:Name="testwater_left" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="49" Margin="60,660,63,64" />
+            <Image x:Name="testwater_left" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="49" Canvas.Left="61" Canvas.Top="660" />
         </Canvas>
-
+        <MediaElement Grid.Row="1" Source="Videos\short_blastoff.mp4" Name="BlastOffLeft" 
+            Width="190" Height="590" Opacity="1" Volume="1" LoadedBehavior="Manual" 
+            UnloadedBehavior="Stop" Stretch="Fill" Margin="4,1,6,28" MediaEnded="BlastOffLeft_MediaEnded" />
+        <MediaElement Source="Videos\short_blastoff.mp4" Name="BlastOffRight" 
+            Width="190" Height="590" Opacity="1" Volume="1" LoadedBehavior="Manual" 
+            UnloadedBehavior="Stop" Stretch="Fill" Margin="1,1,9,28" Grid.Column="2" Grid.Row="1" MediaEnded="BlastOffRight_MediaEnded" />
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="880"/>
