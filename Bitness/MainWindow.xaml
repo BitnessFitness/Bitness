@@ -28,7 +28,10 @@
             <Button Click="PlayVideo" Content="Play"/>
         </StackPanel>
         -->
-
+      
+        <MediaElement Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="blueSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="blueSyncVideo_MediaEnded" Width="550" IsVisibleChanged="blueSyncVideo_IsVisibleChanged"/>
+        <MediaElement Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="redSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="redSyncVideo_MediaEnded" Width="550" IsVisibleChanged="redSyncVideo_IsVisibleChanged"/>
+        
         <MediaElement Name="bluesideSync" Grid.Row="1" Grid.Column="0">
             <MediaElement.Triggers>
                 <EventTrigger RoutedEvent="MediaElement.Loaded">
@@ -76,7 +79,6 @@
             <StatusBarItem Content="{Binding StatusText}" />
         </StatusBar>
 
-        <Image Grid.Row="0" Source="Images/Planets.png" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Grid.ColumnSpan="3" Margin="0,0,0,0"/>
         <Image x:Name="blueFuelBottom" Grid.Row="1" Grid.Column="0" Source="Images/tube-bottom.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30" Width="110"/>
         <Image x:Name="blueFuelTube" Grid.Row="1" Grid.Column="0" Source="Images/Tube-glass-and-top.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"/>
 
@@ -84,6 +86,7 @@
         <Image x:Name="redFuelTube" Grid.Row="1" Grid.Column="3" Source="Images/Tube-glass-and-top.png" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30"/>
 
         <Canvas x:Name="topBarCanvas" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1272" Grid.ColumnSpan="3">
+            <Image Source="Images/Planets.png" HorizontalAlignment="Center" Stretch="UniformToFill" Canvas.Top="-25"/>
             <Image x:Name="redRocket" Source="Images/top_redrocket.png" Width="32" Canvas.Top="50" Canvas.Left="105"/>
             <Image x:Name="blueRocket" Source="Images/top_bluerocket.png" Width="32" Canvas.Bottom="50" Canvas.Left="105"/>
         </Canvas>    
