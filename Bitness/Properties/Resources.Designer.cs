@@ -63,6 +63,16 @@ namespace Bitness.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Bitness_Syncing {
+            get {
+                object obj = ResourceManager.GetObject("Bitness_Syncing", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] bluesideloop {
             get {
                 object obj = ResourceManager.GetObject("bluesideloop", resourceCulture);
