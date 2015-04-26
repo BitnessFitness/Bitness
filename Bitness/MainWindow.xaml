@@ -71,14 +71,18 @@
         </StackPanel>
         <Canvas Name="left_canvas" Grid.Row="1" Grid.Column="0" Margin="61,529,63,64" RenderTransformOrigin="0.546,0.669"/>
         <Canvas Name="right_canvas" Grid.Row="1" Grid.Column="2" Margin="61,529,63,64" RenderTransformOrigin="0.546,0.669"/>
-        <Canvas Name="gif_canvas">
-            <Image x:Name="testwater" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="49" Margin="1140,660,63,64" />
-        </Canvas>      
-        
+
+
         <Canvas x:Name="topBarCanvas" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1272" Grid.ColumnSpan="3">
             <Image Source="Images/Planets.png" HorizontalAlignment="Center" Stretch="UniformToFill" Canvas.Top="-25"/>
             <Image x:Name="redRocket" Source="Images/top_redrocket.png" Width="32" Canvas.Top="50" Canvas.Left="105"/>
             <Image x:Name="blueRocket" Source="Images/top_bluerocket.png" Width="32" Canvas.Bottom="50" Canvas.Left="105"/>
+        </Canvas>
+        <Canvas Name="gif_canvas_right">
+            <Image x:Name="testwater_right" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="49" Margin="1140,660,63,64" />
+        </Canvas>
+        <Canvas Name="gif_canvas_left">
+            <Image x:Name="testwater_left" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="49" Margin="60,660,63,64" />
         </Canvas>
        
         <Grid.ColumnDefinitions>
