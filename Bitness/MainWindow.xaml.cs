@@ -102,9 +102,20 @@ namespace Bitness
         /// </summary>
         private string statusText = "Nothing has happened yet!";
 
+        /// <summary>
+        /// ints used to raise rectngles and gifs for now
+        /// </summary>
+        public int numJacks = 0;
+        public int numRaise = 1;
+        public int numJacks2 = 0;
+        public int numRaise2= 1;
+
         private FloorWindow floor;
 
         private List<Action> exercises;
+
+        private bool bluePlayerSynced = false;
+        private bool redPlayerSynced = false;
 
         /// <summary>
         /// Gets the skeleton points to display
@@ -188,15 +199,23 @@ namespace Bitness
             // use the window object as the view model in this simple example
             this.DataContext = this;
             this.exercises = new List<Action>();
-           
+
             this.InitializeComponent();
 
+            blueSyncVideo.Visibility = Visibility.Hidden;
+            redSyncVideo.Visibility = Visibility.Hidden;
+
+            redFuelTube.Visibility = Visibility.Hidden;
+            redFuelBottom.Visibility = Visibility.Hidden;
+
+            blueFuelTube.Visibility = Visibility.Hidden;
+            blueFuelBottom.Visibility = Visibility.Hidden;
         }
 
         public void PlayVideo(object sender, RoutedEventArgs e)
         {
-            // testVideo.Visibility = Visibility.Visible;
-            // testVideo.Play();
+            //testVideo.Visibility = Visibility.Visible;
+            //testVideo.Play();
         }
 
         /// <summary>
@@ -239,6 +258,7 @@ namespace Bitness
             int bodyCounter = 0;
             Body[] trackedBodies = new Body[2];
 
+
             //Line Trail for red rocket
             Line redRocketTrail = new Line();
             redRocketTrail.Stroke = System.Windows.Media.Brushes.OrangeRed;
@@ -279,7 +299,7 @@ namespace Bitness
                     // Draw a transparent background to set the render size
                     dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
-                    List<int> counts = new List<int>();                   
+                    List<int> counts = new List<int>();
 
                     this.floor.DrawTopDownView(this.bodies);
 
@@ -300,6 +320,7 @@ namespace Bitness
                             //Hide Standby Videos
                             redsideStandby.Visibility = Visibility.Hidden;
                             bluesideStandby.Visibility = Visibility.Hidden;
+
                             //Fuel Tubes
                             redFuelTube.Visibility = Visibility.Visible;
                             blueFuelTube.Visibility = Visibility.Visible;
@@ -318,8 +339,17 @@ namespace Bitness
                                 leftBody = trackedBodies[0];
                                 rightBody = trackedBodies[1];
                             }
+
+                            
+                            //show the water gifs
+                            gif_canvas_left.Visibility = Visibility.Visible;
+                            gif_canvas_right.Visibility = Visibility.Visible;
+
+                            //Show Sync Videos
+                            blueSyncVideo.Visibility = Visibility.Visible;
+                            redSyncVideo.Visibility = Visibility.Visible;
                         }
-                        else if(bodyCounter == 1)
+                        else if (bodyCounter == 1)
                         {
                             if (trackedBodies[0].Joints[JointType.Head].Position.X > 0)
                             {
@@ -349,11 +379,18 @@ namespace Bitness
                             //Show Standby Videos
                             redsideStandby.Visibility = Visibility.Visible;
                             bluesideStandby.Visibility = Visibility.Visible;
+                            //Hide Sync Videos
+                            blueSyncVideo.Visibility = Visibility.Hidden;
+                            redSyncVideo.Visibility = Visibility.Hidden;
                             //Fuel Tubes
                             redFuelTube.Visibility = Visibility.Hidden;
                             blueFuelTube.Visibility = Visibility.Hidden;
                             redFuelBottom.Visibility = Visibility.Hidden;
                             blueFuelBottom.Visibility = Visibility.Hidden;
+                            //hides the gifs
+                            //show the water gifs
+                            gif_canvas_left.Visibility = Visibility.Hidden;
+                            gif_canvas_right.Visibility = Visibility.Hidden;
                         }
 
                         if (i >= this.exercises.Count)
@@ -399,6 +436,9 @@ namespace Bitness
                             if (repAdded && i < 2)
                             {
                                 ROCKET_X[i] = (105 + (counts[i] * 20));
+                                
+                                
+                                moveBar(i);
                             }
 
                         }
@@ -414,13 +454,16 @@ namespace Bitness
                         if (i == 0)
                         {
                             Canvas.SetLeft(redRocket, ROCKET_X[i]);
+
                             //Change the 2nd X position for the trail and add it to the canvas
                             redRocketTrail.X2 = (ROCKET_X[i] + 10);
                             topBarCanvas.Children.Add(redRocketTrail);
+
                         }
                         else
                         {
                             Canvas.SetLeft(blueRocket, ROCKET_X[i]);
+
                             //Change the 2nd X position for the trail and add it to the canvas
                             blueRocketTrail.X2 = (ROCKET_X[i] + 10);
                             topBarCanvas.Children.Add(blueRocketTrail);
@@ -498,6 +541,63 @@ namespace Bitness
             }
         }
 
+        private void PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Debug.WriteLine((sender as FrameworkElement).Tag + " Preview");
+        }
+        
+        private void MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            moveBar(1);
+            moveBar(0);
+            
+        }
+        void moveBar(int index)
+        {
+            System.Windows.Shapes.Rectangle rect;
+            System.Windows.Shapes.Rectangle rect2;
+            rect = new System.Windows.Shapes.Rectangle();
+            rect2 = new System.Windows.Shapes.Rectangle();
+
+
+            if (index == 0)
+            {
+                numJacks = numJacks + 13;
+                // Add a rectangle Element
+                rect.Stroke = new SolidColorBrush(Colors.LightBlue);
+                rect.Fill = new SolidColorBrush(Colors.LightBlue);
+                rect.Width = 80;
+                rect.Height = numJacks;
+                Canvas.SetLeft(rect, 0);
+                Canvas.SetBottom(rect, 0);
+                left_canvas.Children.Add(rect);
+                gif_canvas_left.Margin = new Thickness(0, -13 * numRaise, 0, 0);
+                numRaise++;
+            }
+
+            if (index == 1)
+            {
+                numJacks2 = numJacks2 + 13;
+                // Add a rectangle Element
+                rect2.Stroke = new SolidColorBrush(Colors.Orange);
+                rect2.Fill = new SolidColorBrush(Colors.Orange);
+                rect2.Width = 80;
+                rect2.Height = numJacks2;
+                Canvas.SetLeft(rect2, 0);
+                Canvas.SetBottom(rect2, 0);
+                right_canvas.Children.Add(rect2);
+                gif_canvas_right.Margin = new Thickness(0, -13 * numRaise2, 0, 0);
+                numRaise2++;
+            }
+            
+
+           
+            
+            
+        }
+
+
         /// <summary>
         /// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged).
         /// </summary>
@@ -506,6 +606,53 @@ namespace Bitness
         private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
         {
             // on failure, set the status text
+        }
+
+        private void blueSyncVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Console.WriteLine("Blue Sync Vid Visible?:" + blueSyncVideo.IsVisible);
+            if ((blueSyncVideo.IsVisible == true) && (bluePlayerSynced == false))
+            {
+                bluePlayerSynced = true;
+                blueSyncVideo.Position = TimeSpan.Zero;
+                blueSyncVideo.Play();
+            }
+        }
+
+        private void blueSyncVideo_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            blueSyncVideo.Visibility = Visibility.Hidden;
+            showActiveBlue();
+        }
+
+        private void showActiveBlue()
+        {
+            Console.WriteLine("showActiveBlue");
+            blueFuelTube.Visibility = Visibility.Visible;
+            blueFuelBottom.Visibility = Visibility.Visible;
+        }
+
+
+        private void redSyncVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((redSyncVideo.IsVisible == true) && (redPlayerSynced == false))
+            {
+                redPlayerSynced = true;
+                redSyncVideo.Position = TimeSpan.Zero;
+                redSyncVideo.Play();
+            }
+        }
+
+        private void redSyncVideo_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            redSyncVideo.Visibility = Visibility.Hidden;
+            showActiveRed();
+        }
+
+        private void showActiveRed()
+        {
+            redFuelTube.Visibility = Visibility.Visible;
+            redFuelBottom.Visibility = Visibility.Visible;
         }
     }
 }
