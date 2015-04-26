@@ -243,7 +243,6 @@ namespace Bitness
             //Stores the # of bodies on the screen
             int bodyCounter = 0;
 
-
             //Line Trail for red rocket
             Line redRocketTrail = new Line();
             redRocketTrail.Stroke = System.Windows.Media.Brushes.OrangeRed;
@@ -393,16 +392,13 @@ namespace Bitness
                         if (i == 0)
                         {
                             Canvas.SetLeft(redRocket, ROCKET_X[i]);
-
                             //Change the 2nd X position for the trail and add it to the canvas
                             redRocketTrail.X2 = (ROCKET_X[i] + 10);
                             topBarCanvas.Children.Add(redRocketTrail);
-
                         }
                         else
                         {
                             Canvas.SetLeft(blueRocket, ROCKET_X[i]);
-
                             //Change the 2nd X position for the trail and add it to the canvas
                             blueRocketTrail.X2 = (ROCKET_X[i] + 10);
                             topBarCanvas.Children.Add(blueRocketTrail);
@@ -479,7 +475,7 @@ namespace Bitness
                 }
             }
         }
-
+      
         private void PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine((sender as FrameworkElement).Tag + " Preview");
@@ -499,8 +495,6 @@ namespace Bitness
             
             numJacks = numJacks + 13;
             
-
-
             // Add a rectangle Element
             rect.Stroke = new SolidColorBrush(Colors.LightBlue);
             rect.Fill = new SolidColorBrush(Colors.LightBlue);
@@ -538,8 +532,9 @@ namespace Bitness
             Console.WriteLine("Blue Sync Vid Visible?:" + blueSyncVideo.IsVisible);
             if ((blueSyncVideo.IsVisible == true) && (bluePlayerSynced == false))
             {
+                Console.WriteLine("Now Syncing");
                 bluePlayerSynced = true;
-                blueSyncVideo.Position = TimeSpan.Zero;
+                blueSyncVideo.Position = new TimeSpan(0);
                 blueSyncVideo.Play();
             }
         }
@@ -552,7 +547,7 @@ namespace Bitness
 
         private void showActiveBlue()
         {
-            Console.WriteLine("showActiveBlue");
+            Console.WriteLine("Show Active Blue");
             blueFuelTube.Visibility = Visibility.Visible;
             blueFuelBottom.Visibility = Visibility.Visible;
         }
@@ -563,7 +558,7 @@ namespace Bitness
             if ((redSyncVideo.IsVisible == true) && (redPlayerSynced == false))
             {
                 redPlayerSynced = true;
-                redSyncVideo.Position = TimeSpan.Zero;
+                redSyncVideo.Position = new TimeSpan(0);
                 redSyncVideo.Play();
             }
         }

@@ -96,8 +96,8 @@ namespace Bitness
 
             InitializeComponent();
 
-            Canvas.SetLeft(catGif, 0.0);
-            Canvas.SetTop(catGif, 0.0);
+            Canvas.SetLeft(blueFloorGif, 0.0);
+            Canvas.SetTop(blueFloorGif, 0.0);
 
 
         }
@@ -144,8 +144,8 @@ namespace Bitness
 
                     if (p.X != 0 && p.Y != 0)
                     {
-                        Canvas.SetLeft(catGif, p.X);
-                        Canvas.SetTop(catGif, p.Y);
+                        Canvas.SetLeft(blueFloorGif, p.X);
+                        Canvas.SetTop(blueFloorGif, p.Y);
                     }
 
                     dc.DrawEllipse(drawBrush, null, p, 3, 3);
