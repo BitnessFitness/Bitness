@@ -63,8 +63,8 @@
             <Image x:Name="blueRocket" Source="Images/top_bluerocket.png" Width="32" Canvas.Bottom="50" Canvas.Left="105"/>
         </Canvas>
 
-        <MediaElement Grid.Row="1" Grid.Column="0" Source="Videos\short_blastoff.mp4" Name="BlastOffLeft" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill"  MediaEnded="BlastOffLeft_MediaEnded" />
-        <MediaElement Grid.Row="1" Grid.Column="2" Source="Videos\short_blastoff.mp4" Name="BlastOffRight" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill"  MediaEnded="BlastOffRight_MediaEnded" />
+        <MediaElement x:Name="BlastOffLeft" Grid.Row="1" Grid.Column="0" Source="Videos\short_blastoff.mp4" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill"  MediaEnded="BlastOffLeft_MediaEnded" />
+        <MediaElement x:Name="BlastOffRight" Grid.Row="1" Grid.Column="2" Source="Videos\short_blastoff.mp4" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill"  MediaEnded="BlastOffRight_MediaEnded" />
 
         <Canvas Name="leftSideBarCanvas" Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <Image x:Name="blueFuelBottom" Grid.Row="1" Grid.Column="0" Source="Images/tube-bottom.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110" Panel.ZIndex="-2"/>

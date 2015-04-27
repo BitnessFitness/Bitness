@@ -12,7 +12,8 @@ namespace Bitness
         public enum State {
             SYNCING,
             SYNCED,
-            NOT_SYNCED
+            NOT_SYNCED,
+            COMPLETED
         };
 
         public State state = State.NOT_SYNCED;
