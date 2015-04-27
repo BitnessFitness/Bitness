@@ -185,9 +185,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\redfloor.gif" />
-    <Resource Include="Images\stars.gif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <Content Include="Videos\Bitness-Syncing.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -196,9 +193,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\tube-bottom.png" />
-    <Content Include="Videos\short_blastoff.mp4">
+    <Resource Include="Videos\short_blastoff.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Content Include="Videos\ttPlayTest3.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
