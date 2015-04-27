@@ -115,6 +115,12 @@ namespace Bitness
         public Color blue = Color.FromRgb(16, 177, 232);
         public Color fuelOrange = Color.FromRgb(219, 131, 35);
 
+        //Integers used to calculate team distances
+        public int totalRedTeamJacks;
+        public int totalBlueTeamJacks;
+        public int maxTotalTeamJacks;
+        public long maxTeamTotalDistance = 4670000000000; 
+
         private FloorWindow floor;
 
         /// <summary>
@@ -191,7 +197,6 @@ namespace Bitness
             this.sensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
             this.sensor.Open();
 
-
             List<JointType> joints = new List<JointType>()
             {
                 JointType.Head
@@ -258,7 +263,6 @@ namespace Bitness
             Canvas.SetZIndex(blueRocketTrail, -2);
             #endregion
 
-
             #region GetBodyData
             using (BodyFrame bodyFrame = e.FrameReference.AcquireFrame())
             {
@@ -319,9 +323,8 @@ namespace Bitness
                                     if (repAdded)
                                     {
                                         ROCKET_X[0] = (105 + (redPlayer.Reps * 20));
-
                                         //moves bar based off index
-                                        moveBar(0);
+                                        moveBar(1);
                                     }
                                 }
                             }
@@ -345,9 +348,8 @@ namespace Bitness
                                     if (repAdded)
                                     {
                                         ROCKET_X[1] = (105 + (bluePlayer.Reps * 20));
-
                                         //moves bar based off index
-                                        moveBar(1);
+                                        moveBar(0);
                                     }
                                 }
                             }
@@ -394,9 +396,8 @@ namespace Bitness
                         showIdle(false);
                     }
 
-                    String message = "red: " + redPlayer.Reps + ". Blue: " + bluePlayer.Reps;
-
-                    
+                    String message = "Red: " + redPlayer.Reps + ". Blue: " + bluePlayer.Reps;
+               
                     #region SetRocketPos 
                     Canvas.SetLeft(redRocket, ROCKET_X[0]);
                     //Change the 2nd X position for the trail and add it to the canvas
@@ -421,23 +422,19 @@ namespace Bitness
         {
             if (blue)
             {
+                //Hide sidebar and sync video
                 blueSyncVideo.Visibility = Visibility.Hidden;
-                blueFuelTube.Visibility = Visibility.Hidden;
-                blueFuelBottom.Visibility = Visibility.Hidden;
-                // blue water gif and water
-                rectangle_canvas_left.Visibility = Visibility.Hidden;
                 leftSideBarCanvas.Visibility = Visibility.Hidden;
+                //Show standby screen, set Blue to not synced
                 bluesideStandby.Visibility = Visibility.Visible;
                 bluePlayer.state = Player.State.NOT_SYNCED;
             }
             else
             {
+                //Hide sidebar and sync video
                 redSyncVideo.Visibility = Visibility.Hidden;
-                redFuelTube.Visibility = Visibility.Hidden;
-                redFuelBottom.Visibility = Visibility.Hidden;
-                // blue water gif and water
-                rectangle_canvas_right.Visibility = Visibility.Hidden;
                 rightSideBarCanvas.Visibility = Visibility.Hidden;
+                //Show standby screen, set Blue to not synced
                 redsideStandby.Visibility = Visibility.Visible;
                 redPlayer.state = Player.State.NOT_SYNCED;
             }
@@ -447,21 +444,17 @@ namespace Bitness
         {
             if (blue)
             {
+                //Show Sync Video
                 blueSyncVideo.Visibility = Visibility.Visible;
-                blueFuelTube.Visibility = Visibility.Hidden;
-                blueFuelBottom.Visibility = Visibility.Hidden;
-                // blue water gif and water
-                rectangle_canvas_left.Visibility = Visibility.Hidden;
+                //Hide Sidebar and Standby
                 leftSideBarCanvas.Visibility = Visibility.Hidden;
                 bluesideStandby.Visibility = Visibility.Hidden;
             }
             else
             {
+                //Show Sync Video
                 redSyncVideo.Visibility = Visibility.Visible;
-                redFuelTube.Visibility = Visibility.Hidden;
-                redFuelBottom.Visibility = Visibility.Hidden;
-                // blue water gif and water
-                rectangle_canvas_right.Visibility = Visibility.Hidden;
+                //Hide Sidebar and Visibility
                 rightSideBarCanvas.Visibility = Visibility.Hidden;
                 redsideStandby.Visibility = Visibility.Hidden;
             }
@@ -538,25 +531,11 @@ namespace Bitness
             fuelBarLeft = new System.Windows.Shapes.Rectangle();
             fuelBarRight = new System.Windows.Shapes.Rectangle();
 
-            //will raise the bar based off the index (left is 0 right is 1)
-            //will not raise any more if the respective numRaise value is over a certain amount
-            if (index == 1 && numRaiseRight < 3)
-            {             
-                numJacksRight = numJacksRight + 143;
-                // Add a rectangle Element
-                fuelBarRight.Stroke = fuelBrush;
-                fuelBarRight.Fill = fuelBrush;
-                fuelBarRight.Width = 80;
-                fuelBarRight.Height = numJacksRight;
-                Canvas.SetLeft(fuelBarRight, -40);
-                Canvas.SetBottom(fuelBarRight, 65);
-                Canvas.SetBottom(testwater_right, (65 + (143 * numRaiseRight)));
-                Canvas.SetZIndex(fuelBarRight, -1);
-                rightSideBarCanvas.Children.Add(fuelBarRight);
-                numRaiseRight++;
-            }			
-            if (index == 0 && numRaiseLeft < 3)
+            //will raise the bar based off the index (Blue is 0 | Red is 1)
+            //will not raise any more if the respective numRaise value is over a certain amount           			
+            if (index == 0 && numRaiseLeft < 4)
             {
+                Console.WriteLine("Left Side Jumped");
                 numJacksLeft = numJacksLeft + 143;
                 // Add a rectangle Element
                 fuelBarLeft.Stroke = fuelBrush;
@@ -570,9 +549,10 @@ namespace Bitness
                 leftSideBarCanvas.Children.Add(fuelBarLeft);
                 numRaiseLeft++;
             }
+
             if (numRaiseLeft >= 3)
             {
-                Console.WriteLine("Left Win");
+                Console.WriteLine("Left Side Win");
                 //hides the rectangle and water gif for the left bar
                 leftSideBarCanvas.Visibility = Visibility.Hidden;
                 bluesideStandby.Visibility = Visibility.Hidden;
@@ -580,8 +560,27 @@ namespace Bitness
                 BlastOffLeft.Position = new TimeSpan(0);
                 BlastOffLeft.Play();
             }
+
+            if (index == 1 && numRaiseRight < 4)
+            {
+                Console.WriteLine("Right Side Jumped");
+                numJacksRight = numJacksRight + 143;
+                // Add a rectangle Element
+                fuelBarRight.Stroke = fuelBrush;
+                fuelBarRight.Fill = fuelBrush;
+                fuelBarRight.Width = 80;
+                fuelBarRight.Height = numJacksRight;
+                Canvas.SetLeft(fuelBarRight, -40);
+                Canvas.SetBottom(fuelBarRight, 65);
+                Canvas.SetBottom(testwater_right, (65 + (143 * numRaiseRight)));
+                Canvas.SetZIndex(fuelBarRight, -1);
+                rightSideBarCanvas.Children.Add(fuelBarRight);
+                numRaiseRight++;
+            }
+           
             if (numRaiseRight >= 3)
             {
+                Console.WriteLine("Right Side Win");
                 //hides the rectangle and water gif for the right bar
                 rightSideBarCanvas.Visibility = Visibility.Hidden;
                 redsideStandby.Visibility = Visibility.Hidden;
@@ -602,10 +601,8 @@ namespace Bitness
 
         private void blueSyncVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Console.WriteLine("Blue Sync Vid Visible?:" + blueSyncVideo.IsVisible);
             if (blueSyncVideo.IsVisible == true) 
             {
-                Console.WriteLine("Now Syncing");
                 blueSyncVideo.Position = new TimeSpan(0);
                 bluePlayer.state = Player.State.SYNCING;
                 blueSyncVideo.Play();
@@ -621,7 +618,6 @@ namespace Bitness
 
         private void showActiveBlue()
         {
-            Console.WriteLine("Show Active Blue");
             //Show Left Sidebar
             leftSideBarCanvas.Visibility = Visibility.Visible;
         }
