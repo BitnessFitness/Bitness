@@ -62,6 +62,12 @@ namespace Bitness
         private int[] ROCKET_X = new int[2] { 105, 105 };
 
         /// <summary>
+        /// Refrence to left and right players 
+        /// </summary>
+        private Player redPlayer;
+        private Player bluePlayer;
+
+        /// <summary>
         /// List of all of our bodies.
         /// </summary>
         private Body[] bodies = null;
@@ -102,7 +108,7 @@ namespace Bitness
         public int numJacksLeft = 0;
         public int numRaiseLeft = 1;
         public int numJacksRight = 0;
-        public int numRaiseRight= 1;
+        public int numRaiseRight = 1;
 
         //Custom Colors For Bitness
         public Color red = Color.FromRgb(241, 128, 33);
@@ -110,11 +116,6 @@ namespace Bitness
         public Color fuelOrange = Color.FromRgb(219, 131, 35);
 
         private FloorWindow floor;
-
-        private List<Action> exercises;
-
-        private bool bluePlayerSynced = false;
-        private bool redPlayerSynced = false;
 
         /// <summary>
         /// Gets the skeleton points to display
@@ -198,7 +199,9 @@ namespace Bitness
 
             // use the window object as the view model in this simple example
             this.DataContext = this;
-            this.exercises = new List<Action>();
+
+            redPlayer = new Player(null, new JumpingJack(joints));
+            bluePlayer = new Player(null, new JumpingJack(joints));
 
             this.InitializeComponent();
 
@@ -214,12 +217,6 @@ namespace Bitness
 
         }
 
-        public void PlayVideo(object sender, RoutedEventArgs e)
-        {
-            //testVideo.Visibility = Visibility.Visible;
-            //testVideo.Play();
-        }
-
         /// <summary>
         /// Execute start up tasks
         /// </summary>
@@ -233,32 +230,14 @@ namespace Bitness
             }
         }
 
-        /// <summary>
-        /// Execute shutdown tasks
-        /// </summary>
-        /// <param name="sender">object sending the event</param>
-        /// <param name="e">event arguments</param>
-        private void MainWindow_Closing(object sender, CancelEventArgs e)
-        {
-            if (this.colorFrameReader != null)
-            {
-                this.colorFrameReader.Dispose();
-                this.colorFrameReader = null;
-            }
-
-            if (this.sensor != null)
-            {
-                this.sensor.Close();
-                this.sensor = null;
-            }
-        }
-
         private void Reader_BodyFrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
             bool dataReceived = false;
             //Stores the # of bodies on the screen
             int bodyCounter = 0;
+            Body[] trackedBodies = new Body[2];
 
+            #region InitTrails
             SolidColorBrush redBrush = new SolidColorBrush(red);
             SolidColorBrush blueBrush = new SolidColorBrush(blue);
 
@@ -277,7 +256,10 @@ namespace Bitness
             blueRocketTrail.Y1 = 90;
             blueRocketTrail.Y2 = 90;
             Canvas.SetZIndex(blueRocketTrail, -2);
+            #endregion
 
+
+            #region GetBodyData
             using (BodyFrame bodyFrame = e.FrameReference.AcquireFrame())
             {
                 if (bodyFrame != null)
@@ -293,7 +275,9 @@ namespace Bitness
                     bodyFrame.GetAndRefreshBodyData(this.bodies);
                     dataReceived = true;
                 }
+
             }
+            #endregion
 
             if (dataReceived)
             {
@@ -306,70 +290,72 @@ namespace Bitness
 
                     this.floor.DrawTopDownView(this.bodies);
 
+                    bool redPlayerDetected = false;
+                    bool bluePlayerDetected = false;
+
+                    #region LoopOverBodies
                     for (int i = 0; i < this.bodies.Length; i++)
                     {
                         Pen drawPen = new Pen(Brushes.Red, 6);
                         Body body = this.bodies[i];
 
-                        if (this.bodies[i].IsTracked == true)
+                        if (body.IsTracked == true)
                         {
+                            // if player is on red side
+                            #region RedSide
+                            if (body.Joints[JointType.SpineShoulder].Position.X > 0)
+                            {
+                                redPlayerDetected = true;
+                                redPlayer.body = body;
+
+                                if (redPlayer.state == Player.State.NOT_SYNCED)
+                                {
+                                    redPlayer.state = Player.State.SYNCING;
+                                    showSync(false);
+                                }
+                                if (redPlayer.state == Player.State.SYNCED)
+                                {
+                                    bool repAdded = redPlayer.Update(body.Joints);
+                                    if (repAdded)
+                                    {
+                                        ROCKET_X[0] = (105 + (redPlayer.Reps * 20));
+
+                                        //moves bar based off index
+                                        moveBar(0);
+                                    }
+                                }
+                            }
+                            #endregion
+                            else
+                            // if player is on blue side
+                            #region BlueSide
+                            {
+                                bluePlayerDetected = true;
+                                bluePlayer.body = body;
+                                if (bluePlayer.state == Player.State.NOT_SYNCED)
+                                {
+                                    bluePlayer.state = Player.State.SYNCING;
+                                    showSync(true);
+                                }
+
+                                if (bluePlayer.state == Player.State.SYNCED)
+                                {
+
+                                    bool repAdded = bluePlayer.Update(body.Joints);
+                                    if (repAdded)
+                                    {
+                                        ROCKET_X[1] = (105 + (bluePlayer.Reps * 20));
+
+                                        //moves bar based off index
+                                        moveBar(1);
+                                    }
+                                }
+                            }
+                            #endregion
                             //If a body is bring tracked in the bodies[] add to the body counter.
                             bodyCounter++;
-                        }
 
-                        if (bodyCounter == 2)
-                        {
-                            //Hide Standby Videos
-                            redsideStandby.Visibility = Visibility.Hidden;
-                            bluesideStandby.Visibility = Visibility.Hidden;                            
-                            //Show Sidebars
-                            leftSideBarCanvas.Visibility = Visibility.Visible;
-                            rightSideBarCanvas.Visibility = Visibility.Visible;
-                            //Show Sync Videos
-                            blueSyncVideo.Visibility = Visibility.Visible;
-                            redSyncVideo.Visibility = Visibility.Visible;
-
-                        }
-                        else if (bodyCounter == 1)
-                        {
-                            //Red
-                            redsideStandby.Visibility = Visibility.Visible;
-                            redSyncVideo.Visibility = Visibility.Hidden;
-                            //Hide Right Sidebar
-                            rightSideBarCanvas.Visibility = Visibility.Hidden;
-                            //Blue
-                            bluesideStandby.Visibility = Visibility.Hidden;
-                            blueSyncVideo.Visibility = Visibility.Visible;
-                            //Show Left Sidebar
-                            //leftSideBarCanvas.Visibility = Visibility.Visible;
-                        }
-                        else
-                        {
-                            //Show Standby Videos
-                            redsideStandby.Visibility = Visibility.Visible;
-                            bluesideStandby.Visibility = Visibility.Visible;
-                            //Hide sidebars
-                            leftSideBarCanvas.Visibility = Visibility.Hidden;
-                            rightSideBarCanvas.Visibility = Visibility.Hidden;
-                            //Hide Sync Videos
-                            blueSyncVideo.Visibility = Visibility.Hidden;
-                            redSyncVideo.Visibility = Visibility.Hidden;
-                        }
-
-                        if (i >= this.exercises.Count)
-                        {
-                            List<JointType> joints = new List<JointType>()
-                            {
-                                JointType.Head
-                            };
-
-                            this.exercises.Add(new JumpingJack(joints));
-                        }
-
-                        Action exercise = this.exercises[i];
-
-                        if (body.IsTracked)
-                        {
+                            #region DrawJoints
                             IReadOnlyDictionary<JointType, Joint> joints = body.Joints;
 
                             // convert the joint points to depth (display) space
@@ -392,47 +378,92 @@ namespace Bitness
 
                             this.DrawBody(joints, jointPoints, dc, drawPen);
 
-                            // here is where we check the exercise
-                            bool repAdded = exercise.Update(body.Joints);
-                            counts.Add(exercise.Reps);
-                            
-
-                            if (repAdded && i < 2)
-                            {
-                                ROCKET_X[i] = (105 + (counts[i] * 20));                                                                
-                                //moves bar based off index
-                                moveBar(i);
-                            }
                         }
+                        #endregion
                     }
+                    #endregion
 
-                    String message = "Jumping jacks: ";
-
-                    for (int i = 0; i < counts.Count; i++)
+                    // If player moved off screen, show idle for that side
+                    if(!bluePlayerDetected && bluePlayer.state != Player.State.NOT_SYNCED)
                     {
-                        message += "player #" + i + ": " + counts[i] + ". ";
-                        //Set a new red rocket X for each jump
-                        if (i == 0)
-                        {
-                            Canvas.SetLeft(redRocket, ROCKET_X[i]);
-                            //Change the 2nd X position for the trail and add it to the canvas
-                            redRocketTrail.X2 = (ROCKET_X[i] + 10);
-                            topBarCanvas.Children.Add(redRocketTrail);
-                        }
-                        else
-                        {
-                            Canvas.SetLeft(blueRocket, ROCKET_X[i]);
-                            //Change the 2nd X position for the trail and add it to the canvas
-                            blueRocketTrail.X2 = (ROCKET_X[i] + 10);
-                            topBarCanvas.Children.Add(blueRocketTrail);
-                        }
+                        showIdle(true);
                     }
 
+                    if(!redPlayerDetected && redPlayer.state != Player.State.NOT_SYNCED)
+                    {
+                        showIdle(false);
+                    }
+
+                    String message = "red: " + redPlayer.Reps + ". Blue: " + bluePlayer.Reps;
+
+                    
+                    #region SetRocketPos 
+                    Canvas.SetLeft(redRocket, ROCKET_X[0]);
+                    //Change the 2nd X position for the trail and add it to the canvas
+                    redRocketTrail.X2 = (ROCKET_X[0] + 10);
+                    topBarCanvas.Children.Add(redRocketTrail);
+
+                    Canvas.SetLeft(blueRocket, ROCKET_X[1]);
+                    //Change the 2nd X position for the trail and add it to the canvas
+                    blueRocketTrail.X2 = (ROCKET_X[1] + 10);
+                    topBarCanvas.Children.Add(blueRocketTrail);
+
+                    #endregion
                     this.StatusText = message;
 
                     // prevent drawing outside of our render area
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
                 }
+            }
+        }
+
+        private void showIdle(bool blue)
+        {
+            if (blue)
+            {
+                blueSyncVideo.Visibility = Visibility.Hidden;
+                blueFuelTube.Visibility = Visibility.Hidden;
+                blueFuelBottom.Visibility = Visibility.Hidden;
+                // blue water gif and water
+                rectangle_canvas_left.Visibility = Visibility.Hidden;
+                leftSideBarCanvas.Visibility = Visibility.Hidden;
+                bluesideStandby.Visibility = Visibility.Visible;
+                bluePlayer.state = Player.State.NOT_SYNCED;
+            }
+            else
+            {
+                redSyncVideo.Visibility = Visibility.Hidden;
+                redFuelTube.Visibility = Visibility.Hidden;
+                redFuelBottom.Visibility = Visibility.Hidden;
+                // blue water gif and water
+                rectangle_canvas_right.Visibility = Visibility.Hidden;
+                rightSideBarCanvas.Visibility = Visibility.Hidden;
+                redsideStandby.Visibility = Visibility.Visible;
+                redPlayer.state = Player.State.NOT_SYNCED;
+            }
+        }
+
+        private void showSync(bool blue)
+        {
+            if (blue)
+            {
+                blueSyncVideo.Visibility = Visibility.Visible;
+                blueFuelTube.Visibility = Visibility.Hidden;
+                blueFuelBottom.Visibility = Visibility.Hidden;
+                // blue water gif and water
+                rectangle_canvas_left.Visibility = Visibility.Hidden;
+                leftSideBarCanvas.Visibility = Visibility.Hidden;
+                bluesideStandby.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                redSyncVideo.Visibility = Visibility.Visible;
+                redFuelTube.Visibility = Visibility.Hidden;
+                redFuelBottom.Visibility = Visibility.Hidden;
+                // blue water gif and water
+                rectangle_canvas_right.Visibility = Visibility.Hidden;
+                rightSideBarCanvas.Visibility = Visibility.Hidden;
+                redsideStandby.Visibility = Visibility.Hidden;
             }
         }
 
@@ -571,12 +602,12 @@ namespace Bitness
 
         private void blueSyncVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //Console.WriteLine("Blue Sync Vid Visible?:" + blueSyncVideo.IsVisible);
-            if ((blueSyncVideo.IsVisible == true) && (bluePlayerSynced == false))
+            Console.WriteLine("Blue Sync Vid Visible?:" + blueSyncVideo.IsVisible);
+            if (blueSyncVideo.IsVisible == true) 
             {
                 Console.WriteLine("Now Syncing");
-                bluePlayerSynced = true;
                 blueSyncVideo.Position = new TimeSpan(0);
+                bluePlayer.state = Player.State.SYNCING;
                 blueSyncVideo.Play();
             }
         }
@@ -584,6 +615,7 @@ namespace Bitness
         private void blueSyncVideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             blueSyncVideo.Visibility = Visibility.Hidden;
+            bluePlayer.state = Player.State.SYNCED;
             showActiveBlue();
         }
 
@@ -596,9 +628,8 @@ namespace Bitness
 
         private void redSyncVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if ((redSyncVideo.IsVisible == true) && (redPlayerSynced == false))
+            if (redSyncVideo.IsVisible == true)
             {
-                redPlayerSynced = true;
                 redSyncVideo.Position = new TimeSpan(0);
                 redSyncVideo.Play();
             }
@@ -607,6 +638,7 @@ namespace Bitness
         private void redSyncVideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             redSyncVideo.Visibility = Visibility.Hidden;
+            redPlayer.state = Player.State.SYNCED;
             showActiveRed();
         }
 
@@ -629,5 +661,26 @@ namespace Bitness
             BlastOffRight.Visibility = Visibility.Hidden;
             redsideStandby.Visibility = Visibility.Visible;
         }
+
+        /// <summary>
+        /// Execute shutdown tasks
+        /// </summary>
+        /// <param name="sender">object sending the event</param>
+        /// <param name="e">event arguments</param>
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            if (this.colorFrameReader != null)
+            {
+                this.colorFrameReader.Dispose();
+                this.colorFrameReader = null;
+            }
+
+            if (this.sensor != null)
+            {
+                this.sensor.Close();
+                this.sensor = null;
+            }
+        }
+
     }
 }
