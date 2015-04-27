@@ -59,7 +59,7 @@ namespace Bitness
         /// </summary>
         private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
 
-        private int[] ROCKET_X = new int[2] { 105, 105 };
+        private double[] ROCKET_X = new double[2] { 105, 105 };
 
         /// <summary>
         /// Refrence to left and right players 
@@ -115,11 +115,15 @@ namespace Bitness
         public Color blue = Color.FromRgb(16, 177, 232);
         public Color fuelOrange = Color.FromRgb(219, 131, 35);
 
+        //Integers used to calculate individual distances
+        public double totalRedPlayerDistance;
+        public double totalBluePlayerDistance;
+
         //Integers used to calculate team distances
-        public int totalRedTeamJacks;
-        public int totalBlueTeamJacks;
-        public int maxTotalTeamJacks;
-        public long maxTeamTotalDistance = 4670000000000; 
+        public double totalRedTeamDistance;
+        public double totalBlueTeamDistance;
+        public double maxTotalTeamJacks = 1800;
+        public long maxTeamTotalDistance = 4670000000; 
 
         private FloorWindow floor;
 
@@ -322,9 +326,15 @@ namespace Bitness
                                     bool repAdded = redPlayer.Update(body.Joints);
                                     if (repAdded)
                                     {
-                                        ROCKET_X[0] = (105 + (redPlayer.Reps * 20));
+                                        //(Total # of Reps / Max Total Jacks needed To reach last planet) * (Exact Canvas Distance to last planet --> 1010px))
+                                        double redDistanceToTravel = (redPlayer.Reps / (double)maxTotalTeamJacks) * 1010;
+                                        double redStartingPoint = 105;
+                                        ROCKET_X[0] = (redStartingPoint + redDistanceToTravel);
                                         //moves bar based off index
                                         moveBar(1);
+                                        //Calculate Real Total Team Distance
+                                        totalRedTeamDistance = ((redPlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
+                                        Console.WriteLine("Red team traveled: " +  Math.Round(totalRedTeamDistance, 4) + " billion miles!");
                                     }
                                 }
                             }
@@ -347,9 +357,15 @@ namespace Bitness
                                     bool repAdded = bluePlayer.Update(body.Joints);
                                     if (repAdded)
                                     {
-                                        ROCKET_X[1] = (105 + (bluePlayer.Reps * 20));
+                                        //(Total # of Reps / Max Total Jacks needed To reach last planet) * (Exact Canvas Distance to last planet --> 1010px))
+                                        double blueDistanceToTravel = (bluePlayer.Reps / (double)maxTotalTeamJacks) * 5050;
+                                        double blueStartingPoint = 105;
+                                        ROCKET_X[1] = (blueStartingPoint + blueDistanceToTravel);
                                         //moves bar based off index
                                         moveBar(0);
+                                        //Calculate Real Total Team Distance
+                                        totalBlueTeamDistance = ((bluePlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
+                                        Console.WriteLine("Blue team traveled: " + Math.Round(totalBlueTeamDistance, 2) + " billion miles!");
                                     }
                                 }
                             }
@@ -533,10 +549,10 @@ namespace Bitness
 
             //will raise the bar based off the index (Blue is 0 | Red is 1)
             //will not raise any more if the respective numRaise value is over a certain amount           			
-            if (index == 0 && numRaiseLeft < 4)
+            if (index == 0 && numRaiseLeft < 33)
             {
                 Console.WriteLine("Left Side Jumped");
-                numJacksLeft = numJacksLeft + 143;
+                numJacksLeft = numJacksLeft + 13;
                 // Add a rectangle Element
                 fuelBarLeft.Stroke = fuelBrush;
                 fuelBarLeft.Fill = fuelBrush;
@@ -544,13 +560,13 @@ namespace Bitness
                 fuelBarLeft.Height = numJacksLeft;
                 Canvas.SetLeft(fuelBarLeft, -40);
                 Canvas.SetBottom(fuelBarLeft, 65);
-                Canvas.SetBottom(testwater_left, (65 + (143 * numRaiseLeft)));
+                Canvas.SetBottom(testwater_left, (65 + (13 * numRaiseLeft)));
                 Canvas.SetZIndex(fuelBarLeft, -1);
                 leftSideBarCanvas.Children.Add(fuelBarLeft);
                 numRaiseLeft++;
             }
 
-            if (numRaiseLeft >= 3)
+            if (numRaiseLeft >= 33)
             {
                 Console.WriteLine("Left Side Win");
                 //hides the rectangle and water gif for the left bar
@@ -561,10 +577,10 @@ namespace Bitness
                 BlastOffLeft.Play();
             }
 
-            if (index == 1 && numRaiseRight < 4)
+            if (index == 1 && numRaiseRight < 33)
             {
                 Console.WriteLine("Right Side Jumped");
-                numJacksRight = numJacksRight + 143;
+                numJacksRight = numJacksRight + 13;
                 // Add a rectangle Element
                 fuelBarRight.Stroke = fuelBrush;
                 fuelBarRight.Fill = fuelBrush;
@@ -572,13 +588,13 @@ namespace Bitness
                 fuelBarRight.Height = numJacksRight;
                 Canvas.SetLeft(fuelBarRight, -40);
                 Canvas.SetBottom(fuelBarRight, 65);
-                Canvas.SetBottom(testwater_right, (65 + (143 * numRaiseRight)));
+                Canvas.SetBottom(testwater_right, (65 + (13 * numRaiseRight)));
                 Canvas.SetZIndex(fuelBarRight, -1);
                 rightSideBarCanvas.Children.Add(fuelBarRight);
                 numRaiseRight++;
             }
            
-            if (numRaiseRight >= 3)
+            if (numRaiseRight >= 33)
             {
                 Console.WriteLine("Right Side Win");
                 //hides the rectangle and water gif for the right bar
