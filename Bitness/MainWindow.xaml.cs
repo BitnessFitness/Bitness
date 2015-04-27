@@ -341,8 +341,7 @@ namespace Bitness
                             bluesideStandby.Visibility = Visibility.Hidden;
                             blueSyncVideo.Visibility = Visibility.Visible;
                             //Show Left Sidebar
-                            leftSideBarCanvas.Visibility = Visibility.Visible;
-
+                            //leftSideBarCanvas.Visibility = Visibility.Visible;
                         }
                         else
                         {
@@ -404,9 +403,7 @@ namespace Bitness
                                 //moves bar based off index
                                 moveBar(i);
                             }
-
                         }
-
                     }
 
                     String message = "Jumping jacks: ";
@@ -512,9 +509,9 @@ namespace Bitness
 
             //will raise the bar based off the index (left is 0 right is 1)
             //will not raise any more if the respective numRaise value is over a certain amount
-            if (index == 1 && numRaiseRight<42)
+            if (index == 1 && numRaiseRight < 3)
             {             
-                numJacksRight = numJacksRight + 13;
+                numJacksRight = numJacksRight + 143;
                 // Add a rectangle Element
                 fuelBarRight.Stroke = fuelBrush;
                 fuelBarRight.Fill = fuelBrush;
@@ -522,13 +519,14 @@ namespace Bitness
                 fuelBarRight.Height = numJacksRight;
                 Canvas.SetLeft(fuelBarRight, -40);
                 Canvas.SetBottom(fuelBarRight, 65);
-                Canvas.SetBottom(testwater_right, (65 + (13 * numRaiseRight)));
+                Canvas.SetBottom(testwater_right, (65 + (143 * numRaiseRight)));
+                Canvas.SetZIndex(fuelBarRight, -1);
                 rightSideBarCanvas.Children.Add(fuelBarRight);
                 numRaiseRight++;
             }			
-            if (index == 0 && numRaiseLeft<42)
+            if (index == 0 && numRaiseLeft < 3)
             {
-                numJacksLeft = numJacksLeft + 13;
+                numJacksLeft = numJacksLeft + 143;
                 // Add a rectangle Element
                 fuelBarLeft.Stroke = fuelBrush;
                 fuelBarLeft.Fill = fuelBrush;
@@ -536,19 +534,22 @@ namespace Bitness
                 fuelBarLeft.Height = numJacksLeft;
                 Canvas.SetLeft(fuelBarLeft, -40);
                 Canvas.SetBottom(fuelBarLeft, 65);
-                Canvas.SetBottom(testwater_left, (65 + (13 * numRaiseLeft)));
+                Canvas.SetBottom(testwater_left, (65 + (143 * numRaiseLeft)));
+                Canvas.SetZIndex(fuelBarLeft, -1);
                 leftSideBarCanvas.Children.Add(fuelBarLeft);
                 numRaiseLeft++;
             }
-            if (numRaiseLeft >= 42)
+            if (numRaiseLeft >= 3)
             {
+                Console.WriteLine("Left Win");
                 //hides the rectangle and water gif for the left bar
                 leftSideBarCanvas.Visibility = Visibility.Hidden;
                 bluesideStandby.Visibility = Visibility.Hidden;
                 BlastOffLeft.Visibility = Visibility.Visible;
+                BlastOffLeft.Position = new TimeSpan(0);
                 BlastOffLeft.Play();
             }
-            if (numRaiseRight >= 42)
+            if (numRaiseRight >= 3)
             {
                 //hides the rectangle and water gif for the right bar
                 rightSideBarCanvas.Visibility = Visibility.Hidden;
@@ -570,7 +571,7 @@ namespace Bitness
 
         private void blueSyncVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Console.WriteLine("Blue Sync Vid Visible?:" + blueSyncVideo.IsVisible);
+            //Console.WriteLine("Blue Sync Vid Visible?:" + blueSyncVideo.IsVisible);
             if ((blueSyncVideo.IsVisible == true) && (bluePlayerSynced == false))
             {
                 Console.WriteLine("Now Syncing");
@@ -620,6 +621,7 @@ namespace Bitness
         {
             BlastOffLeft.Visibility = Visibility.Hidden;
             bluesideStandby.Visibility = Visibility.Visible;
+            Console.WriteLine("Left Blastoff Ended");
         }
 
         private void BlastOffRight_MediaEnded(object sender, RoutedEventArgs e)
