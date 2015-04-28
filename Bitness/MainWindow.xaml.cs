@@ -110,6 +110,8 @@ namespace Bitness
         public int numJacksRight = 0;
         public int numRaiseRight = 1;
 
+        private readonly int GOAL_NUM = 5;
+
         //Custom Colors For Bitness
         public Color red = Color.FromRgb(241, 128, 33);
         public Color blue = Color.FromRgb(16, 177, 232);
@@ -398,10 +400,19 @@ namespace Bitness
                                         }
 
                                         //moves bar based off index
-                                        moveBar(1);
-                                        //Calculate Real Total Team Distance
-                                        totalRedTeamDistance = ((redPlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
-                                        Console.WriteLine("Red team traveled: " +  Math.Round(totalRedTeamDistance, 4) + " billion miles!");
+
+                                        if (redPlayer.Reps <= GOAL_NUM)
+                                        {
+                                            //Calculate Real Total Team Distance
+                                            totalRedTeamDistance = ((redPlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
+                                            Console.WriteLine("Red team traveled: " +  Math.Round(totalRedTeamDistance, 4) + " billion miles!");
+                                            moveBar(1);
+                                        }
+                                        else
+                                        {
+                                            showLaunch(false);
+                                            redPlayer.state = Player.State.COMPLETED;
+                                        }
                                     }
                                 }
                             }
@@ -465,10 +476,19 @@ namespace Bitness
                                             Console.WriteLine("Blue Reached Pluto");
                                         }
                                         //moves bar based off index
-                                        moveBar(0);
-                                        //Calculate Real Total Team Distance
-                                        totalBlueTeamDistance = ((bluePlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
-                                        Console.WriteLine("Blue team traveled: " + Math.Round(totalBlueTeamDistance, 2) + " billion miles!");
+
+                                        if (bluePlayer.Reps <= GOAL_NUM)
+                                        {
+                                            //Calculate Real Total Team Distance
+                                            totalBlueTeamDistance = ((bluePlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
+                                            Console.WriteLine("Blue team traveled: " + Math.Round(totalBlueTeamDistance, 2) + " billion miles!");
+                                            moveBar(0);
+                                        }
+                                        else
+                                        {
+                                            showLaunch(true);
+                                            bluePlayer.state = Player.State.COMPLETED;
+                                        }
                                     }
                                 }
                             }
@@ -500,24 +520,24 @@ namespace Bitness
                             this.DrawBody(joints, jointPoints, dc, drawPen);
 
                         }
-                        #endregion
+                            #endregion
                     }
                     #endregion
 
                     // If player moved off screen, show idle for that side
-                    if(!bluePlayerDetected && bluePlayer.state != Player.State.NOT_SYNCED)
+                    if (!bluePlayerDetected && bluePlayer.state != Player.State.NOT_SYNCED)
                     {
                         showIdle(true);
                     }
 
-                    if(!redPlayerDetected && redPlayer.state != Player.State.NOT_SYNCED)
+                    if (!redPlayerDetected && redPlayer.state != Player.State.NOT_SYNCED)
                     {
                         showIdle(false);
                     }
 
                     String message = "Red: " + redPlayer.Reps + ". Blue: " + bluePlayer.Reps;
-               
-                    #region SetRocketPos 
+
+                    #region SetRocketPos
                     Canvas.SetLeft(redRocket, ROCKET_X[0]);
                     //Change the 2nd X position for the trail and add it to the canvas
                     redRocketTrail.X2 = (ROCKET_X[0] + 10);
@@ -534,6 +554,33 @@ namespace Bitness
                     // prevent drawing outside of our render area
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
                 }
+            }
+        }
+
+        private void showLaunch(bool blue)
+        {
+            Console.WriteLine("Showing launch");
+            if (blue && bluePlayer.state != Player.State.COMPLETED)
+            {
+                blueSyncVideo.Visibility = Visibility.Hidden;
+                leftSideBarCanvas.Visibility = Visibility.Hidden;
+                //Show standby screen, set Blue to not synced
+                bluesideStandby.Visibility = Visibility.Hidden;
+
+                BlastOffLeft.Visibility = Visibility.Visible;
+                BlastOffLeft.Position = new TimeSpan(0);
+                BlastOffLeft.Play();
+            }
+            else if (!blue && redPlayer.state != Player.State.COMPLETED)
+            {
+                redSyncVideo.Visibility = Visibility.Hidden;
+                rightSideBarCanvas.Visibility = Visibility.Hidden;
+                //Show standby screen, set Blue to not synced
+                redsideStandby.Visibility = Visibility.Hidden;
+
+                BlastOffRight.Visibility = Visibility.Visible;
+                BlastOffRight.Position = new TimeSpan(0);
+                BlastOffRight.Play();
             }
         }
 
@@ -669,21 +716,9 @@ namespace Bitness
                 numRaiseLeft++;
             }
 
-            if (numRaiseLeft >= 33)
+            if (index == 1 && numRaiseRight < 4)
             {
-                Console.WriteLine("Left Side Win");
-                //hides the rectangle and water gif for the left bar
-                leftSideBarCanvas.Visibility = Visibility.Hidden;
-                bluesideStandby.Visibility = Visibility.Hidden;
-                BlastOffLeft.Visibility = Visibility.Visible;
-                BlastOffLeft.Position = new TimeSpan(0);
-                BlastOffLeft.Play();
-            }
-
-            if (index == 1 && numRaiseRight < 33)
-            {
-                Console.WriteLine("Right Side Jumped");
-                numJacksRight = numJacksRight + 13;
+                numJacksRight = numJacksRight + 143;
                 // Add a rectangle Element
                 fuelBarRight.Stroke = fuelBrush;
                 fuelBarRight.Fill = fuelBrush;
@@ -695,16 +730,6 @@ namespace Bitness
                 Canvas.SetZIndex(fuelBarRight, -1);
                 rightSideBarCanvas.Children.Add(fuelBarRight);
                 numRaiseRight++;
-            }
-           
-            if (numRaiseRight >= 33)
-            {
-                Console.WriteLine("Right Side Win");
-                //hides the rectangle and water gif for the right bar
-                rightSideBarCanvas.Visibility = Visibility.Hidden;
-                redsideStandby.Visibility = Visibility.Hidden;
-                BlastOffRight.Visibility = Visibility.Visible;
-                BlastOffRight.Play();
             }
         }
 
@@ -720,7 +745,7 @@ namespace Bitness
 
         private void blueSyncVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (blueSyncVideo.IsVisible == true) 
+            if (blueSyncVideo.IsVisible == true)
             {
                 blueSyncVideo.Position = new TimeSpan(0);
                 bluePlayer.state = Player.State.SYNCING;
