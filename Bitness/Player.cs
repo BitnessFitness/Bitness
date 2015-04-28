@@ -13,7 +13,8 @@ namespace Bitness
             SYNCING,
             SYNCED,
             NOT_SYNCED,
-            AT_PLANET
+            AT_PLANET,
+            COMPLETED
         };
 
         public State state = State.NOT_SYNCED;
