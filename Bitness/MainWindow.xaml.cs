@@ -123,7 +123,17 @@ namespace Bitness
         public double totalRedTeamDistance;
         public double totalBlueTeamDistance;
         public double maxTotalTeamJacks = 1800;
-        public long maxTeamTotalDistance = 4670000000; 
+        public long maxTeamTotalDistance = 4670000000;
+
+        //At planet Bool for red
+        public bool redAtMars = false;
+        public bool redAtJupiter = false;
+        public bool redAtSaturn = false;
+        public bool redAtNeptune = false;
+        public bool redAtUranus = false;
+        public bool redAtPluto = false;
+
+        private MediaElement[] redPlanetMovieArray;
 
         private FloorWindow floor;
 
@@ -213,6 +223,8 @@ namespace Bitness
             bluePlayer = new Player(null, new JumpingJack(joints));
 
             this.InitializeComponent();
+
+            redPlanetMovieArray = new MediaElement[] {redMars, redJupiter, redSaturn, redNeptune, redUranus, redPluto};
 
             blueSyncVideo.Visibility = Visibility.Hidden;
             redSyncVideo.Visibility = Visibility.Hidden;
@@ -328,8 +340,63 @@ namespace Bitness
                                     {
                                         //(Total # of Reps / Max Total Jacks needed To reach last planet) * (Exact Canvas Distance to last planet --> 1010px))
                                         double redDistanceToTravel = (redPlayer.Reps / (double)maxTotalTeamJacks) * 1010;
-                                        double redStartingPoint = 105;
+                                        double redStartingPoint = 394;
                                         ROCKET_X[0] = (redStartingPoint + redDistanceToTravel);
+                                        //If the rocket reaches a certain planet fire event to show win condition
+                                        if (ROCKET_X[0] > 250 && ROCKET_X[0] < 251)
+                                        {
+                                            //Reached Mars
+                                            if (redAtMars == false)
+                                            {
+                                                redAtPlanet(0);
+                                            }                                         
+                                        }
+
+                                        if (ROCKET_X[0] > 395 && ROCKET_X[0] < 396)
+                                        {
+                                            //Reached Jupiter
+                                            if (redAtJupiter == false)
+                                            {
+                                                redAtPlanet(1);
+                                            }
+                                        }
+
+                                        if (ROCKET_X[0] > 590 && ROCKET_X[0] < 591)
+                                        {
+                                            //Reached Saturn
+                                            if (redAtSaturn == false)
+                                            {
+                                                redAtPlanet(2);
+                                            }
+                                        }
+
+                                        if (ROCKET_X[0] > 770 && ROCKET_X[0] < 771)
+                                        {
+                                            //Reached Neptune
+                                            if (redAtNeptune == false)
+                                            {
+                                                redAtPlanet(3);
+                                            }
+                                        }
+
+                                        if (ROCKET_X[0] > 935 && ROCKET_X[0] < 936)
+                                        {
+                                            //Reached Uranus
+                                            if (redAtUranus == false)
+                                            {
+                                                redAtPlanet(4);
+                                            }
+                                        }
+
+                                        if (ROCKET_X[0] > 1010 && ROCKET_X[0] < 1011)
+                                        {
+                                            //Reached Pluto
+                                            if (redAtPluto == false)
+                                            {
+                                                redAtPlanet(5);
+                                            }
+                                        }
+
                                         //moves bar based off index
                                         moveBar(1);
                                         //Calculate Real Total Team Distance
@@ -361,6 +428,42 @@ namespace Bitness
                                         double blueDistanceToTravel = (bluePlayer.Reps / (double)maxTotalTeamJacks) * 5050;
                                         double blueStartingPoint = 105;
                                         ROCKET_X[1] = (blueStartingPoint + blueDistanceToTravel);
+                                        //If the rocket reaches a certain planet fire event to show win condition
+                                        if (ROCKET_X[1] == 250)
+                                        {
+                                            //Reached Mars
+                                            Console.WriteLine("Blue Reached Mars");
+                                        }
+
+                                        if (ROCKET_X[1] == 395)
+                                        {
+                                            //Reached Jupiter
+                                            Console.WriteLine("Blue Reached Jupiter");
+                                        }
+
+                                        if (ROCKET_X[1] == 590)
+                                        {
+                                            //Reached Saturn
+                                            Console.WriteLine("Blue Reached Saturn");
+                                        }
+
+                                        if (ROCKET_X[1] == 770)
+                                        {
+                                            //Reached Neptune
+                                            Console.WriteLine("Blue Reached Neptune");
+                                        }
+
+                                        if (ROCKET_X[1] == 935)
+                                        {
+                                            //Reached Uranus
+                                            Console.WriteLine("Blue Reached Uranus");
+                                        }
+
+                                        if (ROCKET_X[1] == 1010)
+                                        {
+                                            //Reached Pluto
+                                            Console.WriteLine("Blue Reached Pluto");
+                                        }
                                         //moves bar based off index
                                         moveBar(0);
                                         //Calculate Real Total Team Distance
@@ -674,6 +777,12 @@ namespace Bitness
             redsideStandby.Visibility = Visibility.Visible;
         }
 
+        private void redAtPlanet(int which)
+        {
+            redPlanetMovieArray[which].Visibility = Visibility.Visible;
+            redPlanetMovieArray[which].Play();
+        }
+
         /// <summary>
         /// Execute shutdown tasks
         /// </summary>
@@ -692,6 +801,42 @@ namespace Bitness
                 this.sensor.Close();
                 this.sensor = null;
             }
+        }
+
+        private void redMars_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            redAtMars = true;
+            redMars.Visibility = Visibility.Hidden;
+        }
+
+        private void redJupiter_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            redAtJupiter = true;
+            redJupiter.Visibility = Visibility.Hidden;
+        }
+
+        private void redSaturn_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            redAtSaturn = true;
+            redSaturn.Visibility = Visibility.Hidden;
+        }
+
+        private void redNeptune_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            redAtNeptune = false;
+            redNeptune.Visibility = Visibility.Hidden;
+        }
+
+        private void redUranus_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            redAtUranus = false;
+            redUranus.Visibility = Visibility.Hidden;
+        }
+
+        private void redPluto_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            redAtPluto = false;
+            redPluto.Visibility = Visibility.Hidden;
         }
 
     }

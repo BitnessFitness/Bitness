@@ -65,11 +65,18 @@
 
         <MediaElement Grid.Row="1" Grid.Column="0" Source="Videos\short_blastoff.mp4" Name="BlastOffLeft" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill"  MediaEnded="BlastOffLeft_MediaEnded" />
         <MediaElement Grid.Row="1" Grid.Column="2" Source="Videos\short_blastoff.mp4" Name="BlastOffRight" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill"  MediaEnded="BlastOffRight_MediaEnded" />
+        
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_mars.mp4" Name="redMars" LoadedBehavior="Manual" MediaEnded="redMars_MediaEnded"/>
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_jupiter.mp4" Name="redJupiter" LoadedBehavior="Manual" MediaEnded="redJupiter_MediaEnded"/>
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_saturn.mp4" Name="redSaturn" LoadedBehavior="Manual" MediaEnded="redSaturn_MediaEnded"/>
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_neptune.mp4" Name="redNeptune" LoadedBehavior="Manual" MediaEnded="redNeptune_MediaEnded"/>
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_uranus.mp4" Name="redUranus" LoadedBehavior="Manual" MediaEnded="redUranus_MediaEnded"/>
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_pluto.mp4" Name="redPluto" LoadedBehavior="Manual" MediaEnded="redPluto_MediaEnded"/>
 
         <Canvas Name="leftSideBarCanvas" Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <Image x:Name="blueFuelBottom" Grid.Row="1" Grid.Column="0" Source="Images/tube-bottom.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110" Panel.ZIndex="-2"/>
             <Image x:Name="testwater_left" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" Canvas.Left="-40" Canvas.Bottom="65"/>
-            <Image x:Name="blueFuelTube" Grid.Row="1" Grid.Column="0" Source="Images/Tube-glass-and-top.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110"/>
+            <Image x:Name="blueFuelTube" Grid.Row="1" Grid.Column="0" Source="Images/Tube-glass-and-top.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110"/> 
         </Canvas>
         
         <Canvas Name="rightSideBarCanvas" Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">
@@ -77,6 +84,9 @@
             <Image x:Name="testwater_right" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" Canvas.Left="-40" Canvas.Bottom="65"/>
             <Image x:Name="redFuelTube" Grid.Row="1" Grid.Column="2" Source="Images/Tube-glass-and-top.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110"/>
         </Canvas>
+
+        <Image Grid.Row="1" Grid.Column="0" Stretch="Uniform" VerticalAlignment="Top" Source="Images/blue_teamname.jpg" Width="200"/>
+        <Image Grid.Row="1" Grid.Column="2" Stretch="Uniform" VerticalAlignment="Top" Source="Images/red_teamname.jpg" Width="200"/>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>

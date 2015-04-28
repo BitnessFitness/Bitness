@@ -73,6 +73,16 @@ namespace Bitness.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap blue_teamname {
+            get {
+                object obj = ResourceManager.GetObject("blue_teamname", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bluefloor {
             get {
                 object obj = ResourceManager.GetObject("bluefloor", resourceCulture);
@@ -87,6 +97,76 @@ namespace Bitness.Properties {
             get {
                 object obj = ResourceManager.GetObject("bluesideloop1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] red_jupiter {
+            get {
+                object obj = ResourceManager.GetObject("red_jupiter", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] red_mars {
+            get {
+                object obj = ResourceManager.GetObject("red_mars", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] red_neptune {
+            get {
+                object obj = ResourceManager.GetObject("red_neptune", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] red_pluto {
+            get {
+                object obj = ResourceManager.GetObject("red_pluto", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] red_saturn {
+            get {
+                object obj = ResourceManager.GetObject("red_saturn", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap red_teamname {
+            get {
+                object obj = ResourceManager.GetObject("red_teamname", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] red_uranus {
+            get {
+                object obj = ResourceManager.GetObject("red_uranus", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
