@@ -33,7 +33,7 @@ namespace Bitness
             if (repCompleted)
             {
                 this.Reps = this.exercise.Reps;
-                Console.WriteLine("Player reps: " + this.Reps);
+                //Console.WriteLine("Player reps: " + this.Reps);
             }
             return repCompleted;
         }
