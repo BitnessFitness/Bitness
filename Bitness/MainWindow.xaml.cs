@@ -64,8 +64,8 @@ namespace Bitness
         /// <summary>
         /// Refrence to left and right players 
         /// </summary>
-        private Player redPlayer;
-        private Player bluePlayer;
+        public Player redPlayer;
+        public Player bluePlayer;
 
         /// <summary>
         /// List of all of our bodies.
@@ -298,7 +298,6 @@ namespace Bitness
 
                     List<int> counts = new List<int>();
 
-                    this.floor.DrawTopDownView(this.bodies);
 
                     bool redPlayerDetected = false;
                     bool bluePlayerDetected = false;
@@ -392,6 +391,8 @@ namespace Bitness
                             #endregion
                             //If a body is bring tracked in the bodies[] add to the body counter.
                             bodyCounter++;
+                            
+                            this.floor.DrawTopDownView(redPlayer, bluePlayer);
 
                             #region DrawJoints
                             IReadOnlyDictionary<JointType, Joint> joints = body.Joints;

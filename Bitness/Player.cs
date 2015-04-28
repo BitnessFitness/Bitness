@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bitness
 {
-    class Player
+    public class Player
     {
         public enum State {
             SYNCING,

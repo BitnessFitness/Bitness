@@ -130,16 +130,28 @@ namespace Bitness
             return new Point(0.0, 0.0);
         }
 
-        public void DrawTopDownView(Body[] bodies)
+        public void DrawTopDownView(Player redPlayer, Player bluePlayer)
         {
             using (DrawingContext dc = this.drawingGroup.Open())
             {
                 // Draw a transparent background to set the render size
                 dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, this.Width, this.Height));
 
-                for (int i = 0; i < bodies.Length; i++)
+                if (redPlayer.state == Player.State.SYNCED)
                 {
-                    Body body = bodies[i];
+                    Body body = redPlayer.body;
+                    Point p = MapDepthPointToFloor(body.Joints[JointType.Head].Position);
+
+                    if (p.X != 0 && p.Y != 0)
+                    {
+                        Canvas.SetLeft(redFloorGif, p.X);
+                        Canvas.SetTop(redFloorGif, p.Y);
+                    }
+                }
+
+                if (bluePlayer.state == Player.State.SYNCED)
+                {
+                    Body body = bluePlayer.body;
                     Point p = MapDepthPointToFloor(body.Joints[JointType.Head].Position);
 
                     if (p.X != 0 && p.Y != 0)
@@ -147,10 +159,7 @@ namespace Bitness
                         Canvas.SetLeft(blueFloorGif, p.X);
                         Canvas.SetTop(blueFloorGif, p.Y);
                     }
-
-                    dc.DrawEllipse(drawBrush, null, p, 3, 3);
                 }
-
             }
         }
     }
