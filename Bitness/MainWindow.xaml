@@ -77,15 +77,13 @@
         <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_pluto.mp4" Name="redPluto" LoadedBehavior="Manual" MediaEnded="redPluto_MediaEnded"/>
 
         <Canvas Name="leftSideBarCanvas" Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-            <Image x:Name="blueFuelBottom" Grid.Row="1" Grid.Column="0" Source="Images/tube-bottom.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110" Panel.ZIndex="-2"/>
-            <Image x:Name="testwater_left" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" Canvas.Left="-40" Canvas.Bottom="65"/>
-            <Image x:Name="blueFuelTube" Grid.Row="1" Grid.Column="0" Source="Images/Tube-glass-and-top.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110"/> 
+            <Image x:Name="testwater_left" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="76" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" Canvas.Left="-38" Canvas.Bottom="65" Canvas.Top="-103"/>
+            <Image x:Name="blueFuelTube" Grid.Row="1" Grid.Column="0" Source="Images/tubeBlue.png" Canvas.Bottom="30" Canvas.Left="-50" Width="100"/>
         </Canvas>
         
         <Canvas Name="rightSideBarCanvas" Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-            <Image x:Name="redFuelBottom" Grid.Row="1" Grid.Column="2" Source="Images/tube-bottom.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110" Panel.ZIndex="-2"/>
-            <Image x:Name="testwater_right" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" Canvas.Left="-40" Canvas.Bottom="65"/>
-            <Image x:Name="redFuelTube" Grid.Row="1" Grid.Column="2" Source="Images/Tube-glass-and-top.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110"/>
+            <Image x:Name="testwater_right" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="76" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" Canvas.Left="-38" Canvas.Bottom="65" Canvas.Top="-103"/>
+            <Image x:Name="redFuelTube" Grid.Row="1" Grid.Column="2" Source="Images/tubeOrange.png" Canvas.Bottom="30" Canvas.Left="-50" Width="100"/>
         </Canvas>
 
         <Image Grid.Row="1" Grid.Column="0" Stretch="Uniform" VerticalAlignment="Top" Source="Images/blue_teamname.jpg" Width="200"/>
