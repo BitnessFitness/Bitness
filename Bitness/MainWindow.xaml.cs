@@ -64,8 +64,8 @@ namespace Bitness
         /// <summary>
         /// Refrence to left and right players 
         /// </summary>
-        private Player redPlayer;
-        private Player bluePlayer;
+        public Player redPlayer;
+        public Player bluePlayer;
 
         /// <summary>
         /// List of all of our bodies.
@@ -116,6 +116,7 @@ namespace Bitness
         public Color red = Color.FromRgb(241, 128, 33);
         public Color blue = Color.FromRgb(16, 177, 232);
         public Color fuelOrange = Color.FromRgb(219, 131, 35);
+        public Color fuelBlue = Color.FromRgb(35, 153, 219);
 
         //Integers used to calculate individual distances
         public double totalRedPlayerDistance;
@@ -322,7 +323,6 @@ namespace Bitness
 
                     List<int> counts = new List<int>();
 
-                    this.floor.DrawTopDownView(this.bodies);
 
                     bool redPlayerDetected = false;
                     bool bluePlayerDetected = false;
@@ -525,6 +525,8 @@ namespace Bitness
                             #endregion
                             //If a body is bring tracked in the bodies[] add to the body counter.
                             bodyCounter++;
+                            
+                            this.floor.DrawTopDownView(redPlayer, bluePlayer);
 
                             if (bluePlayer.state == Player.State.SYNCED && redPlayer.state == Player.State.SYNCED) 
                             {
@@ -734,44 +736,21 @@ namespace Bitness
 
         void moveBar(int index)
         {
-            SolidColorBrush fuelBrush = new SolidColorBrush(fuelOrange);
-            System.Windows.Shapes.Rectangle fuelBarLeft;
-            System.Windows.Shapes.Rectangle fuelBarRight;
-            fuelBarLeft = new System.Windows.Shapes.Rectangle();
-            fuelBarRight = new System.Windows.Shapes.Rectangle();
-
+            int JUMPING_JACKS_REQUIRED = 6;
+            double FUEL_INCREASE_AMOUNT = 22;
             //will raise the bar based off the index (Blue is 0 | Red is 1)
             //will not raise any more if the respective numRaise value is over a certain amount           			
-            if (index == 0 && numRaiseLeft < 33)
+            if (index == 0 && numRaiseLeft < JUMPING_JACKS_REQUIRED)
             {
-                numJacksLeft = numJacksLeft + 13;
-                // Add a rectangle Element
-                fuelBarLeft.Stroke = fuelBrush;
-                fuelBarLeft.Fill = fuelBrush;
-                fuelBarLeft.Width = 80;
-                fuelBarLeft.Height = numJacksLeft;
-                Canvas.SetLeft(fuelBarLeft, -40);
-                Canvas.SetBottom(fuelBarLeft, 65);
-                Canvas.SetBottom(testwater_left, (65 + (13 * numRaiseLeft)));
-                Canvas.SetZIndex(fuelBarLeft, -1);
-                leftSideBarCanvas.Children.Add(fuelBarLeft);
-                numRaiseLeft++;
+                blueFuelBlock.Height += FUEL_INCREASE_AMOUNT;
+                Console.WriteLine(Canvas.GetBottom(blueFuelTop));
+                Canvas.SetBottom(blueFuelTop, (Canvas.GetBottom(blueFuelTop) + FUEL_INCREASE_AMOUNT));
             }
 
-            if (index == 1 && numRaiseRight < 33)
+            if (index == 1 && numRaiseRight < JUMPING_JACKS_REQUIRED)
             {
-                numJacksRight = numJacksRight + 13;
-                // Add a rectangle Element
-                fuelBarRight.Stroke = fuelBrush;
-                fuelBarRight.Fill = fuelBrush;
-                fuelBarRight.Width = 80;
-                fuelBarRight.Height = numJacksRight;
-                Canvas.SetLeft(fuelBarRight, -40);
-                Canvas.SetBottom(fuelBarRight, 65);
-                Canvas.SetBottom(testwater_right, (65 + (13 * numRaiseRight)));
-                Canvas.SetZIndex(fuelBarRight, -1);
-                rightSideBarCanvas.Children.Add(fuelBarRight);
-                numRaiseRight++;
+                redFuelBlock.Height += FUEL_INCREASE_AMOUNT;
+                Canvas.SetBottom(redFuelTop, (Canvas.GetBottom(redFuelTop) + FUEL_INCREASE_AMOUNT));
             }
         }
 
@@ -798,7 +777,7 @@ namespace Bitness
         private void blueSyncVideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             blueSyncVideo.Visibility = Visibility.Hidden;
-            bluePlayer.state = Player.State.TUTORIAL;
+            bluePlayer.state = Player.State.SYNCED;
             showActiveBlue();            
         }
 
@@ -820,7 +799,7 @@ namespace Bitness
         private void redSyncVideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             redSyncVideo.Visibility = Visibility.Hidden;
-            redPlayer.state = Player.State.TUTORIAL;
+            redPlayer.state = Player.State.SYNCED;
             showActiveRed();
         }
 
