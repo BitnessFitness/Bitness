@@ -568,12 +568,20 @@ namespace Bitness
                     {
                         showIdle(true);
                         tutorialPlaying = false;
+                        //resets the height of the rectangle for blue side
+                        blueFuelBlock.Height = 0;
+                        Canvas.SetBottom(testwater_left, Canvas.GetBottom(testwater_left) + 0);
+                        bluePlayer.Reps = 0;
                     }
 
                     if (!redPlayerDetected && redPlayer.state != Player.State.NOT_SYNCED)
                     {
                         showIdle(false);
                         tutorialPlaying = false;
+                        //resets the height of the rectangle for blue side
+                        redFuelBlock.Height = 0;
+                        Canvas.SetBottom(testwater_right, Canvas.GetBottom(testwater_right) + 0);
+                        redPlayer.Reps = 0;
                     }
 
                     String message = "Red: " + redPlayer.Reps + ". Blue: " + bluePlayer.Reps;
@@ -741,13 +749,13 @@ namespace Bitness
             //will not raise any more if the respective numRaise value is over a certain amount           			
             if (index == 0 && numRaiseLeft < JUMPING_JACKS_REQUIRED)
             {
-                blueFuelBlock.Height += FUEL_INCREASE_AMOUNT;
+                blueFuelBlock.Height = FUEL_INCREASE_AMOUNT * bluePlayer.Reps;
                 Canvas.SetBottom(testwater_left, Canvas.GetBottom(testwater_left) + FUEL_INCREASE_AMOUNT);
             }
 
             if (index == 1 && numRaiseRight < JUMPING_JACKS_REQUIRED)
             {
-                redFuelBlock.Height += FUEL_INCREASE_AMOUNT;
+                redFuelBlock.Height = FUEL_INCREASE_AMOUNT * redPlayer.Reps;
                 Canvas.SetBottom(testwater_right, Canvas.GetBottom(testwater_right) + FUEL_INCREASE_AMOUNT);
             }
         }
