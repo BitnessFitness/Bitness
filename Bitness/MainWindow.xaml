@@ -41,11 +41,7 @@
             </Grid>
         </Viewbox>
 
-        <!-- <MediaElement Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="testVideo" Source="Videos/ttPlayTest3.mp4" Width="500"/> 
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Height="30">
-            <Button Click="PlayVideo" Content="Play"/>
-        </StackPanel>
-        -->
+        <MediaElement Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" LoadedBehavior="Manual" x:Name="tutorialVideo" Source="Videos/bitnessTutorial.mp4" MediaEnded="tutorialVideo_MediaEnded"/> 
 
         <MediaElement Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="blueSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="blueSyncVideo_MediaEnded" Width="550" IsVisibleChanged="blueSyncVideo_IsVisibleChanged"/>
         <MediaElement Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="redSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="redSyncVideo_MediaEnded" Width="550" IsVisibleChanged="redSyncVideo_IsVisibleChanged"/>
@@ -65,12 +61,19 @@
 
         <MediaElement Grid.Row="1" Grid.Column="0" Source="Videos\short_blastoff.mp4" Name="BlastOffLeft" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill"  MediaEnded="BlastOffLeft_MediaEnded" />
         <MediaElement Grid.Row="1" Grid.Column="2" Source="Videos\short_blastoff.mp4" Name="BlastOffRight" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill"  MediaEnded="BlastOffRight_MediaEnded" />
-        
+
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\blue_mars.mp4" Name="blueMars" LoadedBehavior="Manual" MediaEnded="blueMars_MediaEnded"/>
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\blue_jupiter.mp4" Name="blueJupiter" LoadedBehavior="Manual" MediaEnded="blueJupiter_MediaEnded"/>
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\blue_saturn.mp4" Name="blueSaturn" LoadedBehavior="Manual" MediaEnded="blueSaturn_MediaEnded"/>
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\blue_uranus.mp4" Name="blueUranus" LoadedBehavior="Manual" MediaEnded="blueUranus_MediaEnded"/>
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\blue_neptune.mp4" Name="blueNeptune" LoadedBehavior="Manual" MediaEnded="blueNeptune_MediaEnded"/>
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\blue_pluto.mp4" Name="bluePluto" LoadedBehavior="Manual" MediaEnded="bluePluto_MediaEnded"/>
+
         <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_mars.mp4" Name="redMars" LoadedBehavior="Manual" MediaEnded="redMars_MediaEnded"/>
         <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_jupiter.mp4" Name="redJupiter" LoadedBehavior="Manual" MediaEnded="redJupiter_MediaEnded"/>
         <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_saturn.mp4" Name="redSaturn" LoadedBehavior="Manual" MediaEnded="redSaturn_MediaEnded"/>
-        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_neptune.mp4" Name="redNeptune" LoadedBehavior="Manual" MediaEnded="redNeptune_MediaEnded"/>
         <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_uranus.mp4" Name="redUranus" LoadedBehavior="Manual" MediaEnded="redUranus_MediaEnded"/>
+        <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_neptune.mp4" Name="redNeptune" LoadedBehavior="Manual" MediaEnded="redNeptune_MediaEnded"/>
         <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\red_pluto.mp4" Name="redPluto" LoadedBehavior="Manual" MediaEnded="redPluto_MediaEnded"/>
 
         <Canvas Name="leftSideBarCanvas" Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center">
