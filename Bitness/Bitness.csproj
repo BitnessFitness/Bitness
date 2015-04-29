@@ -175,7 +175,6 @@
   <ItemGroup>
     <Resource Include="Images\Planets.png" />
     <Resource Include="Images\top_logo.png" />
-    <Resource Include="Images\Tube-glass-and-top.png" />
     <Resource Include="Images\top_bluerocket.png" />
     <Resource Include="Images\top_redrocket.png" />
     <Resource Include="Images\bluesideloop.gif">
@@ -192,6 +191,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\red_teamname.jpg" />
+    <Resource Include="Images\tubeBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\tubeOrange.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Videos\Bitness-Syncing.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -202,7 +207,6 @@
     <Content Include="Videos\blue_1.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Images\tube-bottom.png" />
     <Content Include="Videos\blue_jupiter.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

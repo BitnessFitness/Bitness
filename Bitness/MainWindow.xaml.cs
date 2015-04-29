@@ -127,7 +127,7 @@ namespace Bitness
         public double maxTotalTeamJacks = 1800;
         public long maxTeamTotalDistance = 4670000000;
 
-        //Tutorial playing bool
+        //Bool for tutorial
         public bool tutorialPlaying = false;
 
         //At planet Bool for red
@@ -622,9 +622,9 @@ namespace Bitness
                 BlastOffRight.Position = new TimeSpan(0);
                 BlastOffRight.Play();
             }
+
             //reset tutorial bool to false so it can play for next players
             tutorialPlaying = false;
-
         }
 
         private void showIdle(bool blue)
@@ -798,8 +798,8 @@ namespace Bitness
         private void blueSyncVideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             blueSyncVideo.Visibility = Visibility.Hidden;
-            bluePlayer.state = Player.State.SYNCED;
-            showActiveBlue();
+            bluePlayer.state = Player.State.TUTORIAL;
+            showActiveBlue();            
         }
 
         private void showActiveBlue()
@@ -820,7 +820,7 @@ namespace Bitness
         private void redSyncVideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             redSyncVideo.Visibility = Visibility.Hidden;
-            redPlayer.state = Player.State.SYNCED;
+            redPlayer.state = Player.State.TUTORIAL;
             showActiveRed();
         }
 
@@ -952,7 +952,7 @@ namespace Bitness
         #endregion
 
         private void playTutorial()
-        {
+        { 
             Console.WriteLine("Showing Tutorial");
             tutorialPlaying = true;
             tutorialVideo.Visibility = Visibility.Visible;
@@ -963,7 +963,6 @@ namespace Bitness
         private void tutorialVideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             tutorialVideo.Visibility = Visibility.Hidden;
-
         }
     }
 }
