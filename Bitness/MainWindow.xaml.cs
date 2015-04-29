@@ -127,6 +127,9 @@ namespace Bitness
         public double maxTotalTeamJacks = 1800;
         public long maxTeamTotalDistance = 4670000000;
 
+        //Tutorial playing bool
+        public bool tutorialPlaying = false;
+
         //At planet Bool for red
         public bool redAtMars = false;
         public bool redAtJupiter = false;
@@ -247,7 +250,6 @@ namespace Bitness
             //hides videos for blastoff
             BlastOffLeft.Visibility = Visibility.Hidden;
             BlastOffRight.Visibility = Visibility.Hidden;
-
         }
 
         /// <summary>
@@ -524,6 +526,14 @@ namespace Bitness
                             //If a body is bring tracked in the bodies[] add to the body counter.
                             bodyCounter++;
 
+                            if (bluePlayer.state == Player.State.SYNCED && redPlayer.state == Player.State.SYNCED) 
+                            {
+                                if (tutorialPlaying == false)
+                                {
+                                    playTutorial();
+                                }
+                            }
+
                             #region DrawJoints
                             IReadOnlyDictionary<JointType, Joint> joints = body.Joints;
 
@@ -610,6 +620,9 @@ namespace Bitness
                 BlastOffRight.Position = new TimeSpan(0);
                 BlastOffRight.Play();
             }
+            //reset tutorial bool to false so it can play for next players
+            tutorialPlaying = false;
+
         }
 
         private void showIdle(bool blue)
@@ -935,5 +948,20 @@ namespace Bitness
             mainGrid.Children.Remove(bluePluto);
         }
         #endregion
+
+        private void playTutorial()
+        {
+            Console.WriteLine("Showing Tutorial");
+            tutorialPlaying = true;
+            tutorialVideo.Visibility = Visibility.Visible;
+            tutorialVideo.Position = new TimeSpan(0);
+            tutorialVideo.Play();
+        }
+
+        private void tutorialVideo_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            tutorialVideo.Visibility = Visibility.Hidden;
+
+        }
     }
 }

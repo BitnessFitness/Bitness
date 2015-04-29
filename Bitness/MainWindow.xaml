@@ -41,11 +41,7 @@
             </Grid>
         </Viewbox>
 
-        <!-- <MediaElement Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="testVideo" Source="Videos/ttPlayTest3.mp4" Width="500"/> 
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Height="30">
-            <Button Click="PlayVideo" Content="Play"/>
-        </StackPanel>
-        -->
+        <MediaElement Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" LoadedBehavior="Manual" x:Name="tutorialVideo" Source="Videos/bitnessTutorial.mp4" MediaEnded="tutorialVideo_MediaEnded"/> 
 
         <MediaElement Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="blueSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="blueSyncVideo_MediaEnded" Width="550" IsVisibleChanged="blueSyncVideo_IsVisibleChanged"/>
         <MediaElement Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="redSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="redSyncVideo_MediaEnded" Width="550" IsVisibleChanged="redSyncVideo_IsVisibleChanged"/>
