@@ -163,4 +163,22 @@
   <data name="red_uranus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Videos\red_uranus.mp4;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="blue_jupiter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Videos\blue_jupiter.mp4;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="blue_mars" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Videos\blue_mars.mp4;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="blue_neptune" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Videos\blue_neptune.mp4;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="blue_pluto" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Videos\blue_pluto.mp4;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="blue_saturn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Videos\blue_saturn.mp4;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="blue_uranus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Videos\blue_uranus.mp4;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

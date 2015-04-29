@@ -135,7 +135,16 @@ namespace Bitness
         public bool redAtUranus = false;
         public bool redAtPluto = false;
 
+        //At planet Bool for blue
+        public bool blueAtMars = false;
+        public bool blueAtJupiter = false;
+        public bool blueAtSaturn = false;
+        public bool blueAtNeptune = false;
+        public bool blueAtUranus = false;
+        public bool blueAtPluto = false;
+
         private MediaElement[] redPlanetMovieArray;
+        private MediaElement[] bluePlanetMovieArray;
 
         private FloorWindow floor;
 
@@ -226,7 +235,8 @@ namespace Bitness
 
             this.InitializeComponent();
 
-            redPlanetMovieArray = new MediaElement[] {redMars, redJupiter, redSaturn, redNeptune, redUranus, redPluto};
+            bluePlanetMovieArray = new MediaElement[] {blueMars, blueJupiter, blueSaturn, blueUranus, blueNeptune, bluePluto};
+            redPlanetMovieArray = new MediaElement[] {redMars, redJupiter, redSaturn, redUranus, redNeptune, redPluto};
 
             blueSyncVideo.Visibility = Visibility.Hidden;
             redSyncVideo.Visibility = Visibility.Hidden;
@@ -342,7 +352,7 @@ namespace Bitness
                                     {
                                         //(Total # of Reps / Max Total Jacks needed To reach last planet) * (Exact Canvas Distance to last planet --> 1010px))
                                         double redDistanceToTravel = (redPlayer.Reps / (double)maxTotalTeamJacks) * 1010;
-                                        double redStartingPoint = 394;
+                                        double redStartingPoint = 105;
                                         ROCKET_X[0] = (redStartingPoint + redDistanceToTravel);
                                         //If the rocket reaches a certain planet fire event to show win condition
                                         if (ROCKET_X[0] > 250 && ROCKET_X[0] < 251)
@@ -436,44 +446,62 @@ namespace Bitness
                                     if (repAdded)
                                     {
                                         //(Total # of Reps / Max Total Jacks needed To reach last planet) * (Exact Canvas Distance to last planet --> 1010px))
-                                        double blueDistanceToTravel = (bluePlayer.Reps / (double)maxTotalTeamJacks) * 5050;
+                                        double blueDistanceToTravel = (bluePlayer.Reps / (double)maxTotalTeamJacks) * 1010;
                                         double blueStartingPoint = 105;
                                         ROCKET_X[1] = (blueStartingPoint + blueDistanceToTravel);
                                         //If the rocket reaches a certain planet fire event to show win condition
-                                        if (ROCKET_X[1] == 250)
+                                        if (ROCKET_X[1] > 250 && ROCKET_X[1] < 251)
                                         {
                                             //Reached Mars
-                                            Console.WriteLine("Blue Reached Mars");
+                                            if (blueAtMars == false)
+                                            {
+                                                blueAtPlanet(0);
+                                            }
                                         }
 
-                                        if (ROCKET_X[1] == 395)
+                                        if (ROCKET_X[1] > 395 && ROCKET_X[1] < 396)
                                         {
                                             //Reached Jupiter
-                                            Console.WriteLine("Blue Reached Jupiter");
+                                            if (blueAtJupiter == false)
+                                            {
+                                                blueAtPlanet(1);
+                                            }
                                         }
 
-                                        if (ROCKET_X[1] == 590)
+                                        if (ROCKET_X[1] > 590 && ROCKET_X[1] < 591)
                                         {
                                             //Reached Saturn
-                                            Console.WriteLine("Blue Reached Saturn");
+                                            if (blueAtSaturn == false)
+                                            {
+                                                blueAtPlanet(2);
+                                            }
                                         }
 
-                                        if (ROCKET_X[1] == 770)
+                                        if (ROCKET_X[1] > 770 && ROCKET_X[1] < 771)
                                         {
                                             //Reached Neptune
-                                            Console.WriteLine("Blue Reached Neptune");
+                                            if (blueAtNeptune == false)
+                                            {
+                                                blueAtPlanet(3);
+                                            }
                                         }
 
-                                        if (ROCKET_X[1] == 935)
+                                        if (ROCKET_X[1] > 935 && ROCKET_X[1] < 936)
                                         {
                                             //Reached Uranus
-                                            Console.WriteLine("Blue Reached Uranus");
+                                            if (blueAtUranus == false)
+                                            {
+                                                blueAtPlanet(4);
+                                            }
                                         }
 
-                                        if (ROCKET_X[1] == 1010)
+                                        if (ROCKET_X[1] > 1010 && ROCKET_X[1] < 1011)
                                         {
                                             //Reached Pluto
-                                            Console.WriteLine("Blue Reached Pluto");
+                                            if (blueAtPluto == false)
+                                            {
+                                                blueAtPlanet(5);
+                                            }
                                         }
                                         //moves bar based off index
 
@@ -701,7 +729,6 @@ namespace Bitness
             //will not raise any more if the respective numRaise value is over a certain amount           			
             if (index == 0 && numRaiseLeft < 33)
             {
-                Console.WriteLine("Left Side Jumped");
                 numJacksLeft = numJacksLeft + 13;
                 // Add a rectangle Element
                 fuelBarLeft.Stroke = fuelBrush;
@@ -716,9 +743,9 @@ namespace Bitness
                 numRaiseLeft++;
             }
 
-            if (index == 1 && numRaiseRight < 4)
+            if (index == 1 && numRaiseRight < 33)
             {
-                numJacksRight = numJacksRight + 143;
+                numJacksRight = numJacksRight + 13;
                 // Add a rectangle Element
                 fuelBarRight.Stroke = fuelBrush;
                 fuelBarRight.Fill = fuelBrush;
@@ -793,13 +820,18 @@ namespace Bitness
         {
             BlastOffLeft.Visibility = Visibility.Hidden;
             bluesideStandby.Visibility = Visibility.Visible;
-            Console.WriteLine("Left Blastoff Ended");
         }
 
         private void BlastOffRight_MediaEnded(object sender, RoutedEventArgs e)
         {
             BlastOffRight.Visibility = Visibility.Hidden;
             redsideStandby.Visibility = Visibility.Visible;
+        }
+
+        private void blueAtPlanet(int which)
+        {
+            bluePlanetMovieArray[which].Visibility = Visibility.Visible;
+            bluePlanetMovieArray[which].Play();
         }
 
         private void redAtPlanet(int which)
@@ -828,41 +860,80 @@ namespace Bitness
             }
         }
 
+        #region Red Reached Planet Events
         private void redMars_MediaEnded(object sender, RoutedEventArgs e)
         {
             redAtMars = true;
-            redMars.Visibility = Visibility.Hidden;
+            mainGrid.Children.Remove(redMars);
         }
 
         private void redJupiter_MediaEnded(object sender, RoutedEventArgs e)
         {
             redAtJupiter = true;
-            redJupiter.Visibility = Visibility.Hidden;
+            mainGrid.Children.Remove(redJupiter);
         }
 
         private void redSaturn_MediaEnded(object sender, RoutedEventArgs e)
         {
             redAtSaturn = true;
-            redSaturn.Visibility = Visibility.Hidden;
+            mainGrid.Children.Remove(redSaturn);
         }
 
         private void redNeptune_MediaEnded(object sender, RoutedEventArgs e)
         {
             redAtNeptune = false;
-            redNeptune.Visibility = Visibility.Hidden;
+            mainGrid.Children.Remove(redNeptune);
         }
 
         private void redUranus_MediaEnded(object sender, RoutedEventArgs e)
         {
             redAtUranus = false;
-            redUranus.Visibility = Visibility.Hidden;
+            mainGrid.Children.Remove(redUranus);
         }
 
         private void redPluto_MediaEnded(object sender, RoutedEventArgs e)
         {
             redAtPluto = false;
-            redPluto.Visibility = Visibility.Hidden;
+            mainGrid.Children.Remove(redPluto);
+        }
+        #endregion
+
+        #region Blue Reached Planet Events
+        private void blueMars_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            blueAtMars = true;
+            mainGrid.Children.Remove(blueMars);
         }
 
+        private void blueJupiter_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            blueAtJupiter = true;
+            mainGrid.Children.Remove(blueJupiter);
+        }
+
+        private void blueSaturn_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            blueAtSaturn = true;
+            mainGrid.Children.Remove(blueSaturn);
+        }
+
+        private void blueNeptune_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            blueAtNeptune = false;
+            mainGrid.Children.Remove(blueNeptune);
+        }
+
+        private void blueUranus_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            blueAtUranus = false;
+            mainGrid.Children.Remove(blueUranus);
+        }
+
+        private void bluePluto_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            blueAtPluto = false;
+            mainGrid.Children.Remove(bluePluto);
+        }
+        #endregion
     }
 }
