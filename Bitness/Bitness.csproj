@@ -196,9 +196,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\test-water2.gif" />
-    <Content Include="Videos\bitnessTutorial.mp4">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Videos\bitnessTutorial.mp4" />
     <Content Include="Videos\blue_1.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
