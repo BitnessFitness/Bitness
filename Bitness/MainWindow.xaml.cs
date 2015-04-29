@@ -566,11 +566,13 @@ namespace Bitness
                     if (!bluePlayerDetected && bluePlayer.state != Player.State.NOT_SYNCED)
                     {
                         showIdle(true);
+                        tutorialPlaying = false;
                     }
 
                     if (!redPlayerDetected && redPlayer.state != Player.State.NOT_SYNCED)
                     {
                         showIdle(false);
+                        tutorialPlaying = false;
                     }
 
                     String message = "Red: " + redPlayer.Reps + ". Blue: " + bluePlayer.Reps;
