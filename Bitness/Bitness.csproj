@@ -197,6 +197,9 @@
     <Resource Include="Images\tubeOrange.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\blueFuelTop.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Videos\Bitness-Syncing.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

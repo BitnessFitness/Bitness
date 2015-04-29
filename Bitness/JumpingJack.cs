@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bitness
 {
-    class JumpingJack : Action
+    public class JumpingJack : Action
     {
         enum State
         {
