@@ -692,45 +692,20 @@ namespace Bitness
 
         void moveBar(int index)
         {
-            SolidColorBrush fuelBrush = new SolidColorBrush(fuelOrange);
-            System.Windows.Shapes.Rectangle fuelBarLeft;
-            System.Windows.Shapes.Rectangle fuelBarRight;
-            fuelBarLeft = new System.Windows.Shapes.Rectangle();
-            fuelBarRight = new System.Windows.Shapes.Rectangle();
-
+            int JUMPING_JACKS_REQUIRED = 6;
+            double FUEL_INCREASE_AMOUNT = 22;
             //will raise the bar based off the index (Blue is 0 | Red is 1)
             //will not raise any more if the respective numRaise value is over a certain amount           			
-            if (index == 0 && numRaiseLeft < 33)
+            if (index == 0 && numRaiseLeft < JUMPING_JACKS_REQUIRED)
             {
-                Console.WriteLine("Left Side Jumped");
-                numJacksLeft = numJacksLeft + 13;
-                // Add a rectangle Element
-                fuelBarLeft.Stroke = fuelBrush;
-                fuelBarLeft.Fill = fuelBrush;
-                fuelBarLeft.Width = 80;
-                fuelBarLeft.Height = numJacksLeft;
-                Canvas.SetLeft(fuelBarLeft, -40);
-                Canvas.SetBottom(fuelBarLeft, 65);
-                Canvas.SetBottom(testwater_left, (65 + (13 * numRaiseLeft)));
-                Canvas.SetZIndex(fuelBarLeft, -1);
-                leftSideBarCanvas.Children.Add(fuelBarLeft);
-                numRaiseLeft++;
+                blueFuelBlock.Height += FUEL_INCREASE_AMOUNT;
+                Canvas.SetBottom(testwater_left, Canvas.GetBottom(testwater_left) + FUEL_INCREASE_AMOUNT);
             }
 
-            if (index == 1 && numRaiseRight < 4)
+            if (index == 1 && numRaiseRight < JUMPING_JACKS_REQUIRED)
             {
-                numJacksRight = numJacksRight + 143;
-                // Add a rectangle Element
-                fuelBarRight.Stroke = fuelBrush;
-                fuelBarRight.Fill = fuelBrush;
-                fuelBarRight.Width = 80;
-                fuelBarRight.Height = numJacksRight;
-                Canvas.SetLeft(fuelBarRight, -40);
-                Canvas.SetBottom(fuelBarRight, 65);
-                Canvas.SetBottom(testwater_right, (65 + (13 * numRaiseRight)));
-                Canvas.SetZIndex(fuelBarRight, -1);
-                rightSideBarCanvas.Children.Add(fuelBarRight);
-                numRaiseRight++;
+                redFuelBlock.Height += FUEL_INCREASE_AMOUNT;
+                Canvas.SetBottom(testwater_right, Canvas.GetBottom(testwater_right) + FUEL_INCREASE_AMOUNT);
             }
         }
 
