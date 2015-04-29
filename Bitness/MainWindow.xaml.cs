@@ -736,21 +736,20 @@ namespace Bitness
 
         void moveBar(int index)
         {
-            int JUMPING_JACKS_REQUIRED = 6;
-            double FUEL_INCREASE_AMOUNT = 22;
+            int JUMPING_JACKS_REQUIRED = 15;
+            int FUEL_INCREASE_AMOUNT = 22;
             //will raise the bar based off the index (Blue is 0 | Red is 1)
             //will not raise any more if the respective numRaise value is over a certain amount           			
             if (index == 0 && numRaiseLeft < JUMPING_JACKS_REQUIRED)
             {
                 blueFuelBlock.Height += FUEL_INCREASE_AMOUNT;
-                Console.WriteLine(Canvas.GetBottom(blueFuelTop));
-                Canvas.SetBottom(blueFuelTop, (Canvas.GetBottom(blueFuelTop) + FUEL_INCREASE_AMOUNT));
+                Canvas.SetTop(blueFuelTop, (Canvas.GetTop(blueFuelTop) - FUEL_INCREASE_AMOUNT));
             }
 
             if (index == 1 && numRaiseRight < JUMPING_JACKS_REQUIRED)
             {
                 redFuelBlock.Height += FUEL_INCREASE_AMOUNT;
-                Canvas.SetBottom(redFuelTop, (Canvas.GetBottom(redFuelTop) + FUEL_INCREASE_AMOUNT));
+                Canvas.SetTop(redFuelTop, (Canvas.GetTop(redFuelTop) - FUEL_INCREASE_AMOUNT));
             }
         }
 
