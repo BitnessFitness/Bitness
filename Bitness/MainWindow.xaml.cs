@@ -110,7 +110,7 @@ namespace Bitness
         public int numJacksRight = 0;
         public int numRaiseRight = 1;
 
-        private readonly int GOAL_NUM = 5;
+        private readonly int GOAL_NUM = 15;
 
         //Custom Colors For Bitness
         public Color red = Color.FromRgb(241, 128, 33);
