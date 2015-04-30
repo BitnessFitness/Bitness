@@ -428,6 +428,8 @@ namespace Bitness
                                         {
                                             showLaunch(false);
                                             redPlayer.state = Player.State.COMPLETED;
+                                            resetBars(0);
+                                            resetBars(1);
                                         }
                                     }
                                 }
@@ -524,6 +526,8 @@ namespace Bitness
                                         {
                                             showLaunch(true);
                                             bluePlayer.state = Player.State.COMPLETED;
+                                            resetBars(0);
+                                            resetBars(1);
                                         }
                                     }
                                 }
