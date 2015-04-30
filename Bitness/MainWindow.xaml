@@ -84,7 +84,7 @@
         
         <Canvas Name="rightSideBarCanvas" Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <Image x:Name="redFuelTop" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="76" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" Canvas.Left="-38" Canvas.Top="-103"/>
-            <Rectangle x:Name="redFuelBlock" Height="0" Width="76" Canvas.Left="-38" Canvas.Bottom="53" Fill="#f18021"/>
+            <Rectangle x:Name="redFuelBlock" Height="0" Width="76" Canvas.Left="-38" Canvas.Bottom="53" Fill="#DB8323"/>
             <Image x:Name="redFuelTube" Grid.Row="1" Grid.Column="2" Source="Images/tubeOrange.png" Canvas.Bottom="30" Canvas.Left="-50" Width="100"/>
         </Canvas>
 
