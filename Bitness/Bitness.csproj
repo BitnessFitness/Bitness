@@ -210,6 +210,10 @@
     <Resource Include="Images\blueFuelTop.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <None Include="Resources\bitnessTutorial.mp4" />
+    <Content Include="Images\red_finished.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Videos\Bitness-Syncing.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

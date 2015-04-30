@@ -112,7 +112,7 @@
 
         <Canvas x:Name="RedTeamInfo" Margin="1081,0,0,619" Grid.Row="1" Visibility="Hidden">
             <Rectangle Fill="#FF242C3A" HorizontalAlignment="Left" Height="558" Grid.Row="1" Stroke="Black" VerticalAlignment="Top" Width="192" Canvas.Top="61"/>
-            <Image x:Name="RedFinished" gif:ImageBehavior.AnimatedSource="Images/blue_finished.gif" Width="190" Canvas.Top="80"/>
+            <Image x:Name="RedFinished" gif:ImageBehavior.AnimatedSource="Images/red_finished.gif" Width="190" Canvas.Top="80"/>
             <Label Content="You Traveled" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Forgotten Futurist Rg" FontSize="18" Canvas.Left="5" Canvas.Top="219"/>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Canvas.Left="10" Canvas.Top="241">
                 <Label x:Name="RedDistanceTraveled" Content="0" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Forgotten Futurist Rg" FontSize="36" RenderTransformOrigin="0.547,0.451"/>

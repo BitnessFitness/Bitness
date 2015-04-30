@@ -414,15 +414,18 @@ namespace Bitness
                                         if (redPlayer.Reps <= GOAL_NUM)
                                         {
                                             //Calculate Real Total Team Distance
-                                            double teamDist = ((redPlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
-                                            RedTeamDistanceTraveled.Content = Math.Round(teamDist, 2);
-                                            Console.WriteLine("Red team traveled: " + Math.Round(totalRedTeamDistance, 4) + " billion miles!");
+                                            totalRedPlayerDistance = ((redPlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
+                                            totalRedTeamDistance += totalRedPlayerDistance;
+                                            RedTeamDistanceTraveled.Content = Math.Round(totalRedTeamDistance, 2);
+                                            RedDistanceTraveled.Content = Math.Round(totalRedPlayerDistance, 2);
                                             moveBar(1);
                                         }
                                         else
                                         {
                                             showLaunch(false);
                                             redPlayer.state = Player.State.COMPLETED;
+                                            resetBars(0);
+                                            resetBars(1);
                                         }
                                     }
                                 }
@@ -509,15 +512,18 @@ namespace Bitness
                                         if (bluePlayer.Reps <= GOAL_NUM)
                                         {
                                             //Calculate Real Total Team Distance
-                                            double teamDist = ((bluePlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
-                                            BlueTeamDistanceTraveled.Content = Math.Round(teamDist, 2);
-                                            Console.WriteLine("Blue team traveled: " + Math.Round(totalBlueTeamDistance, 2) + " billion miles!");
+                                            totalBluePlayerDistance = ((bluePlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
+                                            totalBlueTeamDistance += totalBluePlayerDistance;
+                                            BlueTeamDistanceTraveled.Content = Math.Round(totalBlueTeamDistance, 2);
+                                            BlueDistanceTraveled.Content = Math.Round(totalBluePlayerDistance, 2);
                                             moveBar(0);
                                         }
                                         else
                                         {
                                             showLaunch(true);
                                             bluePlayer.state = Player.State.COMPLETED;
+                                            resetBars(0);
+                                            resetBars(1);
                                         }
                                     }
                                 }
@@ -619,22 +625,7 @@ namespace Bitness
                     redFuelBlock.Height = 0;
                     Canvas.SetTop(redFuelTop, -103);
                     break;
-                case 2:
-                    bluePlayer.Reps = 0;
-                    blueFuelBlock.Height = 0;
-                    bluePlayer.exercise.Reps = 0;
-                    Canvas.SetTop(blueFuelTop, -103);
-                    redPlayer.Reps = 0;
-                    redFuelBlock.Height = 0;
-                    redPlayer.exercise.Reps = 0;
-                    Canvas.SetTop(redFuelTop, -103);
-                    break;
-                default:
-                    Console.WriteLine("Default case");
-                    break;
             }
-
-
         }
         private void showLaunch(bool blue)
         {
