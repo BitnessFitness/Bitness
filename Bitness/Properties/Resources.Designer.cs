@@ -193,6 +193,26 @@ namespace Bitness.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] longBlastoffBlue {
+            get {
+                object obj = ResourceManager.GetObject("longBlastoffBlue", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] longBlastoffOrange {
+            get {
+                object obj = ResourceManager.GetObject("longBlastoffOrange", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] red_jupiter {
             get {
                 object obj = ResourceManager.GetObject("red_jupiter", resourceCulture);
@@ -283,9 +303,19 @@ namespace Bitness.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] short_blastoff1 {
+        internal static byte[] shortBlastoffBlue {
             get {
-                object obj = ResourceManager.GetObject("short_blastoff1", resourceCulture);
+                object obj = ResourceManager.GetObject("shortBlastoffBlue", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] shortBlastoffOrange {
+            get {
+                object obj = ResourceManager.GetObject("shortBlastoffOrange", resourceCulture);
                 return ((byte[])(obj));
             }
         }

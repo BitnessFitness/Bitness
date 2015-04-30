@@ -249,10 +249,6 @@ namespace Bitness
 
             leftSideBarCanvas.Visibility = Visibility.Hidden;
             rightSideBarCanvas.Visibility = Visibility.Hidden;
-
-            //hides videos for blastoff
-            BlastOffLeft.Visibility = Visibility.Hidden;
-            BlastOffRight.Visibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -650,9 +646,14 @@ namespace Bitness
                 //Show standby screen, set Blue to not synced
                 bluesideStandby.Visibility = Visibility.Hidden;
 
-                BlastOffLeft.Visibility = Visibility.Visible;
-                BlastOffLeft.Position = new TimeSpan(0);
-                BlastOffLeft.Play();
+                //Play long blue blastoff
+                longBlastOffBlue.Visibility = Visibility.Visible;
+                longBlastOffBlue.Position = new TimeSpan(0);
+                longBlastOffBlue.Play();
+                //Play short Orange blastoff
+                shortBlastOffOrange.Visibility = Visibility.Visible;
+                shortBlastOffOrange.Position = new TimeSpan(0);
+                shortBlastOffOrange.Play();
             }
             else if (!blue && redPlayer.state != Player.State.COMPLETED)
             {
@@ -661,9 +662,14 @@ namespace Bitness
                 //Show standby screen, set Blue to not synced
                 redsideStandby.Visibility = Visibility.Hidden;
 
-                BlastOffRight.Visibility = Visibility.Visible;
-                BlastOffRight.Position = new TimeSpan(0);
-                BlastOffRight.Play();
+                //Play long orange blastoff
+                longBlastOffOrange.Visibility = Visibility.Visible;
+                longBlastOffOrange.Position = new TimeSpan(0);
+                longBlastOffOrange.Play();
+                //Play short blue blastoff
+                shortBlastOffBlue.Visibility = Visibility.Visible;
+                shortBlastOffBlue.Position = new TimeSpan(0);
+                shortBlastOffBlue.Play();
             }
 
             //reset tutorial bool to false so it can play for next players
@@ -864,24 +870,6 @@ namespace Bitness
         }
 
         //gets rid of blastoff videos on end
-        private async void BlastOffLeft_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            BlastOffLeft.Visibility = Visibility.Hidden;
-            BlueTeamInfo.Visibility = Visibility.Visible;
-            await Task.Delay(20000);
-            hidePlayerStats(true);
-        }
-
-        private async void BlastOffRight_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            BlastOffRight.Visibility = Visibility.Hidden;
-            RedTeamInfo.Visibility = Visibility.Visible;
-            var controller = ImageBehavior.GetAnimationController(RedFinished);
-            controller.GotoFrame(0);
-            controller.Play();
-            await Task.Delay(20000);
-            hidePlayerStats(false);
-        }
 
         private void blueAtPlanet(int which)
         {
@@ -1003,6 +991,50 @@ namespace Bitness
         private void tutorialVideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             tutorialVideo.Visibility = Visibility.Hidden;
+        }
+
+        private async void shortBlastOffOrange_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            shortBlastOffOrange.Visibility = Visibility.Hidden;
+            BlueTeamInfo.Visibility = Visibility.Visible;
+            var controller = ImageBehavior.GetAnimationController(BlueFinished);
+            controller.GotoFrame(0);
+            controller.Play();
+            await Task.Delay(20000);
+            hidePlayerStats(true);
+        }
+
+        private async void shortBlastOffBlue_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            shortBlastOffBlue.Visibility = Visibility.Hidden;
+            RedTeamInfo.Visibility = Visibility.Visible;
+            var controller = ImageBehavior.GetAnimationController(RedFinished);
+            controller.GotoFrame(0);
+            controller.Play();
+            await Task.Delay(20000);
+            hidePlayerStats(false);
+        }
+
+        private async void longBlastOffOrange_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            longBlastOffOrange.Visibility = Visibility.Hidden;
+            BlueTeamInfo.Visibility = Visibility.Visible;
+            var controller = ImageBehavior.GetAnimationController(BlueFinished);
+            controller.GotoFrame(0);
+            controller.Play();
+            await Task.Delay(20000);
+            hidePlayerStats(true);
+        }
+
+        private async void longBlastOffBlue_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            longBlastOffBlue.Visibility = Visibility.Hidden;
+            RedTeamInfo.Visibility = Visibility.Visible;
+            var controller = ImageBehavior.GetAnimationController(RedFinished);
+            controller.GotoFrame(0);
+            controller.Play();
+            await Task.Delay(20000);
+            hidePlayerStats(false);
         }
     }
 }

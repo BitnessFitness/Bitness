@@ -59,8 +59,11 @@
             <Image x:Name="blueRocket" Source="Images/top_bluerocket.png" Width="32" Canvas.Bottom="50" Canvas.Left="105"/>
         </Canvas>
 
-        <MediaElement Grid.Row="1" Grid.Column="0" Source="Videos\short_blastoff.mp4" Name="BlastOffLeft" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill"  MediaEnded="BlastOffLeft_MediaEnded" />
-        <MediaElement Grid.Row="1" Grid.Column="2" Source="Videos\short_blastoff.mp4" Name="BlastOffRight" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill"  MediaEnded="BlastOffRight_MediaEnded" />
+        <MediaElement Grid.Row="1" Grid.Column="0" Source="Videos\longBlastOffBlue.mp4" Name="longBlastOffBlue" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill" MediaEnded="longBlastOffBlue_MediaEnded"/>
+        <MediaElement Grid.Row="1" Grid.Column="2" Source="Videos\longBlastOffOrange.mp4" Name="longBlastOffOrange" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill" MediaEnded="longBlastOffOrange_MediaEnded" />
+
+        <MediaElement Grid.Row="1" Grid.Column="0" Source="Videos\shortBlastOffBlue.mp4" Name="shortBlastOffBlue" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill" MediaEnded="shortBlastOffBlue_MediaEnded"/>
+        <MediaElement Grid.Row="1" Grid.Column="2" Source="Videos\shortBlastOffOrange.mp4" Name="shortBlastOffOrange" Opacity="1" Volume="1" LoadedBehavior="Manual" Stretch="Fill"  MediaEnded="shortBlastOffOrange_MediaEnded" />
 
         <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\blue_mars.mp4" Name="blueMars" LoadedBehavior="Manual" MediaEnded="blueMars_MediaEnded"/>
         <MediaElement Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="Videos\blue_jupiter.mp4" Name="blueJupiter" LoadedBehavior="Manual" MediaEnded="blueJupiter_MediaEnded"/>
