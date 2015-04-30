@@ -116,6 +116,7 @@ namespace Bitness
         public Color red = Color.FromRgb(241, 128, 33);
         public Color blue = Color.FromRgb(16, 177, 232);
         public Color fuelOrange = Color.FromRgb(219, 131, 35);
+        public Color fuelBlue = Color.FromRgb(35, 153, 219);
 
         //Integers used to calculate individual distances
         public double totalRedPlayerDistance;
@@ -127,7 +128,7 @@ namespace Bitness
         public double maxTotalTeamJacks = 1800;
         public long maxTeamTotalDistance = 4670000000;
 
-        //Tutorial playing bool
+        //Bool for tutorial
         public bool tutorialPlaying = false;
 
         //At planet Bool for red
@@ -238,8 +239,8 @@ namespace Bitness
 
             this.InitializeComponent();
 
-            bluePlanetMovieArray = new MediaElement[] {blueMars, blueJupiter, blueSaturn, blueUranus, blueNeptune, bluePluto};
-            redPlanetMovieArray = new MediaElement[] {redMars, redJupiter, redSaturn, redUranus, redNeptune, redPluto};
+            bluePlanetMovieArray = new MediaElement[] { blueMars, blueJupiter, blueSaturn, blueUranus, blueNeptune, bluePluto };
+            redPlanetMovieArray = new MediaElement[] { redMars, redJupiter, redSaturn, redUranus, redNeptune, redPluto };
 
             blueSyncVideo.Visibility = Visibility.Hidden;
             redSyncVideo.Visibility = Visibility.Hidden;
@@ -248,8 +249,10 @@ namespace Bitness
             rightSideBarCanvas.Visibility = Visibility.Hidden;
 
             //hides videos for blastoff
-            BlastOffLeft.Visibility = Visibility.Hidden;
-            BlastOffRight.Visibility = Visibility.Hidden;
+            BlastOffLeftLong.Visibility = Visibility.Hidden;
+            BlastOffLeftShort.Visibility = Visibility.Hidden;
+            BlastOffRightShort.Visibility = Visibility.Hidden;
+            BlastOffRightMed.Visibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -362,7 +365,7 @@ namespace Bitness
                                             if (redAtMars == false)
                                             {
                                                 redAtPlanet(0);
-                                            }                                         
+                                            }
                                         }
 
                                         if (ROCKET_X[0] > 395 && ROCKET_X[0] < 396)
@@ -416,7 +419,7 @@ namespace Bitness
                                         {
                                             //Calculate Real Total Team Distance
                                             totalRedTeamDistance = ((redPlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
-                                            Console.WriteLine("Red team traveled: " +  Math.Round(totalRedTeamDistance, 4) + " billion miles!");
+                                            Console.WriteLine("Red team traveled: " + Math.Round(totalRedTeamDistance, 4) + " billion miles!");
                                             moveBar(1);
                                         }
                                         else
@@ -524,10 +527,10 @@ namespace Bitness
                             #endregion
                             //If a body is bring tracked in the bodies[] add to the body counter.
                             bodyCounter++;
-                            
+
                             this.floor.DrawTopDownView(redPlayer, bluePlayer);
 
-                            if (bluePlayer.state == Player.State.SYNCED && redPlayer.state == Player.State.SYNCED) 
+                            if (bluePlayer.state == Player.State.SYNCED && redPlayer.state == Player.State.SYNCED)
                             {
                                 if (tutorialPlaying == false)
                                 {
@@ -568,20 +571,15 @@ namespace Bitness
                     {
                         showIdle(true);
                         tutorialPlaying = false;
-                        //resets the height of the rectangle for blue side
-                        blueFuelBlock.Height = 0;
-                        Canvas.SetBottom(testwater_left, Canvas.GetBottom(testwater_left) + 0);
-                        bluePlayer.Reps = 0;
+                        resetBar(0);
+
                     }
 
                     if (!redPlayerDetected && redPlayer.state != Player.State.NOT_SYNCED)
                     {
                         showIdle(false);
                         tutorialPlaying = false;
-                        //resets the height of the rectangle for blue side
-                        redFuelBlock.Height = 0;
-                        Canvas.SetBottom(testwater_right, Canvas.GetBottom(testwater_right) + 0);
-                        redPlayer.Reps = 0;
+                        resetBar(1);
                     }
 
                     String message = "Red: " + redPlayer.Reps + ". Blue: " + bluePlayer.Reps;
@@ -605,7 +603,38 @@ namespace Bitness
                 }
             }
         }
+        private void resetBar(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    //resets the height of the rectangle for blue side
+                    blueFuelBlock.Height = 0;
+                    Canvas.SetTop(blueFuelBlock, -103);
+                    bluePlayer.Reps = 0;
+                    break;
+                case 1:
+                    //resets the height of the rectangle for red side
+                    redFuelBlock.Height = 0;
+                    Canvas.SetTop(redFuelBlock, -103);
+                    redPlayer.Reps = 0;
+                    break;
+                case 2:
+                    //resets the height of the rectangle for blue side
+                    blueFuelBlock.Height = 0;
+                    Canvas.SetBottom(blueFuelBlock, Canvas.GetBottom(blueFuelBlock) + 0);
+                    bluePlayer.Reps = 0;
+                    //resets the height of the rectangle for red side
+                    redFuelBlock.Height = 0;
+                    Canvas.SetBottom(redFuelBlock, Canvas.GetBottom(redFuelBlock) + 0);
+                    redPlayer.Reps = 0;
+                    break;
+                default:
+                    Console.WriteLine("no index given");
+                    break;
+            }
 
+        }
         private void showLaunch(bool blue)
         {
             Console.WriteLine("Showing launch");
@@ -616,24 +645,54 @@ namespace Bitness
                 //Show standby screen, set Blue to not synced
                 bluesideStandby.Visibility = Visibility.Hidden;
 
-                BlastOffLeft.Visibility = Visibility.Visible;
-                BlastOffLeft.Position = new TimeSpan(0);
-                BlastOffLeft.Play();
-            }
-            else if (!blue && redPlayer.state != Player.State.COMPLETED)
-            {
+                //reset both bars for the players
+                resetBar(2);
+
+                BlastOffLeftLong.Visibility = Visibility.Visible;
+                BlastOffLeftLong.Position = new TimeSpan(0);
+                BlastOffLeftLong.Play();
+
+                //plays short redside video
                 redSyncVideo.Visibility = Visibility.Hidden;
                 rightSideBarCanvas.Visibility = Visibility.Hidden;
                 //Show standby screen, set Blue to not synced
                 redsideStandby.Visibility = Visibility.Hidden;
-
-                BlastOffRight.Visibility = Visibility.Visible;
-                BlastOffRight.Position = new TimeSpan(0);
-                BlastOffRight.Play();
+                //reset both bars for the players
+                resetBar(2);
+                BlastOffRightShort.Visibility = Visibility.Visible;
+                BlastOffRightShort.Position = new TimeSpan(0);
+                BlastOffRightShort.Play();
             }
+            else if (!blue && redPlayer.state != Player.State.COMPLETED)
+            {
+                //plays long video for red side
+                redSyncVideo.Visibility = Visibility.Hidden;
+                rightSideBarCanvas.Visibility = Visibility.Hidden;
+                //Show standby screen, set Blue to not synced
+                redsideStandby.Visibility = Visibility.Hidden;
+                //reset both bars for the players
+                resetBar(2);
+                BlastOffRightMed.Visibility = Visibility.Visible;
+                BlastOffRightMed.Position = new TimeSpan(0);
+                BlastOffRightMed.Play();
+
+                //plays the short video for blue side
+                blueSyncVideo.Visibility = Visibility.Hidden;
+                leftSideBarCanvas.Visibility = Visibility.Hidden;
+                //Show standby screen, set Blue to not synced
+                bluesideStandby.Visibility = Visibility.Hidden;
+
+                //reset both bars for the players
+                resetBar(2);
+
+                BlastOffLeftShort.Visibility = Visibility.Visible;
+                BlastOffLeftShort.Position = new TimeSpan(0);
+                BlastOffLeftShort.Play();
+
+            }
+
             //reset tutorial bool to false so it can play for next players
             tutorialPlaying = false;
-
         }
 
         private void showIdle(bool blue)
@@ -743,20 +802,23 @@ namespace Bitness
 
         void moveBar(int index)
         {
-            int JUMPING_JACKS_REQUIRED = 6;
+            int JUMPING_JACKS_REQUIRED = 15;
             double FUEL_INCREASE_AMOUNT = 22;
             //will raise the bar based off the index (Blue is 0 | Red is 1)
             //will not raise any more if the respective numRaise value is over a certain amount           			
             if (index == 0 && numRaiseLeft < JUMPING_JACKS_REQUIRED)
             {
+
                 blueFuelBlock.Height = FUEL_INCREASE_AMOUNT * bluePlayer.Reps;
-                Canvas.SetBottom(testwater_left, Canvas.GetBottom(testwater_left) + FUEL_INCREASE_AMOUNT);
+                Canvas.SetTop(blueFuelTop, (Canvas.GetTop(blueFuelTop) - FUEL_INCREASE_AMOUNT));
+
             }
 
             if (index == 1 && numRaiseRight < JUMPING_JACKS_REQUIRED)
             {
                 redFuelBlock.Height = FUEL_INCREASE_AMOUNT * redPlayer.Reps;
-                Canvas.SetBottom(testwater_right, Canvas.GetBottom(testwater_right) + FUEL_INCREASE_AMOUNT);
+                Canvas.SetTop(redFuelTop, (Canvas.GetTop(redFuelTop) + FUEL_INCREASE_AMOUNT));
+
             }
         }
 
@@ -818,13 +880,16 @@ namespace Bitness
         //gets rid of blastoff videos on end
         private void BlastOffLeft_MediaEnded(object sender, RoutedEventArgs e)
         {
-            BlastOffLeft.Visibility = Visibility.Hidden;
+            BlastOffLeftLong.Visibility = Visibility.Hidden;
+            BlastOffLeftShort.Visibility = Visibility.Hidden;
             bluesideStandby.Visibility = Visibility.Visible;
         }
 
         private void BlastOffRight_MediaEnded(object sender, RoutedEventArgs e)
         {
-            BlastOffRight.Visibility = Visibility.Hidden;
+            BlastOffRightShort.Visibility = Visibility.Hidden;
+            BlastOffRightMed.Visibility = Visibility.Hidden;
+
             redsideStandby.Visibility = Visibility.Visible;
         }
 
@@ -948,7 +1013,6 @@ namespace Bitness
         private void tutorialVideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             tutorialVideo.Visibility = Visibility.Hidden;
-
         }
     }
 }

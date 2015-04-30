@@ -13,7 +13,7 @@ namespace Bitness
             SYNCING,
             SYNCED,
             NOT_SYNCED,
-            AT_PLANET,
+            TUTORIAL,
             COMPLETED
         };
 

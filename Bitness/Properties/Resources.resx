@@ -184,4 +184,22 @@
   <data name="bitnessTutorial1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Videos\bitnessTutorial.mp4;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="tubeBlue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\tubeBlue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tubeOrange" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\tubeOrange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blueFuelTop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\blueFuelTop.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="long_blastoff_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Videos\long blastoff blue.mp4;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="med_blastoff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Videos\med_blastoff.mp4;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="short_blastoff_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Videos\short blastoff blue.mp4;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
