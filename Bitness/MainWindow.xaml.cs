@@ -452,7 +452,7 @@ namespace Bitness
                                     {
                                         //(Total # of Reps / Max Total Jacks needed To reach last planet) * (Exact Canvas Distance to last planet --> 1010px))
                                         double blueDistanceToTravel = (bluePlayer.Reps / (double)maxTotalTeamJacks) * 1010;
-                                        double blueStartingPoint = 105;
+                                        double blueStartingPoint = 249;
                                         ROCKET_X[1] = (blueStartingPoint + blueDistanceToTravel);
                                         //If the rocket reaches a certain planet fire event to show win condition
                                         if (ROCKET_X[1] > 250 && ROCKET_X[1] < 251)
@@ -848,6 +848,13 @@ namespace Bitness
 
         private void blueAtPlanet(int which)
         {
+            //Set the source of media elements
+            blueMars.Source = new Uri("Videos/blue_mars.mp4", UriKind.Relative);
+            Grid.SetColumn(bluePlanetMovieArray[which], 0);
+            Grid.SetRow(bluePlanetMovieArray[which], 0);
+            Grid.SetColumnSpan(bluePlanetMovieArray[which], 3);
+            mainGrid.Children.Add(bluePlanetMovieArray[which]);
+
             bluePlanetMovieArray[which].Visibility = Visibility.Visible;
             bluePlanetMovieArray[which].Play();
         }
