@@ -118,6 +118,7 @@ namespace Bitness
         public Color red = Color.FromRgb(241, 128, 33);
         public Color blue = Color.FromRgb(16, 177, 232);
         public Color fuelOrange = Color.FromRgb(219, 131, 35);
+        public Color fuelBlue = Color.FromRgb(35, 153, 219);
 
         //Integers used to calculate individual distances
         public double totalRedPlayerDistance;
@@ -129,7 +130,7 @@ namespace Bitness
         public double maxTotalTeamJacks = 1800;
         public long maxTeamTotalDistance = 4670000000;
 
-        //Tutorial playing bool
+        //Bool for tutorial
         public bool tutorialPlaying = false;
 
         //At planet Bool for red
@@ -627,9 +628,9 @@ namespace Bitness
                 BlastOffRight.Position = new TimeSpan(0);
                 BlastOffRight.Play();
             }
+
             //reset tutorial bool to false so it can play for next players
             tutorialPlaying = false;
-
         }
 
         private void showIdle(bool blue)
@@ -739,20 +740,20 @@ namespace Bitness
 
         void moveBar(int index)
         {
-            int JUMPING_JACKS_REQUIRED = 6;
-            double FUEL_INCREASE_AMOUNT = 22;
+            int JUMPING_JACKS_REQUIRED = 15;
+            int FUEL_INCREASE_AMOUNT = 22;
             //will raise the bar based off the index (Blue is 0 | Red is 1)
             //will not raise any more if the respective numRaise value is over a certain amount           			
             if (index == 0 && numRaiseLeft < JUMPING_JACKS_REQUIRED)
             {
                 blueFuelBlock.Height += FUEL_INCREASE_AMOUNT;
-                Canvas.SetBottom(testwater_left, Canvas.GetBottom(testwater_left) + FUEL_INCREASE_AMOUNT);
+                Canvas.SetTop(blueFuelTop, (Canvas.GetTop(blueFuelTop) - FUEL_INCREASE_AMOUNT));
             }
 
             if (index == 1 && numRaiseRight < JUMPING_JACKS_REQUIRED)
             {
                 redFuelBlock.Height += FUEL_INCREASE_AMOUNT;
-                Canvas.SetBottom(testwater_right, Canvas.GetBottom(testwater_right) + FUEL_INCREASE_AMOUNT);
+                Canvas.SetTop(redFuelTop, (Canvas.GetTop(redFuelTop) - FUEL_INCREASE_AMOUNT));
             }
         }
 
@@ -780,7 +781,7 @@ namespace Bitness
         {
             blueSyncVideo.Visibility = Visibility.Hidden;
             bluePlayer.state = Player.State.SYNCED;
-            showActiveBlue();
+            showActiveBlue();            
         }
 
         private void showActiveBlue()
@@ -954,7 +955,7 @@ namespace Bitness
         #endregion
 
         private void playTutorial()
-        {
+        { 
             Console.WriteLine("Showing Tutorial");
             tutorialPlaying = true;
             tutorialVideo.Visibility = Visibility.Visible;
@@ -965,7 +966,6 @@ namespace Bitness
         private void tutorialVideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             tutorialVideo.Visibility = Visibility.Hidden;
-
         }
     }
 }
