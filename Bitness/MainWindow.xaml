@@ -41,7 +41,7 @@
             </Grid>
         </Viewbox>
 
-        <MediaElement Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" LoadedBehavior="Manual" x:Name="tutorialVideo" Source="Videos/bitnessTutorial.mp4" MediaEnded="tutorialVideo_MediaEnded"/> 
+        <MediaElement Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" LoadedBehavior="Manual" x:Name="tutorialVideo" Source="Videos/bitnessTutorial.mp4" MediaEnded="tutorialVideo_MediaEnded"/>
 
         <MediaElement Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="blueSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="blueSyncVideo_MediaEnded" Width="550" IsVisibleChanged="blueSyncVideo_IsVisibleChanged"/>
         <MediaElement Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" LoadedBehavior="Manual" UnloadedBehavior="Stop" x:Name="redSyncVideo" Stretch="Uniform" Source="Videos/Bitness-Syncing.mp4" MediaEnded="redSyncVideo_MediaEnded" Width="550" IsVisibleChanged="redSyncVideo_IsVisibleChanged"/>
@@ -80,9 +80,9 @@
             <Image x:Name="blueFuelBottom" Grid.Row="1" Grid.Column="0" Source="Images/tube-bottom.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110" Panel.ZIndex="-2"/>
             <Rectangle x:Name="blueFuelBlock" Height="0" Width="80" Canvas.Left="-40" Canvas.Bottom="65" Fill="#f18021"/>
             <Image x:Name="testwater_left" gif:ImageBehavior.AnimatedSource="Images/test-water2.gif" Width="80" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" Canvas.Left="-40" Canvas.Bottom="65"/>
-            <Image x:Name="blueFuelTube" Grid.Row="1" Grid.Column="0" Source="Images/Tube-glass-and-top.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110"/> 
+            <Image x:Name="blueFuelTube" Grid.Row="1" Grid.Column="0" Source="Images/Tube-glass-and-top.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110"/>
         </Canvas>
-        
+
         <Canvas Name="rightSideBarCanvas" Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <Image x:Name="redFuelBottom" Grid.Row="1" Grid.Column="2" Source="Images/tube-bottom.png" Canvas.Bottom="30" Canvas.Left="-55" Width="110" Panel.ZIndex="-2"/>
             <Rectangle x:Name="redFuelBlock" Height="0" Width="80" Canvas.Left="-40" Canvas.Bottom="65" Fill="#f18021"/>
@@ -92,6 +92,39 @@
 
         <Image Grid.Row="1" Grid.Column="0" Stretch="Uniform" VerticalAlignment="Top" Source="Images/blue_teamname.jpg" Width="200"/>
         <Image Grid.Row="1" Grid.Column="2" Stretch="Uniform" VerticalAlignment="Top" Source="Images/red_teamname.jpg" Width="200"/>
+        <Canvas x:Name="BlueTeamInfo" Margin="0,0,0,619" Grid.Row="1" Visibility="Hidden">
+            <Rectangle Fill="#FF242C3A" HorizontalAlignment="Left" Height="558" Grid.Row="1" Stroke="Black" VerticalAlignment="Top" Width="200" Canvas.Top="61"/>
+            <Image x:Name="BlueFinished" gif:ImageBehavior.AnimatedSource="Images/blue_finished.gif" Width="200" Canvas.Top="80"/>
+            <Label Content="You Traveled" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Forgotten Futurist Rg" Canvas.Left="5" Canvas.Top="222" FontSize="18"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Canvas.Left="10" Canvas.Top="241">
+                <Label x:Name="BlueDistanceTraveled" Content="0" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Forgotten Futurist Rg" FontSize="36" RenderTransformOrigin="0.547,0.451"/>
+                <Label Content="miles" HorizontalAlignment="Left" Margin="0,20,0,107" FontFamily="Forgotten Futurist Rg" Background="#00000000" Foreground="White" FontSize="14"/>
+            </StackPanel>
+
+
+            <Label Content="Your Team has Traveled" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Forgotten Futurist Rg" FontSize="18" Canvas.Left="5" Canvas.Top="319"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Canvas.Left="10" Canvas.Top="341">
+                <Label x:Name="BlueTeamDistanceTraveled" Content="0" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Forgotten Futurist Rg" FontSize="36" RenderTransformOrigin="0.547,0.451"/>
+                <Label Content="billion miles" HorizontalAlignment="Left" Margin="0,20,0,107" FontFamily="Forgotten Futurist Rg" Background="#00000000" Foreground="White" FontSize="14"/>
+            </StackPanel>
+        </Canvas>
+
+        <Canvas x:Name="RedTeamInfo" Margin="1081,0,0,619" Grid.Row="1" Visibility="Hidden">
+            <Rectangle Fill="#FF242C3A" HorizontalAlignment="Left" Height="558" Grid.Row="1" Stroke="Black" VerticalAlignment="Top" Width="192" Canvas.Top="61"/>
+            <Image x:Name="RedFinished" gif:ImageBehavior.AnimatedSource="Images/blue_finished.gif" Width="190" Canvas.Top="80"/>
+            <Label Content="You Traveled" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Forgotten Futurist Rg" FontSize="18" Canvas.Left="5" Canvas.Top="219"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Canvas.Left="10" Canvas.Top="241">
+                <Label x:Name="RedDistanceTraveled" Content="0" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Forgotten Futurist Rg" FontSize="36" RenderTransformOrigin="0.547,0.451"/>
+                <Label Content="miles" HorizontalAlignment="Left" Margin="0,20,0,107" FontFamily="Forgotten Futurist Rg" Background="#00000000" Foreground="White" FontSize="14"/>
+            </StackPanel>
+
+
+            <Label Content="Your Team has Traveled" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Forgotten Futurist Rg" FontSize="18" Canvas.Left="5" Canvas.Top="319"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Canvas.Left="10" Canvas.Top="341">
+                <Label x:Name="RedTeamDistanceTraveled" Content="0" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Foreground="White" FontFamily="Forgotten Futurist Rg" FontSize="36" RenderTransformOrigin="0.547,0.451"/>
+                <Label Content="billion miles" HorizontalAlignment="Left" Margin="0,20,0,107" FontFamily="Forgotten Futurist Rg" Background="#00000000" Foreground="White" FontSize="14"/>
+            </StackPanel>
+        </Canvas>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>

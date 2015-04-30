@@ -25,6 +25,8 @@ namespace Bitness
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using Microsoft.Kinect;
+    using System.Threading;
+    using WpfAnimatedGif;
 
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
@@ -415,7 +417,8 @@ namespace Bitness
                                         if (redPlayer.Reps <= GOAL_NUM)
                                         {
                                             //Calculate Real Total Team Distance
-                                            totalRedTeamDistance = ((redPlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
+                                            double teamDist = ((redPlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
+                                            RedTeamDistanceTraveled.Content = Math.Round(teamDist, 2);
                                             Console.WriteLine("Red team traveled: " +  Math.Round(totalRedTeamDistance, 4) + " billion miles!");
                                             moveBar(1);
                                         }
@@ -509,7 +512,8 @@ namespace Bitness
                                         if (bluePlayer.Reps <= GOAL_NUM)
                                         {
                                             //Calculate Real Total Team Distance
-                                            totalBlueTeamDistance = ((bluePlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
+                                            double teamDist = ((bluePlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
+                                            BlueTeamDistanceTraveled.Content = Math.Round(teamDist, 2);
                                             Console.WriteLine("Blue team traveled: " + Math.Round(totalBlueTeamDistance, 2) + " billion miles!");
                                             moveBar(0);
                                         }
@@ -785,6 +789,20 @@ namespace Bitness
             leftSideBarCanvas.Visibility = Visibility.Visible;
         }
 
+        private void hidePlayerStats(bool blue)
+        {
+            if (blue)
+            {
+                BlueTeamInfo.Visibility = Visibility.Hidden;
+                bluesideStandby.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                RedTeamInfo.Visibility = Visibility.Hidden;
+                redsideStandby.Visibility = Visibility.Visible;
+            }
+        }
+
         private void redSyncVideo_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (redSyncVideo.IsVisible == true)
@@ -808,16 +826,23 @@ namespace Bitness
         }
 
         //gets rid of blastoff videos on end
-        private void BlastOffLeft_MediaEnded(object sender, RoutedEventArgs e)
+        private async void BlastOffLeft_MediaEnded(object sender, RoutedEventArgs e)
         {
             BlastOffLeft.Visibility = Visibility.Hidden;
-            bluesideStandby.Visibility = Visibility.Visible;
+            BlueTeamInfo.Visibility = Visibility.Visible;
+            await Task.Delay(20000);
+            hidePlayerStats(true);
         }
 
-        private void BlastOffRight_MediaEnded(object sender, RoutedEventArgs e)
+        private async void BlastOffRight_MediaEnded(object sender, RoutedEventArgs e)
         {
             BlastOffRight.Visibility = Visibility.Hidden;
-            redsideStandby.Visibility = Visibility.Visible;
+            RedTeamInfo.Visibility = Visibility.Visible;
+            var controller = ImageBehavior.GetAnimationController(RedFinished);
+            controller.GotoFrame(0);
+            controller.Play();
+            await Task.Delay(20000);
+            hidePlayerStats(false);
         }
 
         private void blueAtPlanet(int which)
