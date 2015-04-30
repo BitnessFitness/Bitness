@@ -241,8 +241,8 @@ namespace Bitness
 
             this.InitializeComponent();
 
-            bluePlanetMovieArray = new MediaElement[] {blueMars, blueJupiter, blueSaturn, blueUranus, blueNeptune, bluePluto};
-            redPlanetMovieArray = new MediaElement[] {redMars, redJupiter, redSaturn, redUranus, redNeptune, redPluto};
+            bluePlanetMovieArray = new MediaElement[] { blueMars, blueJupiter, blueSaturn, blueUranus, blueNeptune, bluePluto };
+            redPlanetMovieArray = new MediaElement[] { redMars, redJupiter, redSaturn, redUranus, redNeptune, redPluto };
 
             blueSyncVideo.Visibility = Visibility.Hidden;
             redSyncVideo.Visibility = Visibility.Hidden;
@@ -365,7 +365,7 @@ namespace Bitness
                                             if (redAtMars == false)
                                             {
                                                 redAtPlanet(0);
-                                            }                                         
+                                            }
                                         }
 
                                         if (ROCKET_X[0] > 395 && ROCKET_X[0] < 396)
@@ -420,7 +420,7 @@ namespace Bitness
                                             //Calculate Real Total Team Distance
                                             double teamDist = ((redPlayer.Reps / (double)maxTotalTeamJacks) * maxTeamTotalDistance) / 1000000000;
                                             RedTeamDistanceTraveled.Content = Math.Round(teamDist, 2);
-                                            Console.WriteLine("Red team traveled: " +  Math.Round(totalRedTeamDistance, 4) + " billion miles!");
+                                            Console.WriteLine("Red team traveled: " + Math.Round(totalRedTeamDistance, 4) + " billion miles!");
                                             moveBar(1);
                                         }
                                         else
@@ -529,10 +529,10 @@ namespace Bitness
                             #endregion
                             //If a body is bring tracked in the bodies[] add to the body counter.
                             bodyCounter++;
-                            
+
                             this.floor.DrawTopDownView(redPlayer, bluePlayer);
 
-                            if (bluePlayer.state == Player.State.SYNCED && redPlayer.state == Player.State.SYNCED) 
+                            if (bluePlayer.state == Player.State.SYNCED && redPlayer.state == Player.State.SYNCED)
                             {
                                 if (tutorialPlaying == false)
                                 {
@@ -573,12 +573,16 @@ namespace Bitness
                     {
                         showIdle(true);
                         tutorialPlaying = false;
+                        //resets bar for player blue
+                        resetBars(0);
                     }
 
                     if (!redPlayerDetected && redPlayer.state != Player.State.NOT_SYNCED)
                     {
                         showIdle(false);
                         tutorialPlaying = false;
+                        //resets bar for player red
+                        resetBars(1);
                     }
 
                     String message = "Red: " + redPlayer.Reps + ". Blue: " + bluePlayer.Reps;
@@ -602,7 +606,40 @@ namespace Bitness
                 }
             }
         }
+        private void resetBars(int index)
+        {
+            switch (index)
+            {
+                //resets the values for the player and resets the location of the rectangle
+                case 0:
+                    bluePlayer.Reps = 0;
+                    bluePlayer.exercise.Reps = 0;
+                    blueFuelBlock.Height = 0;
+                    Canvas.SetTop(blueFuelTop, -103);
+                    break;
+                case 1:
+                    redPlayer.Reps = 0;
+                    redPlayer.exercise.Reps = 0;
+                    redFuelBlock.Height = 0;
+                    Canvas.SetTop(redFuelTop, -103);
+                    break;
+                case 2:
+                    bluePlayer.Reps = 0;
+                    blueFuelBlock.Height = 0;
+                    bluePlayer.exercise.Reps = 0;
+                    Canvas.SetTop(blueFuelTop, -103);
+                    redPlayer.Reps = 0;
+                    redFuelBlock.Height = 0;
+                    redPlayer.exercise.Reps = 0;
+                    Canvas.SetTop(redFuelTop, -103);
+                    break;
+                default:
+                    Console.WriteLine("Default case");
+                    break;
+            }
 
+
+        }
         private void showLaunch(bool blue)
         {
             Console.WriteLine("Showing launch");
@@ -746,13 +783,13 @@ namespace Bitness
             //will not raise any more if the respective numRaise value is over a certain amount           			
             if (index == 0 && numRaiseLeft < JUMPING_JACKS_REQUIRED)
             {
-                blueFuelBlock.Height += FUEL_INCREASE_AMOUNT;
+                blueFuelBlock.Height = FUEL_INCREASE_AMOUNT * bluePlayer.Reps;
                 Canvas.SetTop(blueFuelTop, (Canvas.GetTop(blueFuelTop) - FUEL_INCREASE_AMOUNT));
             }
 
             if (index == 1 && numRaiseRight < JUMPING_JACKS_REQUIRED)
             {
-                redFuelBlock.Height += FUEL_INCREASE_AMOUNT;
+                redFuelBlock.Height = FUEL_INCREASE_AMOUNT * redPlayer.Reps;
                 Canvas.SetTop(redFuelTop, (Canvas.GetTop(redFuelTop) - FUEL_INCREASE_AMOUNT));
             }
         }
@@ -781,7 +818,7 @@ namespace Bitness
         {
             blueSyncVideo.Visibility = Visibility.Hidden;
             bluePlayer.state = Player.State.SYNCED;
-            showActiveBlue();            
+            showActiveBlue();
         }
 
         private void showActiveBlue()
@@ -955,7 +992,7 @@ namespace Bitness
         #endregion
 
         private void playTutorial()
-        { 
+        {
             Console.WriteLine("Showing Tutorial");
             tutorialPlaying = true;
             tutorialVideo.Visibility = Visibility.Visible;

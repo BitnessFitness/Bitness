@@ -30,8 +30,10 @@ namespace Bitness
             {
                 return reps;
             }
+            set { reps = value; }
+         
         }
-
+        
         public bool InProgress
         {
             get
