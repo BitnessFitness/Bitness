@@ -37,7 +37,6 @@
         <Viewbox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top">
             <Grid Name="CompositeImage">
                 <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
-                <Image Source="{Binding BodySource}" Stretch="UniformToFill" />
             </Grid>
         </Viewbox>
 

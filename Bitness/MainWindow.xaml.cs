@@ -541,32 +541,7 @@ namespace Bitness
                                     playTutorial();
                                 }
                             }
-
-                            #region DrawJoints
-                            IReadOnlyDictionary<JointType, Joint> joints = body.Joints;
-
-                            // convert the joint points to depth (display) space
-                            Dictionary<JointType, Point> jointPoints = new Dictionary<JointType, Point>();
-
-                            foreach (JointType jointType in joints.Keys)
-                            {
-                                // sometimes the depth(Z) of an inferred joint may show as negative
-                                // clamp down to 0.1f to prevent coordinatemapper from returning (-Infinity, -Infinity)
-                                CameraSpacePoint position = joints[jointType].Position;
-
-                                if (position.Z < 0)
-                                {
-                                    position.Z = InferredZPositionClamp;
-                                }
-
-                                DepthSpacePoint depthSpacePoint = this.coordinateMapper.MapCameraPointToDepthSpace(position);
-                                jointPoints[jointType] = new Point(depthSpacePoint.X, depthSpacePoint.Y);
-                            }
-
-                            this.DrawBody(joints, jointPoints, dc, drawPen);
-
                         }
-                            #endregion
                     }
                     #endregion
 
@@ -589,18 +564,7 @@ namespace Bitness
 
                     String message = "Red: " + redPlayer.Reps + ". Blue: " + bluePlayer.Reps;
 
-                    #region SetRocketPos
-                    Canvas.SetLeft(redRocket, ROCKET_X[0]);
-                    //Change the 2nd X position for the trail and add it to the canvas
-                    redRocketTrail.X2 = (ROCKET_X[0] + 10);
-                    topBarCanvas.Children.Add(redRocketTrail);
 
-                    Canvas.SetLeft(blueRocket, ROCKET_X[1]);
-                    //Change the 2nd X position for the trail and add it to the canvas
-                    blueRocketTrail.X2 = (ROCKET_X[1] + 10);
-                    topBarCanvas.Children.Add(blueRocketTrail);
-
-                    #endregion
                     this.StatusText = message;
 
                     // prevent drawing outside of our render area
