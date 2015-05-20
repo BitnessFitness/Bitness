@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
-        Title="FloorWindow" Height="960" Width="1280">
+        Title="FloorWindow" Height="960" Width="1280" Background="Black">
 
     <Canvas>
         <Image Source="{Binding ImageSource}" />
         <Canvas>
             <Image x:Name="blueFloorGif" gif:ImageBehavior.AnimatedSource="Images/bluefloor.gif" Width="400"/>
-            <Image x:Name="redFloorGif" gif:ImageBehavior.AnimatedSource="Images/bluefloor.gif" Width="400"/>
+            <Image x:Name="redFloorGif" gif:ImageBehavior.AnimatedSource="Images/redfloor.gif" Width="400"/>
         </Canvas>
     </Canvas>
 </Window>
