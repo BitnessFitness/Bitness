@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
-        Title="FloorWindow" Height="1000" Width="1000">
+        Title="FloorWindow" Height="960" Width="1280">
 
     <Canvas>
         <Image Source="{Binding ImageSource}" />

@@ -45,7 +45,7 @@ namespace Bitness
         private string statusText = "Nothing has happened yet!";
 
         public const double OFFSET = 0.5f;
-        public const double X_IN = 2f;
+        public const double X_IN = 3.5f;
         public const double Y_IN = 2f;
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Bitness
                 double px = (fx / X_IN) * this.Width;
                 double py = (fy / Y_IN) * this.Height;
 
-                return new Point(px, py);
+                return new Point(px - 55, py);
             }
 
             return new Point(0.0, 0.0);

@@ -351,9 +351,9 @@ namespace Bitness
                                     if (repAdded)
                                     {
                                         //(Total # of Reps / Max Total Jacks needed To reach last planet) * (Exact Canvas Distance to last planet --> 1010px))
-                                        double redDistanceToTravel = (redPlayer.Reps / (double)maxTotalTeamJacks) * 1010;
-                                        double redStartingPoint = 105;
-                                        ROCKET_X[0] = (redStartingPoint + redDistanceToTravel);
+                                        double redDistanceToTravel = ((redPlayer.TotalReps / (double)maxTotalTeamJacks) * 1010);
+                                        double redStartingPoint = 705;
+                                        ROCKET_X[0] = (int)(redStartingPoint + redDistanceToTravel);
                                         //If the rocket reaches a certain planet fire event to show win condition
                                         if (ROCKET_X[0] > 250 && ROCKET_X[0] < 251)
                                         {
@@ -450,9 +450,9 @@ namespace Bitness
                                     if (repAdded)
                                     {
                                         //(Total # of Reps / Max Total Jacks needed To reach last planet) * (Exact Canvas Distance to last planet --> 1010px))
-                                        double blueDistanceToTravel = (bluePlayer.Reps / (double)maxTotalTeamJacks) * 1010;
-                                        double blueStartingPoint = 105;
-                                        ROCKET_X[1] = (blueStartingPoint + blueDistanceToTravel);
+                                        double blueDistanceToTravel = ((bluePlayer.TotalReps / (double)maxTotalTeamJacks)) * 1010;
+                                        double blueStartingPoint = 705;
+                                        ROCKET_X[1] = (int)(blueStartingPoint + blueDistanceToTravel);
                                         //If the rocket reaches a certain planet fire event to show win condition
                                         if (ROCKET_X[1] > 250 && ROCKET_X[1] < 251)
                                         {
@@ -532,8 +532,6 @@ namespace Bitness
                             //If a body is bring tracked in the bodies[] add to the body counter.
                             bodyCounter++;
 
-                            this.floor.DrawTopDownView(redPlayer, bluePlayer);
-
                             if (bluePlayer.state == Player.State.SYNCED && redPlayer.state == Player.State.SYNCED)
                             {
                                 if (tutorialPlaying == false)
@@ -544,6 +542,11 @@ namespace Bitness
                         }
                     }
                     #endregion
+
+                    if (redPlayerDetected && bluePlayerDetected)
+                    {
+                        this.floor.DrawTopDownView(redPlayer, bluePlayer);
+                    }
 
                     // If player moved off screen, show idle for that side
                     if (!bluePlayerDetected && bluePlayer.state != Player.State.NOT_SYNCED)
