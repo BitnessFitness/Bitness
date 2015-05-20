@@ -21,6 +21,7 @@ namespace Bitness
         public Body body;
         public JumpingJack exercise;
         public int Reps = 0;
+        public int TotalReps = 0;
 
         public Player (Body body, JumpingJack exercise)
         {
@@ -34,6 +35,7 @@ namespace Bitness
             if (repCompleted)
             {
                 this.Reps = this.exercise.Reps;
+                this.TotalReps++;
             }
             return repCompleted;
         }

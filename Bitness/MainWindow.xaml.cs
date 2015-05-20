@@ -132,6 +132,7 @@ namespace Bitness
 
         //Bool for tutorial
         public bool tutorialPlaying = false;
+        public bool tutorialPlayed = false;
 
         //At planet Bool for red
         public bool redAtMars = false;
@@ -148,6 +149,9 @@ namespace Bitness
         public bool blueAtNeptune = false;
         public bool blueAtUranus = false;
         public bool blueAtPluto = false;
+
+        Line redRocketTrail = new Line();
+        Line blueRocketTrail = new Line();
 
         private MediaElement[] redPlanetMovieArray;
         private MediaElement[] bluePlanetMovieArray;
@@ -249,6 +253,25 @@ namespace Bitness
 
             leftSideBarCanvas.Visibility = Visibility.Hidden;
             rightSideBarCanvas.Visibility = Visibility.Hidden;
+
+            SolidColorBrush redBrush = new SolidColorBrush(red);
+            SolidColorBrush blueBrush = new SolidColorBrush(blue);
+
+            //Line Trail for red rocket
+            redRocketTrail.Stroke = redBrush;
+            redRocketTrail.X1 = 125;
+            redRocketTrail.Y1 = 61;
+            redRocketTrail.Y2 = 61;
+            Canvas.SetZIndex(redRocketTrail, -1);
+            topBarCanvas.Children.Add(redRocketTrail);
+
+            //Line Trail for blue rocket
+            blueRocketTrail.Stroke = blueBrush;
+            blueRocketTrail.X1 = 125;
+            blueRocketTrail.Y1 = 90;
+            blueRocketTrail.Y2 = 90;
+            Canvas.SetZIndex(blueRocketTrail, -2);
+            topBarCanvas.Children.Add(blueRocketTrail);
         }
 
         /// <summary>
@@ -270,27 +293,6 @@ namespace Bitness
             //Stores the # of bodies on the screen
             int bodyCounter = 0;
             Body[] trackedBodies = new Body[2];
-
-            #region InitTrails
-            SolidColorBrush redBrush = new SolidColorBrush(red);
-            SolidColorBrush blueBrush = new SolidColorBrush(blue);
-
-            //Line Trail for red rocket
-            Line redRocketTrail = new Line();
-            redRocketTrail.Stroke = redBrush;
-            redRocketTrail.X1 = 125;
-            redRocketTrail.Y1 = 61;
-            redRocketTrail.Y2 = 61;
-            Canvas.SetZIndex(redRocketTrail, -1);
-
-            //Line Trail for blue rocket
-            Line blueRocketTrail = new Line();
-            blueRocketTrail.Stroke = blueBrush;
-            blueRocketTrail.X1 = 125;
-            blueRocketTrail.Y1 = 90;
-            blueRocketTrail.Y2 = 90;
-            Canvas.SetZIndex(blueRocketTrail, -2);
-            #endregion
 
             #region GetBodyData
             using (BodyFrame bodyFrame = e.FrameReference.AcquireFrame())
@@ -352,7 +354,7 @@ namespace Bitness
                                     {
                                         //(Total # of Reps / Max Total Jacks needed To reach last planet) * (Exact Canvas Distance to last planet --> 1010px))
                                         double redDistanceToTravel = ((redPlayer.TotalReps / (double)maxTotalTeamJacks) * 1010);
-                                        double redStartingPoint = 705;
+                                        double redStartingPoint = 105;
                                         ROCKET_X[0] = (int)(redStartingPoint + redDistanceToTravel);
                                         //If the rocket reaches a certain planet fire event to show win condition
                                         if (ROCKET_X[0] > 250 && ROCKET_X[0] < 251)
@@ -451,7 +453,7 @@ namespace Bitness
                                     {
                                         //(Total # of Reps / Max Total Jacks needed To reach last planet) * (Exact Canvas Distance to last planet --> 1010px))
                                         double blueDistanceToTravel = ((bluePlayer.TotalReps / (double)maxTotalTeamJacks)) * 1010;
-                                        double blueStartingPoint = 705;
+                                        double blueStartingPoint = 105;
                                         ROCKET_X[1] = (int)(blueStartingPoint + blueDistanceToTravel);
                                         //If the rocket reaches a certain planet fire event to show win condition
                                         if (ROCKET_X[1] > 250 && ROCKET_X[1] < 251)
@@ -534,9 +536,10 @@ namespace Bitness
 
                             if (bluePlayer.state == Player.State.SYNCED && redPlayer.state == Player.State.SYNCED)
                             {
-                                if (tutorialPlaying == false)
+                                if (!tutorialPlaying && !tutorialPlayed)
                                 {
                                     playTutorial();
+                                    tutorialPlayed = true;
                                 }
                             }
                         }
@@ -567,6 +570,11 @@ namespace Bitness
 
                     String message = "Red: " + redPlayer.Reps + ". Blue: " + bluePlayer.Reps;
 
+                    Canvas.SetLeft(redRocket, ROCKET_X[0]);
+                    redRocketTrail.X2 = (ROCKET_X[0] + 10);
+
+                    Canvas.SetLeft(blueRocket, ROCKET_X[1]);
+                    blueRocketTrail.X2 = (ROCKET_X[1] + 10);
 
                     this.StatusText = message;
 
@@ -632,6 +640,7 @@ namespace Bitness
 
             //reset tutorial bool to false so it can play for next players
             tutorialPlaying = false;
+            tutorialPlayed = false;
         }
 
         private void showIdle(bool blue)
@@ -940,6 +949,8 @@ namespace Bitness
         private void playTutorial()
         {
             Console.WriteLine("Showing Tutorial");
+            redPlayer.state = Player.State.TUTORIAL;
+            bluePlayer.state = Player.State.TUTORIAL;
             tutorialPlaying = true;
             tutorialVideo.Visibility = Visibility.Visible;
             tutorialVideo.Position = new TimeSpan(0);
@@ -949,6 +960,8 @@ namespace Bitness
         private void tutorialVideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             tutorialVideo.Visibility = Visibility.Hidden;
+            redPlayer.state = Player.State.SYNCED;
+            bluePlayer.state = Player.State.SYNCED;
         }
 
         private async void shortBlastOffOrange_MediaEnded(object sender, RoutedEventArgs e)
